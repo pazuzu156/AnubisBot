@@ -7,7 +7,7 @@ Use composer
 `$ composer create-project pazuzu156/anubisbot --prefer-dist`
 
 ## Config
-`config.php` holds commands to register
+`config.php` holds commands to register 
 
 A seperate .env file houses bot information
 
