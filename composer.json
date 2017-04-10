@@ -1,0 +1,31 @@
+{
+    "name": "pazuzu156/anubisbot",
+    "description": "A Discord bot written in PHP",
+    "type": "project",
+    "license": "MIT",
+    "keywords": ["bot", "discord", "php"],
+    "config": {
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "require": {
+        "php": ">=5.6",
+        "vlucas/phpdotenv": "^2.4",
+        "php-curl-class/php-curl-class": "^7.2",
+        "team-reflex/discord-php": "^4.0",
+        "symfony/console": "^3.2",
+        "nesbot/carbon": "^1.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core/",
+            "Commands\\": "commands/"
+        },
+        "files": [ "core/helpers.php" ]
+    },
+    "scripts": {
+        "post-root-package-install": [ "php -r \"file_exists('.env') || copy('.env.example', '.env');\"" ],
+        "post-install-cmd": [ "composer dump-autoload -o" ],
+        "post-update-cmd": [ "composer dump-autoload -o" ],
+    }
+}

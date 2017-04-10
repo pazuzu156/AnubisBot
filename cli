@@ -1,0 +1,18 @@
+#!/bin/env php
+<?php
+
+require_once __DIR__.'/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Core\Console\Console;
+
+$app = new Application();
+$console = new Console();
+
+$commands = config_get('console');
+
+foreach ($commands as $command) {
+    $app->add($console->register($command));
+}
+
+$app->run();
