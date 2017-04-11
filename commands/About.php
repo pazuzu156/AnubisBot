@@ -101,6 +101,13 @@ class About extends Command
                 $day = $days.' days ';
             }
         }
+        if ($hours > 0) {
+            if ($hours == 1) {
+                $hour = '1 hour ';
+            } else {
+                $hour = $hours.' hours ';
+            }
+        }
         if ($mins > 0) {
             if ($mins == 1) {
                 $min = '1 minute ';

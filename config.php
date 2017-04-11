@@ -6,6 +6,7 @@ return [
     // All commands are registered here
     'commands' => [
         Commands\About::class,
+        Commands\GetID::class,
         Commands\Prune::class,
     ],
 

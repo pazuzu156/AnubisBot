@@ -131,10 +131,41 @@ class Command
             $exp = explode("\n", $doc);
         }
 
+        $lines = [];
+        $desc = '';
         if (count($exp) > 1) {
-            return ltrim($exp[1], '* ');
+            foreach ($exp as $line) {
+                $line = ltrim($line, '* ');
+
+                $fc = substr($line, 0, 1);
+
+                if (preg_match('/[a-zA-Z]/i', $fc)) {
+                    $line = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) {
+                        $presets = [
+                            'PREFIX',
+                        ];
+
+                        foreach ($presets as $preset) {
+                            if (strtolower($m[1]) == strtolower($preset)) {
+                                $prefix = env('PREFIX', '!');
+                                if (env('PREFIX_SPACE', false)) {
+                                    $prefix = $prefix.' ';
+                                }
+
+                                return $prefix;
+                            }
+                        }
+                    }, $line);
+
+                    $lines[] = $line;
+                }
+            }
         }
 
-        return 'No description provided.';
+        if (count($lines) > 0) {
+            $desc = implode(' ', $lines);
+        }
+
+        return ($desc == '') ? 'No description provided.' : $desc;
     }
 }
