@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Create extends Command
+class Delete extends Command
 {
     /**
      * Configure Symfony Command.

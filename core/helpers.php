@@ -69,6 +69,6 @@ if (!function_exists('version')) {
      */
     function version()
     {
-        return \Core\Application::$VERSION;
+        return \Core\Application::VERSION;
     }
 }

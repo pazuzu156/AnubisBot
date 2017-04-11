@@ -43,24 +43,33 @@ class Create extends Command
 namespace Commands;
 
 use Core\Command;
+use Core\Parameters;
 
 class $name extends Command
 {
     /**
-     * The name of your command to register with Discord.
-     *
-     * @var string
+     * {@inheritdoc}
      */
     protected \$name = '$nametolower';
 
     /**
-     * The command's description to serve in the help.
-     *
-     * @var string
+     * {@inheritdoc}
      */
     protected \$description = '';
 
-    // Place methods here
+    /**
+     * Default command method.
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
+    public function index(Parameters \$p)
+    {
+        // Default command method
+    }
+
+    // Place your methods here
 }
 
 EOF;

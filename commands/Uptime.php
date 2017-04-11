@@ -8,16 +8,12 @@ use Core\Command;
 class Uptime extends Command
 {
     /**
-     * The name of your command to register with Discord.
-     *
-     * @var string
+     * {@inheritdoc}
      */
     protected $name = 'uptime';
 
     /**
-     * The command's description to serve in the help.
-     *
-     * @var string
+     * {@inheritdoc}
      */
     protected $description = 'Displays the uptime of the bot';
 
@@ -28,17 +24,15 @@ class Uptime extends Command
      */
     public function index()
     {
-        var_dump($this->author);
-        return;
         $start = $GLOBALS['START_TIME'];
         $time = Carbon::createFromTimestamp($start);
 
         $years  = $time->diffInYears();
         $months = $time->diffInMonths();
         $weeks  = $time->diffInWeeks();
-        $days   = $time->diffInDays();
-        $mins   = $time->diffInMinutes();
-        $secs   = $time->diffInSeconds();
+        $days   = $time->diffInDays() % 24;
+        $mins   = $time->diffInMinutes() % 60;
+        $secs   = $time->diffInSeconds() % 60;
 
         $uptime = 'Uptime: ';
         $year   = '';
@@ -49,33 +43,33 @@ class Uptime extends Command
 
         if ($years > 0) {
             if ($years == 1) {
-                $year = '1 year';
+                $year = '1 year ';
             } else {
-                $year = $years.' years';
+                $year = $years.' years ';
             }
         }
 
         if ($months > 0) {
             if ($months == 1) {
-                $month = '1 month';
+                $month = '1 month ';
             } else {
-                $month = $months.' months';
+                $month = $months.' months ';
             }
         }
 
         if ($days > 0) {
             if ($days == 1) {
-                $day = '1 day';
+                $day = '1 day ';
             } else {
-                $day = $days.' days';
+                $day = $days.' days ';
             }
         }
 
         if ($mins > 0) {
             if ($mins == 1) {
-                $min = '1 minute';
+                $min = '1 minute ';
             } else {
-                $min = $mins.' minutes';
+                $min = $mins.' minutes ';
             }
         }
 
