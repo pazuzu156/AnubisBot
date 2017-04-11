@@ -2,7 +2,6 @@
 
 namespace Core;
 
-use Core\Config\Configuration;
 use Discord\Parts\User\Member;
 
 class Permissions
@@ -14,11 +13,11 @@ class Permissions
      * @param string                     $permission
      * @param \Discord\Parts\User\Member $member
      *
-     * @return boolean
+     * @return bool
      */
     public function can($permission, Member $member)
     {
-        foreach($member->roles as $role) {
+        foreach ($member->roles as $role) {
             return $role->permissions->$permission;
         }
 

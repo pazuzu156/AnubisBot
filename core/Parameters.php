@@ -55,7 +55,7 @@ class Parameters
     }
 
     /**
-     * Gets a parameter by the index
+     * Gets a parameter by the index.
      *
      * @param int $index
      *
@@ -75,7 +75,7 @@ class Parameters
      *
      * @param int $index
      *
-     * @return boolean
+     * @return bool
      */
     public function has($index)
     {
@@ -89,7 +89,7 @@ class Parameters
      */
     public function first()
     {
-        if($this->has(0)) {
+        if ($this->has(0)) {
             return $this->get(0);
         }
     }

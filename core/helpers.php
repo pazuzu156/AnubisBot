@@ -25,6 +25,7 @@ if (!function_exists('config_get')) {
     function config_get($config)
     {
         $c = new \Core\Config\Configuration();
+
         return $c->get($config);
     }
 }
@@ -38,9 +39,10 @@ if (!function_exists('env')) {
      *
      * @return mixed
      */
-    function env($key, $default='')
+    function env($key, $default = '')
     {
         $env = new \Core\Environment();
+
         return $env->get($key, $default);
     }
 }
@@ -52,11 +54,12 @@ if (!function_exists('env_set')) {
      * @param string $key
      * @param string $value
      *
-     * @return boolean
+     * @return bool
      */
     function env_set($key, $value)
     {
         $env = new \Core\Environment();
+
         return $env->set($key, $value);
     }
 }

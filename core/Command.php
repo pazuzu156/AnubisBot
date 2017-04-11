@@ -99,7 +99,7 @@ class Command
     }
 
     /**
-     * Sets the message instance
+     * Sets the message instance.
      *
      * @param \Discord\Parts\Channel\Message
      *

@@ -47,7 +47,7 @@ class Environment
         if (!is_null($this->_env)) {
             $env = ($this->has($key)) ? getenv($key) : var_export($default, true);
 
-            switch($env) {
+            switch ($env) {
                 case 'true':
                 return true;
                 case 'false':

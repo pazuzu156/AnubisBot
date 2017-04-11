@@ -4,7 +4,6 @@ namespace Commands;
 
 use Carbon\Carbon;
 use Core\Command;
-use Core\Parameters;
 
 class About extends Command
 {
@@ -47,19 +46,19 @@ class About extends Command
         $start = $GLOBALS['START_TIME'];
         $time = Carbon::createFromTimestamp($start);
 
-        $years  = $time->diffInYears();
+        $years = $time->diffInYears();
         $months = $time->diffInMonths();
-        $weeks  = $time->diffInWeeks();
-        $days   = $time->diffInDays() % 24;
-        $mins   = $time->diffInMinutes() % 60;
-        $secs   = $time->diffInSeconds() % 60;
+        $weeks = $time->diffInWeeks();
+        $days = $time->diffInDays() % 24;
+        $mins = $time->diffInMinutes() % 60;
+        $secs = $time->diffInSeconds() % 60;
 
         $uptime = 'Uptime: ';
-        $year   = '';
-        $month  = '';
-        $day    = '';
-        $min    = '';
-        $sec    = '';
+        $year = '';
+        $month = '';
+        $day = '';
+        $min = '';
+        $sec = '';
 
         if ($years > 0) {
             if ($years == 1) {

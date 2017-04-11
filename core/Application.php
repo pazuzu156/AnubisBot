@@ -5,7 +5,7 @@ namespace Core;
 use Core\Config\Configuration;
 use Discord\DiscordCommandClient;
 use Discord\Parts\User\Game;
-use \ReflectionMethod;
+use ReflectionMethod;
 
 class Application
 {
@@ -72,20 +72,20 @@ class Application
     }
 
     /**
-     * Starts the bot
+     * Starts the bot.
      *
      * @return void
      */
     public function start()
     {
-        $this->_discord->on('ready', function($discord) {
+        $this->_discord->on('ready', function ($discord) {
             if (!is_null($this->_game)) {
                 $discord->updatePresence($this->_game);
             }
 
             $msg = "\nBot is now online\n"
-                . "Bot ID: {$discord->user->id}\n"
-                . "Bot name: {$discord->user->username}\n";
+                ."Bot ID: {$discord->user->id}\n"
+                ."Bot name: {$discord->user->username}\n";
             echo $msg;
         });
 
@@ -103,7 +103,7 @@ class Application
     }
 
     /**
-     * Returns the bot user object
+     * Returns the bot user object.
      *
      * @return \Discord\Parts\User\User
      */
@@ -122,19 +122,19 @@ class Application
         $prefix_space = $this->_env->get('PREFIX_SPACE', false);
         $prefix = $this->_env->get('PREFIX', '');
 
-        $prefix = ($prefix_space=='true') ? $prefix.' ' : $prefix;
+        $prefix = ($prefix_space == 'true') ? $prefix.' ' : $prefix;
 
         $opts = [
-            'token' => $this->_env->get('TOKEN', ''),
-            'prefix' => $prefix,
-            'name' => $this->_env->get('NAME', ''),
+            'token'       => $this->_env->get('TOKEN', ''),
+            'prefix'      => $prefix,
+            'name'        => $this->_env->get('NAME', ''),
             'description' => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
         ];
 
         $this->_discord = new DiscordCommandClient($opts);
 
         $app = $this;
-        $this->_discord->on('ready', function($discord) use ($app) {
+        $this->_discord->on('ready', function ($discord) use ($app) {
             $app->registerCommands();
         });
     }
@@ -154,7 +154,7 @@ class Application
 
             $app = $this;
 
-            $command = $this->_discord->registerCommand($cmd->getName(), function($message, $params) use ($cmd, $app) {
+            $command = $this->_discord->registerCommand($cmd->getName(), function ($message, $params) use ($cmd, $app) {
                 $cmd->setMessage($message);
                 $p = new Parameters(['method' => 'index', 'params' => $params]);
 
@@ -182,7 +182,7 @@ class Application
             foreach ($subCommandsArray as $subCommand) {
                 $methodReflection = new ReflectionMethod(get_class($cmd), $subCommand);
                 $description = $cmd->getSubCommandDescription($cmd, $subCommand, $methodReflection);
-                $command->registerSubCommand($subCommand, function($message, $params) use ($cmd, $app, $subCommand) {
+                $command->registerSubCommand($subCommand, function ($message, $params) use ($cmd, $app, $subCommand) {
                     $cmd->setMessage($message);
                     $p = new Parameters(['method' => $subCommand, 'params' => $params]);
                     $method = $p->getMethod();
