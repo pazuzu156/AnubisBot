@@ -9,7 +9,7 @@ require_once __DIR__.'/vendor/autoload.php';
 $app = new Core\Application();
 
 // Set game presence
-$app->setGame('Testing');
+$app->setGame('God of the Underworld');
 
 // run the bot
 $app->start();
