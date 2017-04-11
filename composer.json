@@ -14,7 +14,6 @@
         "vlucas/phpdotenv": "^2.4",
         "php-curl-class/php-curl-class": "^7.2",
         "symfony/console": "^3.2",
-        "nesbot/carbon": "^1.22",
         "symfony/var-dumper": "^3.2"
     },
     "autoload": {

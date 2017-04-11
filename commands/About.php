@@ -2,8 +2,8 @@
 
 namespace Commands;
 
-use Carbon\Carbon;
 use Core\Command;
+use DateTime;
 
 class About extends Command
 {
@@ -61,30 +61,32 @@ class About extends Command
     public function uptime()
     {
         $start = $GLOBALS['START_TIME'];
-        $time = Carbon::createFromTimestamp($start);
 
-        $years = $time->diffInYears();
-        $months = $time->diffInMonths();
-        $weeks = $time->diffInWeeks();
-        $days = $time->diffInDays() % 24;
-        $mins = $time->diffInMinutes() % 60;
-        $secs = $time->diffInSeconds() % 60;
+        $dtF = new DateTime('@'.time());
+        $dtT = new DateTime("@$start");
+        $diff = $dtF->diff($dtT);
 
-        $uptime = 'Uptime: ';
+        $years = $diff->format('%y');
+        $months = $diff->format('%m');
+        $days = $diff->format('%d');
+        $hours = $diff->format('%h');
+        $mins = $diff->format('%i');
+        $secs = $diff->format('%s');
+
         $year = '';
         $month = '';
         $day = '';
+        $hour = '';
         $min = '';
         $sec = '';
 
         if ($years > 0) {
             if ($years == 1) {
-                $year = '1 year ';
+                $year = '1 year, ';
             } else {
                 $year = $years.' years ';
             }
         }
-
         if ($months > 0) {
             if ($months == 1) {
                 $month = '1 month ';
@@ -92,7 +94,6 @@ class About extends Command
                 $month = $months.' months ';
             }
         }
-
         if ($days > 0) {
             if ($days == 1) {
                 $day = '1 day ';
@@ -100,7 +101,6 @@ class About extends Command
                 $day = $days.' days ';
             }
         }
-
         if ($mins > 0) {
             if ($mins == 1) {
                 $min = '1 minute ';
@@ -108,7 +108,6 @@ class About extends Command
                 $min = $mins.' minutes ';
             }
         }
-
         if ($secs > 0) {
             if ($secs == 1) {
                 $sec = '1 second';
@@ -117,7 +116,7 @@ class About extends Command
             }
         }
 
-        $uptime .= $year.$day.$day.$min.$sec;
+        $uptime = 'Uptime: '.$year.$month.$day.$hour.$min.$sec;
 
         $this->channel->sendMessage($uptime);
     }
