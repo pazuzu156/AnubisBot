@@ -93,7 +93,6 @@ class Command
         
         $description = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($presets) {
             foreach ($presets as $preset) {
-                dump($m[1]);
                 if ($m[1] == $preset) {
                     switch($preset) {
                         case 'PREFIX':
