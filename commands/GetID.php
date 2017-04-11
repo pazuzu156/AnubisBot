@@ -53,7 +53,7 @@ class GetID extends Command
     {
         $curl = new Curl();
         $user = $p->first();
-        
+
         if (is_null($user)) {
             $this->message->reply('You forgot to give the username!');
         } else {
