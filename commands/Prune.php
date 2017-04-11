@@ -49,6 +49,8 @@ class Prune extends Command
             } else {
                 $channel->sendMessage('`pruned '.count($arr).' messages`');
             }
+
+            $arr = [];
         });
     }
 
@@ -83,6 +85,8 @@ class Prune extends Command
                 } else {
                     $channel->sendMessage('`pruned '.count($arr).' messages`');
                 }
+
+                $arr = [];
             });
         } else {
             $this->message->reply('You do not have permission to prune messages!');
@@ -118,6 +122,8 @@ class Prune extends Command
             } else {
                 $channel->sendMessage('`pruned '.count($arr).' messages`');
             }
+
+            $arr = [];
         });
     }
 }

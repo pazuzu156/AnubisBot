@@ -32,6 +32,18 @@ class About extends Command
     }
 
     /**
+     * Runs all of the about sub commands.
+     *
+     * @return void
+     */
+    public function all()
+    {
+        $this->index();
+        $this->uptime();
+        $this->source();
+    }
+
+    /**
      * Gives the GitHub link to the source code.
      *
      * @return void
