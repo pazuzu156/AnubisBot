@@ -45,7 +45,16 @@ class Environment
     public function get($key, $default = '')
     {
         if (!is_null($this->_env)) {
-            return ($this->has($key)) ? getenv($key) : var_export($default, true);
+            $env = ($this->has($key)) ? getenv($key) : var_export($default, true);
+
+            switch($env) {
+                case 'true':
+                return true;
+                case 'false':
+                return false;
+                default:
+                return $env;
+            }
         }
 
         return var_export($default, true);

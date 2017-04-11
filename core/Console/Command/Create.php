@@ -60,7 +60,7 @@ class $name extends Command
     /**
      * Default command method.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Parameters \$p
      *
      * @return void
      */

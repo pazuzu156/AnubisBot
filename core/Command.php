@@ -3,6 +3,7 @@
 namespace Core;
 
 use Discord\Parts\Channel\Channel;
+use ReflectionMethod;
 
 class Command
 {
@@ -110,5 +111,30 @@ class Command
         $this->channel = $this->message->channel;
         $this->author = $this->message->author;
         $this->guild = $this->channel->guild;
+    }
+
+    /**
+     * Extrapolates the sub command description from it's method's docblock.
+     *
+     * @param \Core\Command     $command
+     * @param string            $subCommand
+     * @param \ReflectionMethod $reflection
+     *
+     * @return string
+     */
+    public function getSubCommandDescription(Command $command, $subCommand, ReflectionMethod $reflection)
+    {
+        $doc = $reflection->getDocComment();
+
+        $exp = explode("\r\n", $doc);
+        if (count($exp) == 1) {
+            $exp = explode("\n", $doc);
+        }
+
+        if (count($exp) > 1) {
+            return ltrim($exp[1], '* ');
+        }
+
+        return 'No description provided.';
     }
 }

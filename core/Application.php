@@ -154,33 +154,44 @@ class Application
 
             $app = $this;
 
-            $this->_discord->registerCommand($cmd->getName(), function($message, $params) use ($cmd, $app) {
+            $command = $this->_discord->registerCommand($cmd->getName(), function($message, $params) use ($cmd, $app) {
                 $cmd->setMessage($message);
-                $p = new Parameters($params);
-                $method = $p->getMethod();
+                $p = new Parameters(['method' => 'index', 'params' => $params]);
 
-                if ($method == 'index') {
-                    $app->call($cmd, $method, $p);
+                if (method_exists(get_class($cmd), 'index')) {
+                    $app->call($cmd, 'index', $p);
                 } else {
-                    if (method_exists(get_class($cmd), $method)) {
-                        $app->call($cmd, $method, $p);
-                    } else {
-                        if (method_exists(get_class($cmd), 'index')) {
-                            $parms = ['index'];
-                            foreach ($params as $par) {
-                                $parms[] = $par;
-                            }
-                            $p = new Parameters($parms);
-                            $method = $p->getMethod();
-                            $app->call($cmd, $method, $p);
-                        } else {
-                            echo "$method is not a valid command method!";
-                        }
-                    }
+                    echo "{$cmd->getname()} doesn't have [index] method and is not calling a sub command!";
                 }
             }, [
                 'description' => $desc.'.',
             ]);
+
+            $methods = get_class_methods($cmd);
+            $subCommandsArray = [];
+            foreach ($methods as $m) {
+                if ($m == '__construct') {
+                    break;
+                }
+
+                if ($m != 'index') {
+                    $subCommandsArray[] = $m;
+                }
+            }
+
+            foreach ($subCommandsArray as $subCommand) {
+                $methodReflection = new ReflectionMethod(get_class($cmd), $subCommand);
+                $description = $cmd->getSubCommandDescription($cmd, $subCommand, $methodReflection);
+                $command->registerSubCommand($subCommand, function($message, $params) use ($cmd, $app, $subCommand) {
+                    $cmd->setMessage($message);
+                    $p = new Parameters(['method' => $subCommand, 'params' => $params]);
+                    $method = $p->getMethod();
+
+                    $app->call($cmd, $method, $p);
+                }, [
+                    'description' => $description,
+                ]);
+            }
         }
     }
 

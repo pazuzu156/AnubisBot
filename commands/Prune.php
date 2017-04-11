@@ -17,10 +17,17 @@ class Prune extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Prune messages for a user, bot or all messages. Default limit: 50';
+    protected $description = 'Prune messages. (Default limit: 50)';
 
     /**
-     * Prune all messages limited by limit
+     * Default message log limit.
+     *
+     * @var int
+     */
+    const DEFAULT_LIMIT = 50;
+
+    /**
+     * Prune all messages limited by limit.
      *
      * @param \Core\Parameters $p
      *
@@ -28,7 +35,7 @@ class Prune extends Command
      */
     public function index(Parameters $p)
     {
-        $limit = (!is_null($p->first())) ? (int)$p->first() : 50;
+        $limit = ($p->count()) ? (int)$p->first() : Prune::DEFAULT_LIMIT;
 
         $channel = $this->channel;
         $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel) {
@@ -48,7 +55,7 @@ class Prune extends Command
     }
 
     /**
-     * Prune all user messages limited by limit
+     * Prune all user messages limited by limit.
      *
      * @param \Core\Parameters $p
      *
@@ -56,7 +63,7 @@ class Prune extends Command
      */
     public function user(Parameters $p)
     {
-        $limit = (!is_null($p->get(1))) ? (int)$p->get(1) : 50;
+        $limit = (!is_null($p->get(1))) ? (int)$p->get(1) : Prune::DEFAULT_LIMIT;
 
         if ($this->permissions->can('manage_messages', $this->author)) {
             $userid = str_replace('<@', '', rtrim($p->get(0), '>'));
@@ -85,7 +92,7 @@ class Prune extends Command
     }
 
     /**
-     * Prune all bot messages limited by limit
+     * Prune all bot messages limited by limit.
      *
      * @param \Core\Parameters $p
      *
@@ -93,7 +100,7 @@ class Prune extends Command
      */
     public function bot(Parameters $p)
     {
-        $limit = (!is_null($p->first())) ? (int)$p->first() : 50;
+        $limit = ($p->count()) ? (int)$p->first() : Prune::DEFAULT_LIMIT;
 
         $channel = $this->channel;
         $bot = $this->app->getBotUser();

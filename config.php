@@ -7,7 +7,6 @@ return [
     'commands' => [
         Commands\About::class,
         Commands\Prune::class,
-        Commands\Uptime::class,
     ],
 
     // All console commands are registered here

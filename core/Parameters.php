@@ -9,32 +9,29 @@ class Parameters
      *
      * @var array
      */
-    private $_params;
+    private $_params = [];
 
     /**
      * The command method to call.
      *
      * @var string
      */
-    private $_method;
+    private $_method = 'index';
 
     /**
      * Ctor.
      *
      * @return void
      */
-    public function __construct(array $params = [])
+    public function __construct(array $options = [])
     {
-        $this->_params = $params;
-        // $this->_method = $params[0];
-
-        if (isset($params[0])) {
-            $this->_method = $params[0];
-        } else {
-            $this->_method = 'index';
+        if (isset($options['params'])) {
+            $this->_params = $options['params'];
         }
 
-        array_shift($this->_params);
+        if (isset($options['method'])) {
+            $this->_method = $options['method'];
+        }
     }
 
     /**
