@@ -35,7 +35,7 @@ class Delete extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
-        
+
         $cpath = base_path().'/commands/';
         $filename = $name.'.php';
         $filepath = $cpath.$filename;

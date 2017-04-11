@@ -73,7 +73,7 @@ class $name extends Command
 }
 
 EOF;
-        
+
         $cpath = base_path().'/commands/';
         $filename = $name.'.php';
         $filepath = $cpath.$filename;

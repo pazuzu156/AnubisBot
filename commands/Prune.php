@@ -5,8 +5,6 @@ namespace Commands;
 use Core\Command;
 use Core\Parameters;
 
-use Discord\Parts\User\Member;
-
 class Prune extends Command
 {
     /**
@@ -35,7 +33,7 @@ class Prune extends Command
      */
     public function index(Parameters $p)
     {
-        $limit = ($p->count()) ? (int)$p->first() : Prune::DEFAULT_LIMIT;
+        $limit = ($p->count()) ? (int) $p->first() : self::DEFAULT_LIMIT;
 
         $channel = $this->channel;
         $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel) {
@@ -63,7 +61,7 @@ class Prune extends Command
      */
     public function user(Parameters $p)
     {
-        $limit = (!is_null($p->get(1))) ? (int)$p->get(1) : Prune::DEFAULT_LIMIT;
+        $limit = (!is_null($p->get(1))) ? (int) $p->get(1) : self::DEFAULT_LIMIT;
 
         if ($this->permissions->can('manage_messages', $this->author)) {
             $userid = str_replace('<@', '', rtrim($p->get(0), '>'));
@@ -77,7 +75,7 @@ class Prune extends Command
                         $arr[] = $message;
                     }
                 }
-                
+
                 $channel->deleteMessages($arr);
 
                 if (count($arr) == 1) {
@@ -87,7 +85,7 @@ class Prune extends Command
                 }
             });
         } else {
-            $this->message->reply("You do not have permission to prune messages!");
+            $this->message->reply('You do not have permission to prune messages!');
         }
     }
 
@@ -100,7 +98,7 @@ class Prune extends Command
      */
     public function bot(Parameters $p)
     {
-        $limit = ($p->count()) ? (int)$p->first() : Prune::DEFAULT_LIMIT;
+        $limit = ($p->count()) ? (int) $p->first() : self::DEFAULT_LIMIT;
 
         $channel = $this->channel;
         $bot = $this->app->getBotUser();
