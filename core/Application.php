@@ -164,7 +164,7 @@ class Application
                     echo "{$cmd->getname()} doesn't have [index] method and is not calling a sub command!";
                 }
             }, [
-                'description' => $desc.'.',
+                'description' => $cmd->parseDescription($desc).'.',
             ]);
 
             $methods = get_class_methods($cmd);

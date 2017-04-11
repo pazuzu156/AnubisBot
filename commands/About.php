@@ -15,7 +15,7 @@ class About extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = '';
+    protected $description = 'Retrieve information about {NAME}';
 
     /**
      * Default command method.
@@ -24,7 +24,6 @@ class About extends Command
      */
     public function index()
     {
-        // Default command method
         $name = env('NAME', '');
         $version = version();
 

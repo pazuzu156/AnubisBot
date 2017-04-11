@@ -63,6 +63,8 @@ class Command
      */
     protected $permissions;
 
+    private $_presets = ['PREFIX', 'NAME'];
+
     /**
      * Ctor.
      *
@@ -76,6 +78,43 @@ class Command
 
         $this->app = $app;
         $this->permissions = new Permissions();
+    }
+
+    /**
+     * Parses a command description.
+     *
+     * @param string $description
+     *
+     * @return string
+     */
+    public function parseDescription($description)
+    {
+        $presets = $this->_presets;
+        
+        $description = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($presets) {
+            foreach ($presets as $preset) {
+                dump($m[1]);
+                if ($m[1] == $preset) {
+                    switch($preset) {
+                        case 'PREFIX':
+                        $prefix = env('PREFIX', '!');
+                        if (env('PREFIX_SPACE', false)) {
+                            $prefix = $prefix.' ';
+                        }
+
+                        return $prefix;
+                        break;
+                        case 'NAME':
+                        return env('NAME', '');
+                        break;
+                    }
+                }
+            }
+
+            return $m[0];
+        }, $description);
+
+        return $description;
     }
 
     /**
@@ -140,23 +179,7 @@ class Command
                 $fc = substr($line, 0, 1);
 
                 if (preg_match('/[a-zA-Z]/i', $fc)) {
-                    $line = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) {
-                        $presets = [
-                            'PREFIX',
-                        ];
-
-                        foreach ($presets as $preset) {
-                            if (strtolower($m[1]) == strtolower($preset)) {
-                                $prefix = env('PREFIX', '!');
-                                if (env('PREFIX_SPACE', false)) {
-                                    $prefix = $prefix.' ';
-                                }
-
-                                return $prefix;
-                            }
-                        }
-                    }, $line);
-
+                    $line = $this->parseDescription($line);
                     $lines[] = $line;
                 }
             }
