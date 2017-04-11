@@ -41,6 +41,11 @@ class About extends Command
         $this->channel->sendMessage('https://github.com/pazuzu156/anubisbot');
     }
 
+    /**
+     * Displays the amount of time the bot has been live.
+     *
+     * @return void
+     */
     public function uptime()
     {
         $start = $GLOBALS['START_TIME'];
