@@ -37,7 +37,7 @@ class Run extends Command
         // $msg = $input->getArgument('startup_message');
         $bool = $input->getArgument('startup_message');
 
-        switch($bool) {
+        switch ($bool) {
             case 'true':
             $bool = true;
             break;
@@ -45,7 +45,7 @@ class Run extends Command
             $bool = false;
             break;
         }
-        
+
         require_once base_path().'/bot.php';
     }
 }

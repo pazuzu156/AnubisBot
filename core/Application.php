@@ -88,7 +88,7 @@ class Application
 
             if ($startMessage) {
                 $channel = $discord->factory(Channel::class, [
-                    'id' => env('BOTSPAM_CHANNEL_ID', ''),
+                    'id'   => env('BOTSPAM_CHANNEL_ID', ''),
                     'type' => 'text',
                 ]);
 
