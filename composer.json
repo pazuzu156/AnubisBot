@@ -3,6 +3,12 @@
     "description": "A Discord bot written in PHP",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Kaleb Klein",
+            "email": "klein.jae@gmail.com"
+        }
+    ],
     "keywords": ["bot", "discord", "php"],
     "config": {
         "preferred-install": "dist",
