@@ -130,8 +130,8 @@ class UserInfo extends Command
                 'value' => $user->id,
             ],
             [
-                'name'  => 'Joined Server',
-                'value' => "$date ({$carbon->diffForHumans()})",
+                'name'   => 'Joined Server',
+                'value'  => "$date ({$carbon->diffForHumans()})",
                 'inline' => false,
             ],
         ];
