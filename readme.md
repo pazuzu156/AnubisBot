@@ -14,9 +14,9 @@ Use composer to install the latest stable version of AnubisBot
 
 If you want the latest codebase for AnubisBot, please use the `dev-develop` branch:
 
-`$ composer create-project pazuzu156/anubisbot -s dev dev-develop`  
+`$ composer create-project pazuzu156/anubisbot:dev-develop --stability=dev --prefer-dist`  
 or  
-`$ composer create-project pazuzu156/anubisbot -s dev dev-master`  
+`$ composer create-project pazuzu156/anubisbot:dev-master --stability=dev --prefer-dist`  
 for the master branch
 
 `dev-develop` is the most active branch. If you want to use `master`, `dev-develop` is merged into `master` daily, so while changes are always frequent, it's more stable than `dev-develop`
