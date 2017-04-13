@@ -20,7 +20,7 @@ class Run extends Command
         $this->setName('run')
         ->setDescription('Runs the bot')
         ->setDefinition(new InputDefinition([
-            new InputArgument('startup_message', InputArgument::OPTIONAL, 'To run with on-start changelog. True | False* (*default)'),
+            new InputArgument('startup_message', InputArgument::OPTIONAL, 'To run with on-start changelog. True* | False (*default)'),
         ]));
     }
 
@@ -34,7 +34,6 @@ class Run extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // $msg = $input->getArgument('startup_message');
         $bool = $input->getArgument('startup_message');
 
         switch ($bool) {

@@ -12,7 +12,7 @@ $app = new Core\Application();
 $app->setGame('God of the Underworld');
 
 if (!isset($bool) || is_null($bool)) {
-    $bool = false;
+    $bool = true;
 }
 
 $app->start($bool);

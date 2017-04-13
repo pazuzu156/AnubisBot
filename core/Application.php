@@ -78,7 +78,7 @@ class Application
      *
      * @return void
      */
-    public function start($startMessage = false)
+    public function start($startMessage = true)
     {
         $app = $this;
         $this->_discord->on('ready', function ($discord) use ($startMessage, $app) {
