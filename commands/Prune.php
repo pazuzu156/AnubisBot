@@ -15,7 +15,7 @@ class Prune extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Prune messages. (Default limit: 50)';
+    protected $description = '{INHERIT_MSG_PRUNE}';
 
     /**
      * Default message log limit.
@@ -25,7 +25,7 @@ class Prune extends Command
     const DEFAULT_LIMIT = 50;
 
     /**
-     * Prune all messages limited by limit.
+     * Default command method.
      *
      * @param \Core\Parameters $p
      *
@@ -37,7 +37,7 @@ class Prune extends Command
     }
 
     /**
-     * Prune all user messages limited by limit.
+     * {INHERIT_MSG_PRUNEUSER}
      *
      * @param \Core\Parameters $p
      *
@@ -49,7 +49,7 @@ class Prune extends Command
     }
 
     /**
-     * Prune all bot messages limited by limit.
+     * {INHERIT_MSG_PRUNEBOT}.
      *
      * @param \Core\Parameters $p
      *

@@ -17,11 +17,22 @@ class Messages extends Command
      */
     protected $description = 'Moderates user messages';
 
+    /**
+     * Default message history limit.
+     *
+     * @var int
+     */
     private $_defaultLimit = 50;
 
+    /**
+     * Prune messages. (Default limit: 50)
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
     public function prune(Parameters $p)
     {
-        // $this->alias('prune', 'index', $p);
         $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
 
         if ($this->can('manage_messages')) {
@@ -49,6 +60,13 @@ class Messages extends Command
         }
     }
 
+    /**
+     * Prune user messages. (Default limit: 50)
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
     public function pruneuser(Parameters $p)
     {
         $limit = (!is_null($p->get(1))) ? (int) $p->get(1) : $this->_defaultLimit;
@@ -83,6 +101,13 @@ class Messages extends Command
         }
     }
 
+    /**
+     * Prune bot messages. (Default limit: 50)
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
     public function prunebot(Parameters $p)
     {
         $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
