@@ -73,7 +73,7 @@ class UserInfo extends Command
     {
         $curl = new Curl();
         $user = $p->first();
-        
+
         if (is_null($user)) {
             $this->message->reply('You forgot to give the username!');
         } else {
@@ -108,7 +108,6 @@ class UserInfo extends Command
         $roles = implode(', ', $userRolesArr);
         $roles = rtrim($roles, ', ');
 
-
         if (is_null($member->nick)) {
             $nick = 'No nickname given';
         } else {
@@ -120,31 +119,31 @@ class UserInfo extends Command
         $date = $carbon->toRfc2822String();
 
         $embed = $this->app->bot()->factory(Embed::class, [
-            'title' => '',
-            'type' => 'rich',
-            'color' => Color::INFO,
+            'title'     => '',
+            'type'      => 'rich',
+            'color'     => Color::INFO,
             'thumbnail' => $this->app->bot()->factory(Image::class, [
                 'url' => $user->avatar,
             ]),
             'fields' => [
                 [
-                    'name' => 'Name',
+                    'name'  => 'Name',
                     'value' => "{$user->username}#{$user->discriminator}",
                 ],
                 [
-                    'name' => 'Nickname',
+                    'name'  => 'Nickname',
                     'value' => $nick,
                 ],
                 [
-                    'name' => 'Joined Server',
+                    'name'  => 'Joined Server',
                     'value' => "$date ({$carbon->diffForHumans()})", //"{$carbon->diffForHumans()} | $date",
                 ],
                 [
-                    'name' => 'Roles',
+                    'name'  => 'Roles',
                     'value' => $roles,
                 ],
                 [
-                    'name' => 'ID',
+                    'name'  => 'ID',
                     'value' => $user->id,
                 ],
             ],
