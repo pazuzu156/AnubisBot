@@ -11,5 +11,8 @@ $app = new Core\Application();
 // Set game presence
 $app->setGame('God of the Underworld');
 
-// run the bot
-$app->start();
+if (!isset($bool) || is_null($bool)) {
+    $bool = false;
+}
+
+$app->start($bool);

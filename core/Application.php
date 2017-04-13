@@ -3,7 +3,9 @@
 namespace Core;
 
 use Core\Config\Configuration;
+use Curl\Curl;
 use Discord\DiscordCommandClient;
+use Discord\Parts\Channel\Channel;
 use Discord\Parts\User\Game;
 use ReflectionMethod;
 
@@ -76,11 +78,29 @@ class Application
      *
      * @return void
      */
-    public function start()
+    public function start($startMessage = false)
     {
-        $this->_discord->on('ready', function ($discord) {
+        $app = $this;
+        $this->_discord->on('ready', function ($discord) use ($startMessage, $app) {
             if (!is_null($this->_game)) {
                 $discord->updatePresence($this->_game);
+            }
+
+            if ($startMessage) {
+                $channel = $discord->factory(Channel::class, [
+                    'id' => env('BOTSPAM_CHANNEL_ID', ''),
+                    'type' => 'text',
+                ]);
+
+                $curl = new Curl();
+                $curl->get('https://cdn.kalebklein.com/anubisbot/changes.php');
+
+                $message = env('NAME', '').' is back online! Here are the new changes this update:'."\n\n";
+
+                $cmd = new Command();
+                $message .= $cmd->parseDescription($curl->response);
+
+                $channel->sendMessage($message);
             }
 
             $msg = "\nBot is now online\n"

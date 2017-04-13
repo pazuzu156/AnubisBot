@@ -75,14 +75,16 @@ class Command
      *
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app = null)
     {
-        if ($this->name == '') {
-            throw new \RuntimeException('You command MUST have a name!');
-        }
+        if (!is_null($app)) {
+            if ($this->name == '') {
+                throw new \RuntimeException('You command MUST have a name!');
+            }
 
-        $this->app = $app;
-        $this->permissions = new Permissions();
+            $this->app = $app;
+            $this->permissions = new Permissions();
+        }
     }
 
     /**

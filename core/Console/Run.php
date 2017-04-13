@@ -3,6 +3,8 @@
 namespace Core\Console;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,7 +18,10 @@ class Run extends Command
     protected function configure()
     {
         $this->setName('run')
-        ->setDescription('Runs the bot');
+        ->setDescription('Runs the bot')
+        ->setDefinition(new InputDefinition([
+            new InputArgument('startup_message', InputArgument::OPTIONAL, 'To run with a startup message. True | False* (*default)'),
+        ]));
     }
 
     /**
@@ -29,6 +34,18 @@ class Run extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // $msg = $input->getArgument('startup_message');
+        $bool = $input->getArgument('startup_message');
+
+        switch($bool) {
+            case 'true':
+            $bool = true;
+            break;
+            case 'false':
+            $bool = false;
+            break;
+        }
+        
         require_once base_path().'/bot.php';
     }
 }
