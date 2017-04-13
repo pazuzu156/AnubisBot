@@ -20,7 +20,7 @@ class Delete extends Command
         $this->setName('command:drop')
         ->setDescription('Deletes a command')
         ->setDefinition(new InputDefinition([
-            new InputArgument('name', InputArgument::REQUIRED),
+            new InputArgument('name', InputArgument::REQUIRED, 'The name of the command class to drop (CammelCase please)'),
         ]));
     }
 

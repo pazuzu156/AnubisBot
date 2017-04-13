@@ -20,7 +20,7 @@ class Run extends Command
         $this->setName('run')
         ->setDescription('Runs the bot')
         ->setDefinition(new InputDefinition([
-            new InputArgument('startup_message', InputArgument::OPTIONAL, 'To run with a startup message. True | False* (*default)'),
+            new InputArgument('startup_message', InputArgument::OPTIONAL, 'To run with on-start changelog. True | False* (*default)'),
         ]));
     }
 

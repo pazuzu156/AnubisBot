@@ -20,7 +20,7 @@ class Create extends Command
         $this->setName('command:make')
         ->setDescription('Creates a new command template')
         ->setDefinition(new InputDefinition([
-            new InputArgument('name', InputArgument::REQUIRED),
+            new InputArgument('name', InputArgument::REQUIRED, 'The name of the command class to create (CammelCase please)'),
         ]));
     }
 
