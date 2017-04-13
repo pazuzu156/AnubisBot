@@ -1,0 +1,157 @@
+<?php
+
+namespace Commands;
+
+use Carbon\Carbon;
+use Core\Color;
+use Core\Command;
+use Core\Parameters;
+use Curl\Curl;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\Embed\Image;
+use Discord\Parts\User\Member;
+
+class UserInfo extends Command
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected $name = 'info';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $description = 'Get user info for yourself or an @Mention';
+
+    /**
+     * Default command method.
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
+    public function index(Parameters $p)
+    {
+        // $this->me();
+        if ($p->count()) {
+            $userid = str_replace('<@', '', rtrim($p->first(), '>'));
+            $user = $this->guild->members[$userid];
+            $this->channel->sendMessage('', false, $this->getUserInfo($user));
+        } else {
+            $this->me();
+        }
+    }
+
+    /**
+     * Returns your user info in a nice little box.
+     *
+     * @return void
+     */
+    public function me()
+    {
+        $this->channel->sendMessage('', false, $this->getUserInfo($this->author));
+    }
+
+    /**
+     * Gets your ID and sends it to you in a DM.
+     *
+     * @return void
+     */
+    public function getid()
+    {
+        $me->sendMessage("Your Discord ID is: `{$this->author->user->id}`");
+    }
+
+    /**
+     * Returns the given user's Steam64 ID.
+     *
+     * @param \Core\Parameters $p
+     *
+     * @return void
+     */
+    public function steam(Parameters $p)
+    {
+        $curl = new Curl();
+        $user = $p->first();
+        
+        if (is_null($user)) {
+            $this->message->reply('You forgot to give the username!');
+        } else {
+            $curl->get("https://api.kalebklein.com/steam/public/getid?username=$user");
+
+            if ($curl->response->error) {
+                $this->message->reply("Error getting user ID: {$curl->response->message}");
+            } else {
+                $this->message->reply("$user's Steam64 ID is: {$curl->response->steam64}");
+            }
+        }
+    }
+
+    /**
+     * Gets the user info and generates an Embed box with that info.
+     *
+     * @param \Discord\Parts\User\Member $member
+     *
+     * @return \Discord\Parts\Embed\Embed
+     */
+    private function getUserInfo(Member $member)
+    {
+        // dump($member);
+        $user = $member->user;
+        $bot = $this->app->getBotUser();
+
+        $userRolesArr = [];
+        foreach ($member->roles as $role) {
+            $userRolesArr[] = $role->name;
+        }
+
+        $roles = implode(', ', $userRolesArr);
+        $roles = rtrim($roles, ', ');
+
+
+        if (is_null($member->nick)) {
+            $nick = 'No nickname given';
+        } else {
+            $nick = $member->nick;
+        }
+
+        $timestamp = strtotime($member->joined_at);
+        $carbon = Carbon::createFromTimestamp($timestamp);
+        $date = $carbon->toRfc2822String();
+
+        $embed = $this->app->bot()->factory(Embed::class, [
+            'title' => '',
+            'type' => 'rich',
+            'color' => Color::INFO,
+            'thumbnail' => $this->app->bot()->factory(Image::class, [
+                'url' => $user->avatar,
+            ]),
+            'fields' => [
+                [
+                    'name' => 'Name',
+                    'value' => "{$user->username}#{$user->discriminator}",
+                ],
+                [
+                    'name' => 'Nickname',
+                    'value' => $nick,
+                ],
+                [
+                    'name' => 'Joined Server',
+                    'value' => "$date ({$carbon->diffForHumans()})", //"{$carbon->diffForHumans()} | $date",
+                ],
+                [
+                    'name' => 'Roles',
+                    'value' => $roles,
+                ],
+                [
+                    'name' => 'ID',
+                    'value' => $user->id,
+                ],
+            ],
+        ]);
+
+        return $embed;
+
+        // $this->channel->sendMessage('', false, $embed);
+    }
+}

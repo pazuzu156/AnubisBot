@@ -6,8 +6,8 @@ return [
     // All commands are registered here
     'commands' => [
         Commands\About::class,
-        Commands\GetID::class,
         Commands\Prune::class,
+        Commands\UserInfo::class,
     ],
 
     // All console commands are registered here

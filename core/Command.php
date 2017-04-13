@@ -63,6 +63,11 @@ class Command
      */
     protected $permissions;
 
+    /**
+     * Preset variables to parse in command descriptions.
+     *
+     * @var array
+     */
     private $_presets = ['PREFIX', 'NAME'];
 
     /**
