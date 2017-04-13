@@ -95,7 +95,6 @@ class UserInfo extends Command
      */
     private function getUserInfo(Member $member)
     {
-        // dump($member);
         $user = $member->user;
         $bot = $this->app->getBotUser();
 
@@ -121,6 +120,38 @@ class UserInfo extends Command
         $carbon = Carbon::createFromTimestamp($timestamp);
         $date = $carbon->toRfc2822String();
 
+        $fields = [
+            [
+                'name'  => 'Name',
+                'value' => "{$user->username}#{$user->discriminator}",
+            ],
+            [
+                'name'  => 'Nickname',
+                'value' => $nick,
+            ],
+            [
+                'name'  => 'Roles',
+                'value' => $roles,
+            ],
+            [
+                'name'  => 'ID',
+                'value' => $user->id,
+            ],
+            [
+                'name'  => 'Joined Server',
+                'value' => "$date ({$carbon->diffForHumans()})",
+                'inline' => false,
+            ],
+        ];
+
+        if (!is_null($member->game->name)) {
+            $fields[] = [
+                'name' => 'Currently Playing',
+                'value' => $member->game->name,
+                'inline' => true,
+            ];
+        }
+
         $embed = $this->app->bot()->factory(Embed::class, [
             'title'     => '',
             'type'      => 'rich',
@@ -128,34 +159,9 @@ class UserInfo extends Command
             'thumbnail' => $this->app->bot()->factory(Image::class, [
                 'url' => $user->avatar,
             ]),
-            'fields' => [
-                [
-                    'name'  => 'Name',
-                    'value' => "{$user->username}#{$user->discriminator}",
-                ],
-                [
-                    'name'  => 'Nickname',
-                    'value' => $nick,
-                ],
-                [
-                    'name'  => 'Joined Server',
-                    'value' => "$date ({$carbon->diffForHumans()})", //"{$carbon->diffForHumans()} | $date",
-                ],
-                [
-                    'name'  => 'Roles',
-                    'value' => $roles,
-                ],
-                [
-                    'name'  => 'ID',
-                    'value' => $user->id,
-                ],
-            ],
+            'fields' => $fields,
         ]);
 
-        dump($embed);
-
         return $embed;
-
-        // $this->channel->sendMessage('', false, $embed);
     }
 }
