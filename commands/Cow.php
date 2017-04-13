@@ -37,7 +37,7 @@ class Cow extends Command
             $cow = $this->buildBubble($p->all())."\n".$this->buildCow();
             $this->channel->sendMessage("```$cow```");
         } else {
-            $this->message->reply("You forgot to give me something to say!");
+            $this->message->reply('You forgot to give me something to say!');
         }
     }
 
@@ -54,14 +54,14 @@ class Cow extends Command
             $cow = $this->buildBubble($p->all())."\n".$this->buildCow(true);
             $this->channel->sendMessage("```$cow```");
         } else {
-            $this->message->reply("You forgot to give me something to say!");
+            $this->message->reply('You forgot to give me something to say!');
         }
     }
 
     /**
      * Builds the cow ASCII.
      *
-     * @param boolean $thought
+     * @param bool $thought
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Cow extends Command
             ||----w |
             ||     ||
 EOC;
-        
+
         return $cow;
     }
 
@@ -162,13 +162,13 @@ EOC;
     private function getBorder($lines, $index)
     {
         if (count($lines) < 2) {
-            return [ '<', '>' ];
+            return ['<', '>'];
         } elseif ($index == 0) {
-            return [ '/', '\\' ];
+            return ['/', '\\'];
         } elseif ($index == count($lines) - 1) {
-            return [ '\\', '/' ];
+            return ['\\', '/'];
         } else {
-            return [ '|', '|' ];
+            return ['|', '|'];
         }
     }
 }
