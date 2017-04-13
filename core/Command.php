@@ -68,7 +68,7 @@ class Command
      *
      * @var array
      */
-    private $_presets = ['PREFIX', 'NAME'];
+    private $_presets = ['PREFIX', 'NAME', 'VERSION'];
 
     /**
      * Ctor.
@@ -112,6 +112,9 @@ class Command
                         break;
                         case 'NAME':
                         return env('NAME', '');
+                        break;
+                        case 'VERSION':
+                        return version();
                         break;
                     }
                 }

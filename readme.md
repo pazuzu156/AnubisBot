@@ -39,7 +39,7 @@ Sub commands are basically public methods within your command class. While the b
 
 Command descriptions (including sub commands) can house variables using `{VAR_NAME}`
 
-`PREFIX` and `NAME` are the only suppored ones at the moment though..
+`PREFIX`, `NAME`, and `VERSION` are the only suppored ones at the moment though..
 
 ## Run
 Run the bot with `$ php cli run`
