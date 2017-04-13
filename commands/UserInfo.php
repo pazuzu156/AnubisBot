@@ -106,10 +106,6 @@ class UserInfo extends Command
         $roles = implode(', ', $userRolesArr);
         $roles = rtrim($roles, ', ');
 
-        if (is_null($roles) || $roles == '') {
-            $roles = 'No roles assigned';
-        }
-
         if (is_null($member->nick)) {
             $nick = 'No nickname given';
         } else {
@@ -130,10 +126,6 @@ class UserInfo extends Command
                 'value' => $nick,
             ],
             [
-                'name'  => 'Roles',
-                'value' => $roles,
-            ],
-            [
                 'name'  => 'ID',
                 'value' => $user->id,
             ],
@@ -144,11 +136,17 @@ class UserInfo extends Command
             ],
         ];
 
+        if (!is_null($roles) && $roles !== '') {
+            $fields[] = [
+                'name'  => 'Roles',
+                'value' => $roles,
+            ];
+        }
+
         if (!is_null($member->game->name)) {
             $fields[] = [
-                'name' => 'Currently Playing',
+                'name'  => 'Currently Playing',
                 'value' => $member->game->name,
-                'inline' => true,
             ];
         }
 
