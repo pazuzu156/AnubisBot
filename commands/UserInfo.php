@@ -59,7 +59,7 @@ class UserInfo extends Command
      */
     public function getid()
     {
-        $me->sendMessage("Your Discord ID is: `{$this->author->user->id}`");
+        $this->author->user->sendMessage("Your Discord ID is: `{$this->author->user->id}`");
     }
 
     /**

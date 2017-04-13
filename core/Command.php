@@ -95,11 +95,11 @@ class Command
     public function parseDescription($description)
     {
         $presets = $this->_presets;
-        
+
         $description = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($presets) {
             foreach ($presets as $preset) {
                 if ($m[1] == $preset) {
-                    switch($preset) {
+                    switch ($preset) {
                         case 'PREFIX':
                         $prefix = env('PREFIX', '!');
                         if (env('PREFIX_SPACE', false)) {
