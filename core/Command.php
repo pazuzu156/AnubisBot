@@ -200,4 +200,32 @@ class Command
 
         return ($desc == '') ? 'No description provided.' : $desc;
     }
+
+    /**
+     * Executes another command as an alias.
+     *
+     * @param string           $command
+     * @param string           $method
+     * @param \Core\Parameters $params
+     *
+     * @return void
+     */
+    protected function alias($command, $method, Parameters $params)
+    {
+        foreach ($this->app->getCommandList() as $command => $value) {
+            dump($command);
+        }
+    }
+
+    /**
+     * Checks if a user has the requested permission.
+     *
+     * @param string $permission
+     *
+     * @return bool
+     */
+    protected function can($permission)
+    {
+        return $this->permissions->can($permission, $this->author);
+    }
 }

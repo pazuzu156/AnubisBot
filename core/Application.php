@@ -47,6 +47,13 @@ class Application
     const VERSION = '0.3.1';
 
     /**
+     * List of current active commands.
+     *
+     * @var array
+     */
+    private $_commands;
+
+    /**
      * Ctor.
      *
      * @return void
@@ -86,7 +93,7 @@ class Application
                 $discord->updatePresence($this->_game);
             }
 
-            if ($startMessage) {
+            if ($startMessage && !env('DEBUG', false)) {
                 $channel = $discord->factory(Channel::class, [
                     'id'   => env('BOTSPAM_CHANNEL_ID', ''),
                     'type' => 'text',
@@ -212,6 +219,10 @@ class Application
                     'description' => $description,
                 ]);
             }
+
+            $this->_commands[$cmd->getName()] = [
+                'sub_commands' => $subCommandsArray,
+            ];
         }
     }
 
@@ -240,5 +251,15 @@ class Application
                 $class->$method();
             }
         }
+    }
+
+    /**
+     * Returns the current command list.
+     *
+     * @return array
+     */
+    public function getCommandList()
+    {
+        return $this->_commands;
     }
 }

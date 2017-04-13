@@ -7,6 +7,7 @@ return [
     'commands' => [
         Commands\Cow::class,
         Commands\About::class,
+        Commands\Messages::class,
         Commands\Prune::class,
         Commands\UserInfo::class,
     ],

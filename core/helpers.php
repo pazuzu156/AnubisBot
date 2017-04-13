@@ -64,6 +64,20 @@ if (!function_exists('env_set')) {
     }
 }
 
+if (!function_exists('tsleep')) {
+    /**
+     * Allows ints and doubles to use for sleeping script.
+     *
+     * @param mixed $time
+     *
+     * @return void
+     */
+    function tsleep($time = 0)
+    {
+        usleep($time * 1000000);
+    }
+}
+
 if (!function_exists('version')) {
     /**
      * Gets the bot's current version.
