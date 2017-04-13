@@ -5,6 +5,7 @@
 return [
     // All commands are registered here
     'commands' => [
+        Commands\Cow::class,
         Commands\About::class,
         Commands\Prune::class,
         Commands\UserInfo::class,
