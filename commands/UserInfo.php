@@ -32,7 +32,6 @@ class UserInfo extends Command
      */
     public function index(Parameters $p)
     {
-        // $this->me();
         if ($p->count()) {
             $userid = str_replace('<@', '', rtrim($p->first(), '>'));
             $user = $this->guild->members[$userid];
@@ -108,6 +107,10 @@ class UserInfo extends Command
         $roles = implode(', ', $userRolesArr);
         $roles = rtrim($roles, ', ');
 
+        if (is_null($roles) || $roles == '') {
+            $roles = 'No roles assigned';
+        }
+
         if (is_null($member->nick)) {
             $nick = 'No nickname given';
         } else {
@@ -148,6 +151,8 @@ class UserInfo extends Command
                 ],
             ],
         ]);
+
+        dump($embed);
 
         return $embed;
 
