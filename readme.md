@@ -52,3 +52,6 @@ To inherit a description, `COMMAND` is the command name (not the class itself) a
 Run the bot with `$ php cli run`
 
 Running the above will also run the on-start changelog message. To disable this, add `false` at the end
+
+## Invite
+If you want to invite the bot instead of running it yourself, [click here](https://discordapp.com/oauth2/authorize?client_id=302580156176924672&scope=bot&permissions=36957190)
