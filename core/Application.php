@@ -223,7 +223,7 @@ class Application
             }
 
             $this->_commands[$cmd->getName()] = [
-                'class'        => $cmd,
+                'class' => $cmd,
                 'sub_commands' => $subCommandsArray,
             ];
         }
