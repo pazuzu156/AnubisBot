@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Config;
+namespace Core;
 
 class Configuration
 {

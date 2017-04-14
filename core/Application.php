@@ -2,7 +2,6 @@
 
 namespace Core;
 
-use Core\Config\Configuration;
 use Curl\Curl;
 use Discord\DiscordCommandClient;
 use Discord\Parts\Channel\Channel;

@@ -24,7 +24,7 @@ if (!function_exists('config_get')) {
      */
     function config_get($config)
     {
-        $c = new \Core\Config\Configuration();
+        $c = new \Core\Configuration();
 
         return $c->get($config);
     }
