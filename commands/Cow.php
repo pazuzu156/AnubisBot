@@ -118,6 +118,13 @@ EOC;
         return $cow;
     }
 
+    /**
+     * Builds the tux ASCII.
+     *
+     * @param bool $thought
+     *
+     * @return string
+     */
     private function buildTux($thought = false)
     {
         $bubbleTrail = ($thought) ? 'o' : '\\';
@@ -135,6 +142,13 @@ EOT;
         return $tux;
     }
 
+    /**
+     * Builds the moose ASCII.
+     *
+     * @param bool $thought
+     *
+     * @return string
+     */
     private function buildMoose($thought = false)
     {
         $bubbleTrail = ($thought) ? 'o' : '\\';
@@ -151,6 +165,13 @@ EOC;
         return $moose;
     }
 
+    /**
+     * Builds the squirrel ASCII.
+     *
+     * @param bool $thought
+     *
+     * @return string
+     */
     private function buildSquirrel($thought = false)
     {
         $bubbleTrail = ($thought) ? 'o' : '\\';

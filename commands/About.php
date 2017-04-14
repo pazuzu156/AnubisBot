@@ -18,6 +18,13 @@ class About extends Command
     protected $description = 'Retrieve information about {NAME}';
 
     /**
+     * Pazuzu156 Discord server invite link.
+     *
+     * @var
+     */
+    private $_inviteLink = 'https://discord.gg/eanAmrs';
+
+    /**
      * Default command method.
      *
      * @return void
@@ -40,6 +47,7 @@ class About extends Command
         $this->index();
         $this->uptime();
         $this->source();
+        $this->invite();
     }
 
     /**
@@ -125,5 +133,17 @@ class About extends Command
         $uptime = 'Uptime: '.$year.$month.$day.$hour.$min.$sec;
 
         $this->channel->sendMessage($uptime);
+    }
+
+    /**
+     * Gives the official server's invite link.
+     *
+     * @return void
+     */
+    public function invite()
+    {
+        $message = 'If you\'re on my server, you can invite using the invite link. If you\'re not on my server, you\'re welcome to join by also using the invite link.';
+
+        $this->channel->sendMessage($message."\n".$this->_inviteLink);
     }
 }
