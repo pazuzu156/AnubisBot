@@ -8,12 +8,18 @@ return [
         Commands\Cow::class,
         Commands\About::class,
         Commands\Messages::class,
-        Commands\Prune::class,
         Commands\UserInfo::class,
+    ],
+
+    // All command aliases are registered here
+    'aliases' => [
+        Aliases\Prune::class,
     ],
 
     // All console commands are registered here
     'console' => [
+        Core\Console\Alias\Create::class,
+        Core\Console\Alias\Delete::class,
         Core\Console\Command\Create::class,
         Core\Console\Command\Delete::class,
         Core\Console\Run::class,
