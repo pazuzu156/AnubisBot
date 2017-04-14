@@ -34,7 +34,6 @@ class Cow extends Command
     public function say(Parameters $p)
     {
         if ($p->count()) {
-            dump($p->all());
             $params = $p->all();
             $ascii = 'cow';
             switch (strtolower($params[0])) {
@@ -71,7 +70,6 @@ class Cow extends Command
     public function think(Parameters $p)
     {
         if ($p->count()) {
-            dump($p->all());
             $params = $p->all();
             $ascii = 'cow';
             switch (strtolower($params[0])) {
