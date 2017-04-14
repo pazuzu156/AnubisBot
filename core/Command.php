@@ -141,9 +141,13 @@ class Command
                     if ($command == $cmd) {
                         $class = $info['class'];
 
-                        if (in_array($method, $info['sub_commands'])) {
+                        if (in_array($method, $info['sub_commands']) && $method !== 'index') {
                             $reflection = new ReflectionMethod(get_class($class), $method);
-                            return $this->getSubCommandDescription($class, $method, $reflection);
+                            $content = $this->getSubCommandDescription($class, $method, $reflection);
+
+                            $content .= ' '.$this->parseDescription("({PREFIX}$cmd $method)");
+
+                            return rtrim($content, '.');
                         }
                     }
                 }
@@ -231,22 +235,6 @@ class Command
         }
 
         return ($desc == '') ? 'No description provided.' : $desc;
-    }
-
-    /**
-     * Executes another command as an alias.
-     *
-     * @param string           $command
-     * @param string           $method
-     * @param \Core\Parameters $params
-     *
-     * @return void
-     */
-    protected function alias($command, $method, Parameters $params)
-    {
-        foreach ($this->app->getCommandList() as $command => $value) {
-            dump($command);
-        }
     }
 
     /**

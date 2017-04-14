@@ -163,6 +163,7 @@ class Application
         $app = $this;
         $this->_discord->on('ready', function ($discord) use ($app) {
             $app->registerCommands();
+            $app->registerCommands(true); // Aliases
         });
     }
 
@@ -171,9 +172,13 @@ class Application
      *
      * @return void
      */
-    public function registerCommands()
+    public function registerCommands($alias = false)
     {
-        $commands = $this->_config->get('commands');
+        if ($alias) {
+            $commands = $this->_config->get('aliases');
+        } else {
+            $commands = $this->_config->get('commands');
+        }
 
         foreach ($commands as $command) {
             $cmd = new $command($this);
@@ -208,6 +213,10 @@ class Application
                 }
             }
 
+            if ($alias) {
+                $this->_discord->registerAlias($cmd->getName(), $cmd->alias);
+            }
+
             foreach ($subCommandsArray as $subCommand) {
                 $methodReflection = new ReflectionMethod(get_class($cmd), $subCommand);
                 $description = $cmd->getSubCommandDescription($cmd, $subCommand, $methodReflection);
@@ -223,7 +232,7 @@ class Application
             }
 
             $this->_commands[$cmd->getName()] = [
-                'class' => $cmd,
+                'class'        => $cmd,
                 'sub_commands' => $subCommandsArray,
             ];
         }
