@@ -71,6 +71,16 @@ class Command
     private $_presets = ['PREFIX', 'NAME', 'VERSION'];
 
     /**
+     * Variable regex array.
+     *
+     * @var array
+     */
+    private $_varRegex = [
+        'default' => '/\{([a-zA-Z]+)\}/i',
+        'inherit' => '/\{(INHERIT)\_([A-Z\_]+)\_([A-Z\_]+)\}/i',
+    ];
+
+    /**
      * Ctor.
      *
      * @return void
@@ -94,11 +104,14 @@ class Command
      *
      * @return string
      */
-    public function parseDescription($description)
+    public function parseDescription($description, $inherit = false)
     {
         $presets = $this->_presets;
 
-        $description = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($presets) {
+        $regex = ($inherit) ? $this->_varRegex['inherit'] : $this->_varRegex['default'];
+
+        $app = $this->app;
+        $description = preg_replace_callback($regex, function ($m) use ($presets, $app) {
             foreach ($presets as $preset) {
                 if ($m[1] == $preset) {
                     switch ($preset) {
@@ -116,6 +129,22 @@ class Command
                         case 'VERSION':
                         return version();
                         break;
+                    }
+                }
+            }
+
+            if ($m[1] == 'INHERIT') {
+                $command = strtolower($m[2]);
+                $method = strtolower($m[3]);
+
+                foreach ($app->getCommandList() as $cmd => $info) {
+                    if ($command == $cmd) {
+                        $class = $info['class'];
+
+                        if (in_array($method, $info['sub_commands'])) {
+                            $reflection = new ReflectionMethod(get_class($class), $method);
+                            return $this->getSubCommandDescription($class, $method, $reflection);
+                        }
                     }
                 }
             }
@@ -189,6 +218,9 @@ class Command
 
                 if (preg_match('/[a-zA-Z]/i', $fc)) {
                     $line = $this->parseDescription($line);
+                    $lines[] = $line;
+                } elseif (preg_match($this->_varRegex['inherit'], $line)) {
+                    $line = $this->parseDescription($line, true);
                     $lines[] = $line;
                 }
             }

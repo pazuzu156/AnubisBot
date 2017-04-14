@@ -25,7 +25,7 @@ class Messages extends Command
     private $_defaultLimit = 50;
 
     /**
-     * Prune messages. (Default limit: 50)
+     * Prune messages.
      *
      * @param \Core\Parameters $p
      *
@@ -61,7 +61,7 @@ class Messages extends Command
     }
 
     /**
-     * Prune user messages. (Default limit: 50)
+     * Prune user messages.
      *
      * @param \Core\Parameters $p
      *
@@ -102,7 +102,7 @@ class Messages extends Command
     }
 
     /**
-     * Prune bot messages. (Default limit: 50)
+     * Prune bot messages.
      *
      * @param \Core\Parameters $p
      *

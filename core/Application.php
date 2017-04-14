@@ -181,6 +181,8 @@ class Application
 
             $app = $this;
 
+            $desc = $cmd->parseDescription($desc);
+
             $command = $this->_discord->registerCommand($cmd->getName(), function ($message, $params) use ($cmd, $app) {
                 $cmd->setMessage($message);
                 $p = new Parameters(['method' => 'index', 'params' => $params]);
@@ -191,7 +193,7 @@ class Application
                     echo "{$cmd->getname()} doesn't have [index] method and is not calling a sub command!";
                 }
             }, [
-                'description' => $cmd->parseDescription($desc).'.',
+                'description' => $cmd->parseDescription($desc, true).'.',
             ]);
 
             $methods = get_class_methods($cmd);
@@ -221,6 +223,7 @@ class Application
             }
 
             $this->_commands[$cmd->getName()] = [
+                'class' => $cmd,
                 'sub_commands' => $subCommandsArray,
             ];
         }

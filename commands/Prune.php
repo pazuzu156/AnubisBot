@@ -18,13 +18,6 @@ class Prune extends Command
     protected $description = '{INHERIT_MSG_PRUNE}';
 
     /**
-     * Default message log limit.
-     *
-     * @var int
-     */
-    const DEFAULT_LIMIT = 50;
-
-    /**
      * Default command method.
      *
      * @param \Core\Parameters $p
@@ -37,7 +30,7 @@ class Prune extends Command
     }
 
     /**
-     * {INHERIT_MSG_PRUNEUSER}
+     * {INHERIT_MSG_PRUNEUSER}.
      *
      * @param \Core\Parameters $p
      *
