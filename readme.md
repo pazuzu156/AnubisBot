@@ -39,7 +39,14 @@ Sub commands are basically public methods within your command class. While the b
 
 Command descriptions (including sub commands) can house variables using `{VAR_NAME}`
 
-`PREFIX`, `NAME`, and `VERSION` are the only suppored ones at the moment though..
+`PREFIX`, `NAME`, `INHERIT_COMMAND_SUBCOMMAND`, and `VERSION` are the only suppored ones at the moment though..
+
+`{PREFIX}` is replaced with your bot's prefix  
+`{NAME}` is replaced with your bot's name  
+`{VERSION}` is replaced with the bot's current version  
+`{INHERIT_COMMAND_SUBCOMMAND}` inherits a command's (and sub command's) description
+
+To inherit a description, `COMMAND` is the command name (not the class itself) and `SUBCOMMAND` is the sub command to get the info from.
 
 ## Run
 Run the bot with `$ php cli run`
