@@ -15,7 +15,7 @@ class Cow extends Command
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Display a cow with your message';
+    protected $description = 'Display an animal with your message. (cow, squirrel, moose, tux)';
 
     /**
      * Default length of bubble text.
@@ -25,7 +25,7 @@ class Cow extends Command
     private $_defaultLength = 40;
 
     /**
-     * Displays a cow with your message in a speech bubble.
+     * Displays animal with your message in a speech bubble.
      *
      * @param \Core\Parameters $p
      *
@@ -34,7 +34,27 @@ class Cow extends Command
     public function say(Parameters $p)
     {
         if ($p->count()) {
-            $cow = $this->buildBubble($p->all())."\n".$this->buildCow();
+            dump($p->all());
+            $params = $p->all();
+            $ascii = 'cow';
+            switch (strtolower($params[0])) {
+                case 'tux':
+                $ascii = 'tux';
+                break;
+                case 'moose':
+                $ascii = 'moose';
+                break;
+                case 'squirrel':
+                $ascii = 'squirrel';
+                break;
+            }
+
+            if ($params[0] == $ascii) {
+                array_shift($params);
+            }
+
+            $method = 'build'.ucwords(strtolower($ascii));
+            $cow = $this->buildBubble($params)."\n".$this->$method();
             $this->channel->sendMessage("```$cow```");
         } else {
             $this->message->reply('You forgot to give me something to say!');
@@ -42,7 +62,7 @@ class Cow extends Command
     }
 
     /**
-     * Displays a cow with your message in a thought bubble.
+     * Displays animal with your message in a thought bubble.
      *
      * @param \Core\Parameters $p
      *
@@ -51,7 +71,27 @@ class Cow extends Command
     public function think(Parameters $p)
     {
         if ($p->count()) {
-            $cow = $this->buildBubble($p->all())."\n".$this->buildCow(true);
+            dump($p->all());
+            $params = $p->all();
+            $ascii = 'cow';
+            switch (strtolower($params[0])) {
+                case 'tux':
+                $ascii = 'tux';
+                break;
+                case 'moose':
+                $ascii = 'moose';
+                break;
+                case 'squirrel':
+                $ascii = 'squirrel';
+                break;
+            }
+
+            if ($params[0] == $ascii) {
+                array_shift($params);
+            }
+
+            $method = 'build'.ucwords(strtolower($ascii));
+            $cow = $this->buildBubble($params)."\n".$this->$method(true);
             $this->channel->sendMessage("```$cow```");
         } else {
             $this->message->reply('You forgot to give me something to say!');
@@ -71,13 +111,64 @@ class Cow extends Command
 
         $cow = <<<EOC
     $bubbleTrail  ^__^
-     $bubbleTrail (oo)\_______
-       (__)\       )\\/\\
+     $bubbleTrail (oo)\\_______
+       (__)\\       )\\/\\
            ||----w |
            ||     ||
 EOC;
 
         return $cow;
+    }
+
+    private function buildTux($thought = false)
+    {
+        $bubbleTrail = ($thought) ? 'o' : '\\';
+
+        $tux = <<<EOT
+    $bubbleTrail   .--.
+     $bubbleTrail |o_o |
+       |:_/ |
+      //   \\ \\
+     (|     | )
+    /'\\_   _/`\\
+    \\___)=(___/
+EOT;
+    
+        return $tux;
+    }
+
+    private function buildMoose($thought = false)
+    {
+        $bubbleTrail = ($thought) ? 'o' : '\\';
+
+        $moose = <<<EOC
+    $bubbleTrail \\_\\_    _/_/
+     $bubbleTrail   \\\__//
+          (oo)\\_______
+          (__)\\       )\\/\\
+              ||----- |
+              ||     ||
+EOC;
+
+        return $moose;
+    }
+
+    private function buildSquirrel($thought = false)
+    {
+        $bubbleTrail = ($thought) ? 'o' : '\\';
+
+        $squirrel = <<<EOS
+    $bubbleTrail    _    _
+     $bubbleTrail  | \__/|  .~    ~.
+      $bubbleTrail /o o `./      .'
+       {o__,   \    {
+         / .  . )    \
+         `-` '-' \    }
+        .(   _(   )_.'
+       '---.~_ _ _|
+EOS;
+        
+        return $squirrel;
     }
 
     /**
