@@ -70,11 +70,11 @@ class Cow extends Command
         $bubbleTrail = ($thought) ? 'o' : '\\';
 
         $cow = <<<EOC
-    $bubbleTrail   ^__^
-     $bubbleTrail  (oo)\_______
-        (__)\       )\\/\\
-            ||----w |
-            ||     ||
+    $bubbleTrail  ^__^
+     $bubbleTrail (oo)\_______
+       (__)\       )\\/\\
+           ||----w |
+           ||     ||
 EOC;
 
         return $cow;
