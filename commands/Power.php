@@ -3,7 +3,6 @@
 namespace Commands;
 
 use Core\Command;
-use Core\Parameters;
 
 class Power extends Command
 {
@@ -24,7 +23,7 @@ class Power extends Command
      */
     public function shutdown()
     {
-        if($this->can('administrator')) {
+        if ($this->can('administrator')) {
             $this->app->bot()->close();
         } else {
             $this->message->reply('You do not have permission to shutdown the bot!');
