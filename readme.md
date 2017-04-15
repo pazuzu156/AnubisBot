@@ -1,5 +1,10 @@
 # AnubisBot
-
+[![StyleCI](https://styleci.io/repos/87753072/shield?branch=master)](https://styleci.io/repos/87753072)
+[![Latest Stable Version](https://poser.pugx.org/pazuzu156/anubisbot/v/stable?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
+[![Latest Unstable Version](https://poser.pugx.org/pazuzu156/anubisbot/v/unstable?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
+[![Total Downloads](https://poser.pugx.org/pazuzu156/anubisbot/downloads?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
+[![License](https://poser.pugx.org/pazuzu156/anubisbot/license?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
+[![Bot Status](https://api.kalebklein.com/anubisbot_status)](https://api.kalebklein.com/anubisbot_status)
 
 A Discord bot built in PHP
 
