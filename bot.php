@@ -17,4 +17,10 @@ if (!isset($bool) || is_null($bool)) {
     $bool = true;
 }
 
+if (!file_exists(__DIR__.'/bot_online')) {
+    $file = fopen(__DIR__.'/bot_online', 'w');
+    fwrite('online', $file);
+    fclose($file);
+}
+
 $app->start($bool);
