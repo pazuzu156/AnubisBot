@@ -26,7 +26,7 @@ class Color
      *
      * @var int
      */
-    const SUCCESS = 720671;
+    const SUCCESS = 2469401;
 
     /**
      * Warning color: orange.
