@@ -115,7 +115,7 @@ class Application
             echo $msg;
         });
 
-        $this->_discord->on('closed', function($discord) {
+        $this->_discord->on('closed', function ($discord) {
             unlink(base_path().'/bot_online');
             exit;
         });
