@@ -19,7 +19,7 @@ if (!isset($bool) || is_null($bool)) {
 
 if (!file_exists(__DIR__.'/bot_online')) {
     $file = fopen(__DIR__.'/bot_online', 'w');
-    fwrite('online', $file);
+    fwrite($file, 'online');
     fclose($file);
 }
 

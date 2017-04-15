@@ -8,6 +8,7 @@ return [
         Commands\Cow::class,
         Commands\About::class,
         Commands\Messages::class,
+        Commands\Power::class,
         Commands\UserInfo::class,
     ],
 
