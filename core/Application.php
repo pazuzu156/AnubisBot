@@ -140,7 +140,9 @@ class Application
 
         $this->_logger->info('Registering DiscordPHP CLOSED event');
         $this->_discord->on('closed', function ($discord) {
-            unlink(base_path().'/bot_online');
+            if (file_exists(base_path().'/bot_online')) {
+                unlink(base_path().'/bot_online');
+            }
             exit;
         });
 
