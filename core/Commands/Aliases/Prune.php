@@ -1,6 +1,6 @@
 <?php
 
-namespace Aliases;
+namespace Core\Commands\Aliases;
 
 use Core\Alias;
 use Core\Parameters;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands;
+namespace Core\Commands;
 
 use Carbon\Carbon;
 use Core\Color;

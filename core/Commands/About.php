@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands;
+namespace Core\Commands;
 
 use Core\Command;
 use DateTime;
@@ -20,9 +20,16 @@ class About extends Command
     /**
      * Pazuzu156 Discord server invite link.
      *
-     * @var
+     * @var string
      */
     private $_inviteLink = 'https://discord.gg/eanAmrs';
+
+    /**
+     * Official AnubisBot Github repo url.
+     *
+     * @var string
+     */
+    private $_sourceUrl = 'https://github.com/pazuzu156/anubisbot';
 
     /**
      * Default command method.
@@ -57,7 +64,7 @@ class About extends Command
      */
     public function source()
     {
-        $this->channel->sendMessage('https://github.com/pazuzu156/anubisbot');
+        $this->channel->sendMessage($this->_sourceUrl);
     }
 
     /**
