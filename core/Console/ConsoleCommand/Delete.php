@@ -36,9 +36,9 @@ class Delete extends Command
     {
         $name = $input->getArgument('name');
 
-        $cpath = base_path().'/console/';
+        $cpath = console_path();
         $filename = $name.'.php';
-        $filepath = $cpath.$filename;
+        $filepath = $cpath.'/'.$filename;
 
         if (file_exists($filepath)) {
             unlink($filepath);

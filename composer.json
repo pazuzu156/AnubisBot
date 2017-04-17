@@ -24,8 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Aliases\\": "aliases/",
-            "Commands\\": "commands/",
+            "App\\": "app/",
             "Core\\": "core/"
         },
         "files": [ "core/helpers.php" ]

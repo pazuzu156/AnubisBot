@@ -17,7 +17,7 @@ class Create extends Command
      */
     protected function configure()
     {
-        $this->setName('alias:make')
+        $this->setName('make:alias')
         ->setDescription('Creates a new alias template')
         ->setDefinition(new InputDefinition([
             new InputArgument('name', InputArgument::REQUIRED, 'The name of the alias class to create (CammelCase please)'),
@@ -40,7 +40,7 @@ class Create extends Command
         $content = <<<EOF
 <?php
 
-namespace Aliases;
+namespace App\Aliases;
 
 use Core\Alias;
 use Core\Parameters;
@@ -79,9 +79,9 @@ class $name extends Alias
 
 EOF;
 
-        $cpath = base_path().'/aliases/';
+        $cpath = aliases_path();
         $filename = $name.'.php';
-        $filepath = $cpath.$filename;
+        $filepath = $cpath.'/'.$filename;
 
         if (!file_exists($filepath)) {
             $file = fopen($filepath, 'w');

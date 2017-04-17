@@ -40,7 +40,7 @@ class Create extends Command
         $content = <<<EOF
 <?php
 
-namespace Commands;
+namespace App\Commands;
 
 use Core\Command;
 use Core\Parameters;
@@ -74,9 +74,9 @@ class $name extends Command
 
 EOF;
 
-        $cpath = base_path().'/commands/';
+        $cpath = commands_path();
         $filename = $name.'.php';
-        $filepath = $cpath.$filename;
+        $filepath = $cpath.'/'.$filename;
 
         if (!file_exists($filepath)) {
             $file = fopen($filepath, 'w');

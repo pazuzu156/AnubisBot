@@ -37,6 +37,5 @@ return [
         Core\Console\Run::class,
 
         // Register any of your custom console commands here
-
     ],
 ];

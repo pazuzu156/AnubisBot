@@ -17,7 +17,7 @@ class Delete extends Command
      */
     protected function configure()
     {
-        $this->setName('alias:drop')
+        $this->setName('drop:alias')
         ->setDescription('Deletes a alias')
         ->setDefinition(new InputDefinition([
             new InputArgument('name', InputArgument::REQUIRED, 'The name of the alias class to drop (CammelCase please)'),
@@ -36,9 +36,9 @@ class Delete extends Command
     {
         $name = $input->getArgument('name');
 
-        $cpath = base_path().'/aliases/';
+        $cpath = aliases_path();
         $filename = $name.'.php';
-        $filepath = $cpath.$filename;
+        $filepath = $cpath.'/'.$filename;
 
         if (file_exists($filepath)) {
             unlink($filepath);

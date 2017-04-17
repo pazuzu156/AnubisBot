@@ -2,6 +2,30 @@
 
 // This file houses a host of helper functions.
 
+if (!function_exists('aliases_path')) {
+    /**
+     * Gets the custom aliases path.
+     *
+     * @return string
+     */
+    function aliases_path()
+    {
+        return app_path().'/aliases';
+    }
+}
+
+if (!function_exists('app_path')) {
+    /**
+     * Gets the application path.
+     *
+     * @return string
+     */
+    function app_path()
+    {
+        return base_path().'/app';
+    }
+}
+
 if (!function_exists('base_path')) {
     /**
      * Gets the base app path.
@@ -11,6 +35,18 @@ if (!function_exists('base_path')) {
     function base_path()
     {
         return getcwd();
+    }
+}
+
+if (!function_exists('commands_path')) {
+    /**
+     * Gets the custom commands path.
+     *
+     * @return string
+     */
+    function commands_path()
+    {
+        return app_path().'/commands';
     }
 }
 
@@ -27,6 +63,18 @@ if (!function_exists('config_get')) {
         $c = new \Core\Configuration();
 
         return $c->get($config);
+    }
+}
+
+if (!function_exists('console_path')) {
+    /**
+     * Gets the custom console commands path.
+     *
+     * @return string
+     */
+    function console_path()
+    {
+        return app_path().'/console';
     }
 }
 
