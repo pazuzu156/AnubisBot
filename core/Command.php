@@ -64,6 +64,13 @@ class Command
     protected $permissions;
 
     /**
+     * Logger instance.
+     *
+     * @var \Core\Logger
+     */
+    protected $logger;
+
+    /**
      * Preset variables to parse in command descriptions.
      *
      * @var array
@@ -93,7 +100,18 @@ class Command
             }
 
             $this->app = $app;
+
+            $this->logger = $this->app->logger();
+            $this->logger->info('Registering new command');
+
+            // we'll do an alias check and log appropriately
+            if(isset($this->alias)) {
+                $this->logger->info('Command is a command alias. Registering as an alias instead');
+            }
+
             $this->permissions = new Permissions();
+        } else {
+            throw new \RuntimeException('ERROR: You must provide an application instance to the base command class!');
         }
     }
 

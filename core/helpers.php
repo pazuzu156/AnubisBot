@@ -112,6 +112,18 @@ if (!function_exists('env_set')) {
     }
 }
 
+if (!function_exists('logs_path')) {
+    /**
+     * Gets the logger's logs path.
+     *
+     * @return string
+     */
+    function logs_path()
+    {
+        return base_path().'/logs';
+    }
+}
+
 if (!function_exists('tsleep')) {
     /**
      * Allows ints and doubles to use for sleeping script.

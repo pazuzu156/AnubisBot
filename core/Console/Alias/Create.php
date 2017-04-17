@@ -63,7 +63,7 @@ class $name extends Alias
     public \$alias = '';
 
     /**
-     * Default command method.
+     * Default alias method.
      *
      * @param \Core\Parameters \$p
      *
@@ -71,7 +71,7 @@ class $name extends Alias
      */
     public function index(Parameters \$p)
     {
-        // Default command method
+        // Default alias method
     }
 
     // Place your methods here

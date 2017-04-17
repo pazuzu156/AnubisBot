@@ -53,6 +53,13 @@ class Application
     private $_commands;
 
     /**
+     * Logger instance.
+     *
+     * @var \Core\Logger
+     */
+    private $_logger;
+
+    /**
      * Ctor.
      *
      * @return void
@@ -61,6 +68,7 @@ class Application
     {
         $this->_env = new Environment();
         $this->_config = new Configuration();
+        $this->_logger = new Logger(env('NAME', ''));
 
         $this->registerDiscordBot();
     }
@@ -144,11 +152,31 @@ class Application
     }
 
     /**
+     * Returns the current command list.
+     *
+     * @return array
+     */
+    public function getCommandList()
+    {
+        return $this->_commands;
+    }
+
+    /**
+     * Gets the current logger instance.
+     *
+     * @return \Core\Logger
+     */
+    public function logger()
+    {
+        return $this->_logger;
+    }
+
+    /**
      * Registers the bot.
      *
      * @return void
      */
-    public function registerDiscordBot()
+    private function registerDiscordBot()
     {
         $prefix_space = $this->_env->get('PREFIX_SPACE', false);
         $prefix = $this->_env->get('PREFIX', '');
@@ -160,6 +188,10 @@ class Application
             'prefix'      => $prefix,
             'name'        => $this->_env->get('NAME', ''),
             'description' => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
+            'discordOptions' => [
+                'logging' => true,
+                'logger' => $this->_logger->get(),
+            ],
         ];
 
         $this->_discord = new DiscordCommandClient($opts);
@@ -176,7 +208,7 @@ class Application
      *
      * @return void
      */
-    public function registerCommands($alias = false)
+    private function registerCommands($alias = false)
     {
         if ($alias) {
             $commands = $this->_config->get('aliases');
@@ -251,7 +283,7 @@ class Application
      *
      * @return void
      */
-    public function call($class, $method, Parameters $params)
+    private function call($class, $method, Parameters $params)
     {
         $methodInfo = new ReflectionMethod(get_class($class), $method);
         if ($params->count()) {
@@ -267,15 +299,5 @@ class Application
                 $class->$method();
             }
         }
-    }
-
-    /**
-     * Returns the current command list.
-     *
-     * @return array
-     */
-    public function getCommandList()
-    {
-        return $this->_commands;
     }
 }

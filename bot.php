@@ -17,7 +17,8 @@ if (!isset($bool) || is_null($bool)) {
     $bool = true;
 }
 
-if (!file_exists(__DIR__.'/bot_online')) {
+$app->logger()->info('Making sure bot tells the world it\'s online');
+if (!file_exists(__DIR__.'/bot_online') && !env('DEBUG', false)) {
     $file = fopen(__DIR__.'/bot_online', 'w');
     fwrite($file, 'online');
     fclose($file);

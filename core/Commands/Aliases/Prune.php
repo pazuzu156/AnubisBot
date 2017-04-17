@@ -23,7 +23,7 @@ class Prune extends Alias
     public $alias = 'msg';
 
     /**
-     * Default command method.
+     * Default alias method.
      *
      * @param \Core\Parameters $p
      *
@@ -31,7 +31,7 @@ class Prune extends Alias
      */
     public function index(Parameters $p)
     {
-        $this->runCommand('msg', 'prune', $p);
+        $this->runCommand('prune', $p);
     }
 
     /**
@@ -43,7 +43,7 @@ class Prune extends Alias
      */
     public function user(Parameters $p)
     {
-        $this->runCommand('msg', 'pruneuser', $p);
+        $this->runCommand('pruneuser', $p);
     }
 
     /**
@@ -55,6 +55,6 @@ class Prune extends Alias
      */
     public function bot(Parameters $p)
     {
-        $this->runCommand('msg', 'prunebot', $p);
+        $this->runCommand('prunebot', $p);
     }
 }

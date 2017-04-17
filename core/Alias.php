@@ -20,10 +20,10 @@ class Alias extends Command
      *
      * @return void
      */
-    protected function runCommand($command, $method, Parameters $params)
+    protected function runCommand($method, Parameters $params)
     {
         foreach ($this->app->getCommandList() as $cmd => $value) {
-            if ($cmd == $command) {
+            if ($cmd == $this->alias) {
                 $class = $value['class'];
                 if (method_exists(get_class($class), $method)) {
                     $class->setMessage($this->message);
