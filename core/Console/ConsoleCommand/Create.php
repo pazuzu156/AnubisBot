@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Console\Command;
+namespace Core\Console\ConsoleCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,10 +17,10 @@ class Create extends Command
      */
     protected function configure()
     {
-        $this->setName('make:command')
-        ->setDescription('Creates a new command template')
+        $this->setName('make:console')
+        ->setDescription('Creates a new console command template')
         ->setDefinition(new InputDefinition([
-            new InputArgument('name', InputArgument::REQUIRED, 'The name of the command class to create (CammelCase please)'),
+            new InputArgument('name', InputArgument::REQUIRED, 'The name of the console command class to create (CammelCase please)'),
         ]));
     }
 
@@ -40,41 +40,43 @@ class Create extends Command
         $content = <<<EOF
 <?php
 
-namespace Commands;
+namespace Console;
 
-use Core\Command;
-use Core\Parameters;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class $name extends Command
 {
     /**
-     * {@inheritdoc}
-     */
-    protected \$name = '$nametolower';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected \$description = '';
-
-    /**
-     * Default command method.
-     *
-     * @param \Core\Parameters \$p
+     * Configure Symfony Command.
      *
      * @return void
      */
-    public function index(Parameters \$p)
+    protected function configure()
     {
-        // Default command method
+        \$this->setName('$nameToLower');
     }
 
-    // Place your methods here
+    /**
+     * Execute console command.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return void
+     */
+    protected function execute(InputInterface \$input, OutputInterface \$output)
+    {
+        \$output->writeln("<info>This is your $name command!</>");
+    }
 }
 
 EOF;
 
-        $cpath = base_path().'/commands/';
+        $cpath = base_path().'/console/';
         $filename = $name.'.php';
         $filepath = $cpath.$filename;
 
@@ -83,11 +85,11 @@ EOF;
             fwrite($file, $content);
             fclose($file);
 
-            $output->writeln("<info>Command: $name created</>");
+            $output->writeln("<info>Console command: $name created</>");
 
             shell_exec('composer dump-autoload -o');
         } else {
-            $output->writeln("<error>Command: $name already exists!</>");
+            $output->writeln("<error>Console command: $name already exists!</>");
         }
     }
 }

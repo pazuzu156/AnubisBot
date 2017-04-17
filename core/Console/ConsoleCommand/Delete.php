@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Console\Command;
+namespace Core\Console\ConsoleCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,10 +17,10 @@ class Delete extends Command
      */
     protected function configure()
     {
-        $this->setName('drop:command')
-        ->setDescription('Deletes a command')
+        $this->setName('drop:console')
+        ->setDescription('Deletes a console command')
         ->setDefinition(new InputDefinition([
-            new InputArgument('name', InputArgument::REQUIRED, 'The name of the command class to drop (CammelCase please)'),
+            new InputArgument('name', InputArgument::REQUIRED, 'The name of the console command class to drop (CammelCase please)'),
         ]));
     }
 
@@ -36,16 +36,16 @@ class Delete extends Command
     {
         $name = $input->getArgument('name');
 
-        $cpath = base_path().'/commands/';
+        $cpath = base_path().'/console/';
         $filename = $name.'.php';
         $filepath = $cpath.$filename;
 
         if (file_exists($filepath)) {
             unlink($filepath);
-            $output->writeln("<info>Command: $name was deleted</>");
+            $output->writeln("<info>Console command: $name was deleted</>");
             shell_exec('composer dump-autoload -o');
         } else {
-            $output->writeln("<error>Command: $name doesn't exist!</>");
+            $output->writeln("<error>Consone command: $name doesn't exist!</>");
         }
     }
 }

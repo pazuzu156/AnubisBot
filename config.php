@@ -32,6 +32,8 @@ return [
         Core\Console\Alias\Delete::class,
         Core\Console\Command\Create::class,
         Core\Console\Command\Delete::class,
+        Core\Console\ConsoleCommand\Create::class,
+        Core\Console\ConsoleCommand\Delete::class,
         Core\Console\Run::class,
 
         // Register any of your custom console commands here
