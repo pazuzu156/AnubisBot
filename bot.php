@@ -11,10 +11,15 @@ require_once __DIR__.'/vendor/autoload.php';
 $app = new Core\Application();
 
 // Set game presence
-$app->setGame('God of the Underworld');
+$app->setPresence('God of the Underworld');
 
+// Handle whether to display changelog or not
 if (!isset($bool) || is_null($bool)) {
-    $bool = true;
+    if (env('DEBUG', false) !== true) {
+        $bool = true;
+    } else {
+        $bool = false;
+    }
 }
 
 $app->logger()->info('Making sure bot tells the world it\'s online');

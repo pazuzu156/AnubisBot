@@ -30,7 +30,7 @@ class CleanLogs extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         copy(logs_path().'/.gitignore', base_path().'/.gitignore_logs');
-        unlink(logs_paht().'/.gitignore');
+        unlink(logs_path().'/.gitignore');
         $handle = opendir(logs_path());
         $ignore = ['.', '..'];
 

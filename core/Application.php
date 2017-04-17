@@ -66,9 +66,9 @@ class Application
      */
     public function __construct()
     {
-        $this->_env = new Environment();
-        $this->_config = new Configuration();
         $this->_logger = new Logger(env('NAME', ''));
+        $this->_env = new Environment($this->_logger);
+        $this->_config = new Configuration();
 
         $this->registerDiscordBot();
     }
@@ -80,8 +80,9 @@ class Application
      *
      * @return void
      */
-    public function setGame($gameName)
+    public function setPresence($gameName)
     {
+        $this->_logger->info('Setting bot\'s presence');
         $this->_game = $this->_discord->factory(Game::class, [
             'name' => $gameName,
         ]);
@@ -94,40 +95,56 @@ class Application
      */
     public function start($startMessage = true)
     {
+        $this->_logger->info('Starting DiscordPHP Loop');
         $app = $this;
+
+        $this->_logger->info('Registering DiscordPHP\'s READY event');
         $this->_discord->on('ready', function ($discord) use ($startMessage, $app) {
             if (!is_null($this->_game)) {
                 $discord->updatePresence($this->_game);
             }
 
-            if ($startMessage && !env('DEBUG', false)) {
+            if ($startMessage) {
+                $app->logger()->info('Getting changelog to display to given bot-spam channel');
                 $channel = $discord->factory(Channel::class, [
                     'id'   => env('BOTSPAM_CHANNEL_ID', ''),
                     'type' => 'text',
                 ]);
 
+                $app->logger()->info('Opening up cURL connection');
                 $curl = new Curl();
                 $curl->get('https://cdn.kalebklein.com/anubisbot/changes.php');
 
                 $message = env('NAME', '').' is back online! Here are the new changes this update:'."\n\n";
 
+                $app->logger()->info('Parsing changelog');
                 $cmd = new Command();
                 $message .= $cmd->parseDescription($curl->response);
 
+                $app->logger()->info('Sending changelog');
                 $channel->sendMessage($message);
             }
 
             $msg = "\nBot is now online\n"
                 ."Bot ID: {$discord->user->id}\n"
                 ."Bot name: {$discord->user->username}\n";
+
+            foreach (explode("\n", $msg) as $line) {
+                if ($line !== '') {
+                    $this->_logger->info($line);
+                }
+            }
+
             echo $msg;
         });
 
+        $this->_logger->info('Registering DiscordPHP CLOSED event');
         $this->_discord->on('closed', function ($discord) {
             unlink(base_path().'/bot_online');
             exit;
         });
 
+        $this->_logger->info('Executing DiscordPHP');
         $this->_discord->run();
     }
 
@@ -189,18 +206,19 @@ class Application
             'name'        => $this->_env->get('NAME', ''),
             'description' => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
             'discordOptions' => [
-                'logging' => true,
+                'logging' => env('LOG_DISCORDPHP', true),
                 'logger' => $this->_logger->get(),
             ],
         ];
 
+        $this->_logger->info('Registering DiscordPHP bot');
         $this->_discord = new DiscordCommandClient($opts);
 
-        $app = $this;
-        $this->_discord->on('ready', function ($discord) use ($app) {
-            $app->registerCommands();
-            $app->registerCommands(true); // Aliases
-        });
+        $this->_logger->info('Registering commands');
+        $this->registerCommands();
+
+        $this->_logger->info('Registering command aliases');
+        $this->registerCommands(true); // Aliases
     }
 
     /**
@@ -212,13 +230,17 @@ class Application
     {
         if ($alias) {
             $commands = $this->_config->get('aliases');
+            $logstr = 'alias';
         } else {
             $commands = $this->_config->get('commands');
+            $logstr = 'command';
         }
 
         foreach ($commands as $command) {
             $cmd = new $command($this);
             $desc = ($cmd->getDescription() == '') ? 'No description provided' : $cmd->getDescription();
+
+            $this->_logger->info("Registering $logstr {$cmd->getName()}");
 
             $app = $this;
 
@@ -254,6 +276,7 @@ class Application
             }
 
             foreach ($subCommandsArray as $subCommand) {
+                $this->_logger->info("Registering sub command {$cmd->getName()} -> $subCommand");
                 $methodReflection = new ReflectionMethod(get_class($cmd), $subCommand);
                 $description = $cmd->getSubCommandDescription($cmd, $subCommand, $methodReflection);
                 $command->registerSubCommand($subCommand, function ($message, $params) use ($cmd, $app, $subCommand) {

@@ -30,8 +30,9 @@ class Logger
 
         $this->_logger = new MonoLogger($loggerName);
 
-        // This will log default logs from DiscordPHP as well
-        $this->_logger->pushHandler(new StreamHandler($log, MonoLogger::DEBUG));
+        if (env('LOG_TO_FILE', false)) {
+            $this->_logger->pushHandler(new StreamHandler($log, MonoLogger::INFO));
+        }
     }
 
     /**
@@ -53,7 +54,11 @@ class Logger
      */
     public function info($text)
     {
-        return $this->get()->info($text);
+        if (env('LOG_BOT', true)) {
+            return $this->get()->info($text);
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +70,11 @@ class Logger
      */
     public function warn($text)
     {
-        $this->get()->warn($text);
+        if (env('LOG_BOT', true)) {
+            return $this->get()->warn($text);
+        }
+
+        return false;
     }
 
     /**
@@ -77,6 +86,10 @@ class Logger
      */
     public function error($text)
     {
-        $this->get()->error($text);
+        if (env('LOG_BOT', true)) {
+            return $this->get()->error($text);
+        }
+
+        return false;
     }
 }

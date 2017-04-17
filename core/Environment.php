@@ -25,8 +25,12 @@ class Environment
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Logger $logger = null)
     {
+        if (!is_null($logger)) {
+            $this->_logger = $logger;
+            $logger->info('Loading application .env file');
+        }
         $this->_envFile = base_path().'/.env';
         if (file_exists($this->_envFile)) {
             $this->_env = new Dotenv(base_path());
