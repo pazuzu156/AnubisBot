@@ -203,13 +203,13 @@ class Application
         $prefix = ($prefix_space == 'true') ? $prefix.' ' : $prefix;
 
         $opts = [
-            'token'       => $this->_env->get('TOKEN', ''),
-            'prefix'      => $prefix,
-            'name'        => $this->_env->get('NAME', ''),
-            'description' => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
+            'token'          => $this->_env->get('TOKEN', ''),
+            'prefix'         => $prefix,
+            'name'           => $this->_env->get('NAME', ''),
+            'description'    => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
             'discordOptions' => [
                 'logging' => env('LOG_DISCORDPHP', true),
-                'logger' => $this->_logger->get(),
+                'logger'  => $this->_logger->get(),
             ],
         ];
 
