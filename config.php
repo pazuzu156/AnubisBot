@@ -13,7 +13,7 @@ return [
         Core\Commands\UserInfo::class,
 
         // Register any of your custom commands here
-        App\Commands\TestCommand::class,
+        // App\Commands\TestCommand::class,
     ],
 
     // All command aliases are registered here
@@ -22,7 +22,7 @@ return [
         Core\Commands\Aliases\Prune::class,
 
         // Register any of your custom command aliases here
-        App\Aliases\TestAlias::class,
+        // App\Aliases\TestAlias::class,
     ],
 
     // All console commands are registered here
@@ -38,6 +38,6 @@ return [
         Core\Console\ConsoleCommand\Delete::class,
 
         // Register any of your custom console commands here
-        App\Console\TestConsoleCommand::class,
+        // App\Console\TestConsoleCommand::class,
     ],
 ];
