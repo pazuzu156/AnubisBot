@@ -28,7 +28,7 @@ return [
     // All console commands are registered here
     'console' => [
         // All built-in console commands are registered here
-        Core\Console\CleanLogs::class,
+        Core\Console\ClearLogs::class,
         Core\Console\Run::class,
         Core\Console\Alias\Create::class,
         Core\Console\Alias\Delete::class,
