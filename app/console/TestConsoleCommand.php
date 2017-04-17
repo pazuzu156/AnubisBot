@@ -3,8 +3,6 @@
 namespace App\Console;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -30,6 +28,6 @@ class TestConsoleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>This is your TestConsoleCommand command!</>");
+        $output->writeln('<info>This is your TestConsoleCommand command!</>');
     }
 }

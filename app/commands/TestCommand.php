@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Core\Command;
-use Core\Parameters;
 
 class TestCommand extends Command
 {

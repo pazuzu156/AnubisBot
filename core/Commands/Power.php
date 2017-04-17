@@ -26,7 +26,7 @@ class Power extends Command
         if ($this->can('administrator')) {
             $bot = $this->app->bot();
             $logger = $this->logger;
-            $this->channel->sendMessage("Brining the bot offline...")->then(function ($msg) use ($bot, $logger) {
+            $this->channel->sendMessage('Brining the bot offline...')->then(function ($msg) use ($bot, $logger) {
                 $logger->info('Shutting down bot');
                 $bot->close();
             });
