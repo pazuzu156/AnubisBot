@@ -4,3 +4,5 @@ composer.lock
 bot_online
 logs/*
 !logs/.gitkeep
+data/*
+!data/.gitkeep

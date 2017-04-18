@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use Core\Command;
+use Core\Command\Command;
 
 class TestCommand extends Command
 {

@@ -2,8 +2,8 @@
 
 namespace App\Aliases;
 
-use Core\Alias;
-use Core\Parameters;
+use Core\Command\Alias;
+use Core\Command\Parameters;
 
 class TestAlias extends Alias
 {

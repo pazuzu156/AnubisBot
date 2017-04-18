@@ -2,6 +2,7 @@
 
 namespace Core\Console;
 
+use Core\FileSystemWrapper as File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,20 +30,18 @@ class ClearLogs extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        copy(logs_path().'/.gitignore', base_path().'/.gitignore_logs');
-        unlink(logs_path().'/.gitignore');
+        File::move(logs_path().'/.gitignore', base_path().'/.gitignore_logs');
         $handle = opendir(logs_path());
         $ignore = ['.', '..'];
 
         while ($file = readdir($handle)) {
             if (!in_array($file, $ignore)) {
-                unlink(logs_path().'/'.$file);
+                File::delete(logs_path().'/'.$file);
                 $output->writeln('<info>Clearing out '.$file.'</>');
             }
         }
 
-        copy(base_path().'/.gitignore_logs', logs_path().'/.gitignore');
-        unlink(base_path().'/.gitignore_logs');
+        File::move(base_path().'/.gitignore_logs', logs_path().'/.gitignore');
         $output->writeln('<info>Logs directory cleaned out successfully</>');
     }
 }

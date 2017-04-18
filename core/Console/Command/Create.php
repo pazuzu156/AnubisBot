@@ -42,8 +42,8 @@ class Create extends Command
 
 namespace App\Commands;
 
-use Core\Command;
-use Core\Parameters;
+use Core\Command\Command;
+use Core\Command\Parameters;
 
 class $name extends Command
 {

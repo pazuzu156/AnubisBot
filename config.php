@@ -6,11 +6,12 @@ return [
     // All commands are registered here
     'commands' => [
         // All built-in commands are registered here
-        Core\Commands\Cow::class,
-        Core\Commands\About::class,
-        Core\Commands\Messages::class,
-        Core\Commands\Power::class,
-        Core\Commands\UserInfo::class,
+        Core\Base\Commands\Cow::class,
+        Core\Base\Commands\About::class,
+        Core\Base\Commands\Messages::class,
+        Core\Base\Commands\Power::class,
+        Core\Base\Commands\Roles::class,
+        Core\Base\Commands\UserInfo::class,
 
         // Register any of your custom commands here
         // App\Commands\TestCommand::class,
@@ -19,7 +20,7 @@ return [
     // All command aliases are registered here
     'aliases' => [
         // All built-in command aliases are registered here
-        Core\Commands\Aliases\Prune::class,
+        Core\Base\Aliases\Prune::class,
 
         // Register any of your custom command aliases here
         // App\Aliases\TestAlias::class,

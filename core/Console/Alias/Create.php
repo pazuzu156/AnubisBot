@@ -42,8 +42,8 @@ class Create extends Command
 
 namespace App\Aliases;
 
-use Core\Alias;
-use Core\Parameters;
+use Core\Command\Alias;
+use Core\Command\Parameters;
 
 class $name extends Alias
 {
