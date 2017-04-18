@@ -30,7 +30,7 @@ class ClearLogs extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        File::move(logs_path().'/.gitignore', base_path().'/.gitignore_logs');
+        File::move(logs_path().'/.gitkeep', base_path().'/.gitkeep_logs');
         $handle = opendir(logs_path());
         $ignore = ['.', '..'];
 
@@ -41,7 +41,7 @@ class ClearLogs extends Command
             }
         }
 
-        File::move(base_path().'/.gitignore_logs', logs_path().'/.gitignore');
+        File::move(base_path().'/.gitkeep_logs', logs_path().'/.gitkeep');
         $output->writeln('<info>Logs directory cleaned out successfully</>');
     }
 }
