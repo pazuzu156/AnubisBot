@@ -14,9 +14,9 @@ class FileSystemWrapper
      * @param string $delem
      * @param bool   $lock
      *
-     * @return array
-     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return array
      */
     public static function getAsArray($path, $delim = '', $lock = false)
     {
@@ -52,9 +52,9 @@ class FileSystemWrapper
      * @param string $path
      * @param bool   $lock
      *
-     * @return string
-     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return string
      */
     public function getAsJson($path, $lock = false)
     {
@@ -64,9 +64,9 @@ class FileSystemWrapper
     /**
      * Writes to the file (Alias for Filesystem::put).
      *
-     * @param string        $path
-     * @param string|array  $contents
-     * @param bool          $lock
+     * @param string       $path
+     * @param string|array $contents
+     * @param bool         $lock
      *
      * @return int
      */
