@@ -2,7 +2,7 @@
 
 namespace Core\Console;
 
-use Core\FileSystemWrapper as File;
+use Core\Wrappers\FileSystemWrapper as File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
