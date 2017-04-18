@@ -95,7 +95,7 @@ class Environment
     {
         if (!is_null($this->_env)) {
             $env = File::getAsArray($this->_envFile, '=');
-            
+
             foreach ($env as $k => $v) {
                 if ($key == $k) {
                     $val = (is_bool($value)) ? var_export($value, true) : $value;
@@ -105,7 +105,6 @@ class Environment
 
             $lines = [];
             foreach ($env as $k => $v) {
-
                 $lines[] = "$k=$v";
             }
 
