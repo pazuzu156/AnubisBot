@@ -69,15 +69,9 @@ class FileSystemWrapper
      * @param bool          $lock
      *
      * @return int
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public static function write($path, $contents, $lock = false)
     {
-        if (!Filesystem::exists($path)) {
-            throw new FileNotFoundException("Error: the file $path does not exists!");
-        }
-
         // If array, build into string with each item as a line
         if (is_array($contents)) {
             $contents = implode("\n", $contents);

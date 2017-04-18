@@ -2,6 +2,7 @@
 
 namespace Core\Console\Alias;
 
+use Core\Wrappers\FileSystemWrapper as File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -40,8 +41,8 @@ class Delete extends Command
         $filename = $name.'.php';
         $filepath = $cpath.'/'.$filename;
 
-        if (file_exists($filepath)) {
-            unlink($filepath);
+        if (File::exists($filepath)) {
+            File::delete($filepath);
             $output->writeln("<info>Alias: $name was deleted</>");
             shell_exec('composer dump-autoload -o');
         } else {
