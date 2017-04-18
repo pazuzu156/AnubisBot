@@ -2,7 +2,8 @@
 
 namespace Core\Foundation;
 
-use Core\Commands\Parameters;
+use Core\Command\Command;
+use Core\Command\Parameters;
 use Core\Utils\Configuration;
 use Core\Wrappers\FileSystemWrapper as File;
 use Core\Wrappers\LoggerWrapper as Logger;
