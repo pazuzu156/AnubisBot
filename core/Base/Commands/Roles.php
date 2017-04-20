@@ -52,7 +52,7 @@ class Roles extends Command
                 if ($roleToRestrict !== false) {
                     if (!$this->isRoleRestricted($roleToRestrict, $roles)) {
                         $data = [
-                            'id' => $roleToRestrict->id,
+                            'id'   => $roleToRestrict->id,
                             'name' => strtolower($roleToRestrict->name),
                         ];
 
@@ -251,7 +251,7 @@ class Roles extends Command
     private function isRoleRestricted($role, $json)
     {
         foreach ($json as $item) {
-            $arr = (array)$item;
+            $arr = (array) $item;
 
             if (strtolower($role->name) == strtolower($arr['name'])) {
                 return true;

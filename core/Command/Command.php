@@ -206,9 +206,9 @@ class Command
     /**
      * Extrapolates the sub command description from it's method's docblock.
      *
-     * @param \Core\Command\Command     $command
-     * @param string                    $subCommand
-     * @param \ReflectionMethod         $reflection
+     * @param \Core\Command\Command $command
+     * @param string                $subCommand
+     * @param \ReflectionMethod     $reflection
      *
      * @return string
      */
