@@ -215,6 +215,7 @@ class Roles extends Command
         foreach ($this->guild->roles as $r) {
             if (strtolower($p->first()) == strtolower($r->name)) {
                 $role = $r;
+
                 return $role;
             }
         }
