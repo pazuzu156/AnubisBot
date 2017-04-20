@@ -20,7 +20,7 @@ class FileSystemWrapper
      */
     public static function getAsArray($path, $delim = '', $lock = false)
     {
-        if (!Filesystem::exists($path)) {
+        if (!self::exists($path)) {
             throw new FileNotFoundException("Error: the file $path does not exists!");
         }
 
@@ -77,7 +77,7 @@ class FileSystemWrapper
             $contents = implode("\n", $contents);
         }
 
-        return Filesystem::put($path, $contents, $lock);
+        return self::put($path, $contents, $lock);
     }
 
     /**
