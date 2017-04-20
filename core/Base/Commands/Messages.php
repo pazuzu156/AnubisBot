@@ -27,7 +27,7 @@ class Messages extends Command
     /**
      * Prune messages.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class Messages extends Command
     /**
      * Prune user messages.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
@@ -104,7 +104,7 @@ class Messages extends Command
     /**
      * Prune bot messages.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */

@@ -14,9 +14,9 @@ class Alias extends Command
     /**
      * Executes another command as an alias.
      *
-     * @param string           $command
-     * @param string           $method
-     * @param \Core\Parameters $params
+     * @param string                    $command
+     * @param string                    $method
+     * @param \Core\Commands\Parameters $params
      *
      * @return void
      */

@@ -25,7 +25,7 @@ class Command
     /**
      * Application instance.
      *
-     * @var \Core\Application
+     * @var \Core\Foundation\Application
      */
     protected $app;
 
@@ -60,14 +60,14 @@ class Command
     /**
      * Permissions instance.
      *
-     * @var \Core\Permissions
+     * @var \Core\Command\Permissions
      */
     protected $permissions;
 
     /**
      * Logger instance.
      *
-     * @var \Core\Logger
+     * @var \Core\Wrappers\LoggerWrapper
      */
     protected $logger;
 
@@ -206,9 +206,9 @@ class Command
     /**
      * Extrapolates the sub command description from it's method's docblock.
      *
-     * @param \Core\Command     $command
-     * @param string            $subCommand
-     * @param \ReflectionMethod $reflection
+     * @param \Core\Command\Command     $command
+     * @param string                    $subCommand
+     * @param \ReflectionMethod         $reflection
      *
      * @return string
      */

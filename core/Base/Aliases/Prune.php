@@ -25,7 +25,7 @@ class Prune extends Alias
     /**
      * Default alias method.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
@@ -37,7 +37,7 @@ class Prune extends Alias
     /**
      * {INHERIT_MSG_PRUNEUSER}.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
@@ -49,7 +49,7 @@ class Prune extends Alias
     /**
      * {INHERIT_MSG_PRUNEBOT}.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */

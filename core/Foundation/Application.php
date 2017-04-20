@@ -25,7 +25,7 @@ class Application
     /**
      * Environment instance.
      *
-     * @var \Core\Environment
+     * @var \Core\Foundation\Environment
      */
     private $_env;
 
@@ -39,7 +39,7 @@ class Application
     /**
      * Configuration instance.
      *
-     * @var \Core\Config\Configuration
+     * @var \Core\Utils\Configuration
      */
     private $_config;
 
@@ -60,7 +60,7 @@ class Application
     /**
      * Logger instance.
      *
-     * @var \Core\Logger
+     * @var \Core\Wrappers\LoggerWrapper
      */
     private $_logger;
 
@@ -81,7 +81,7 @@ class Application
     /**
      * Sets the bot's game.
      *
-     * @param string $gamaeName
+     * @param string $gameName
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class Application
     /**
      * Gets the current logger instance.
      *
-     * @return \Core\Logger
+     * @return \Core\Wrappers\LoggerWrapper
      */
     public function logger()
     {
@@ -307,9 +307,9 @@ class Application
     /**
      * Makes the command call.
      *
-     * @param mixed            $class
-     * @param string           $method
-     * @param \Core\Parameters $params
+     * @param mixed                    $class
+     * @param string                   $method
+     * @param \Core\Command\Parameters $params
      *
      * @return void
      */

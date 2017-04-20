@@ -81,6 +81,20 @@ class FileSystemWrapper
     }
 
     /**
+     * Writes given contents as json.
+     *
+     * @param string       $path
+     * @param string|array $contents
+     * @param bool         $lock
+     *
+     * @return int
+     */
+    public static function writeAsJson($path, $contents, $lock = false)
+    {
+        return self::write($path, json_encode($contents, JSON_PRETTY_PRINT), $lock);
+    }
+
+    /**
      * Statically call Illuminate's FileSystem functions dynamically.
      *
      * @param string $function

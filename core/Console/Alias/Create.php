@@ -66,7 +66,7 @@ class $name extends Alias
     /**
      * Default alias method.
      *
-     * @param \Core\Parameters \$p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */

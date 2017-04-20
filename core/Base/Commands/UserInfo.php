@@ -26,7 +26,7 @@ class UserInfo extends Command
     /**
      * Default command method.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class UserInfo extends Command
     /**
      * Returns the given user's Steam64 ID.
      *
-     * @param \Core\Parameters $p
+     * @param \Core\Commands\Parameters $p
      *
      * @return void
      */
