@@ -13,12 +13,8 @@ use Core\Wrappers\FileSystemWrapper as File;
 $app = new Application();
 $app->setPresence(env('DEFAULT_BOT_PRESENCE', ''));
 
-if (isset($bool) || is_null($bool)) {
-    if (env('DEBUG', false) !== true) {
-        $bool = true;
-    } else {
-        $bool = false;
-    }
+if (!isset($bool)) {
+    $bool = env('DEBUG', false);
 }
 
 $app->logger()->info('Making sure bot tells the world it\'s online');
