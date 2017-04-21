@@ -164,16 +164,14 @@ class Application
 
                             if (isset($dataFile['bot_spam_channel'])) {
                                 $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                // $channel->sendMessage("User $member has joined the server. Welcome! :smile:");
-
                                 if (!isset($dataFile['messages']['join'])
                                     || $dataFile['messages']['join'] == '') {
-                                    $message = "User {USER} has joined the server. Welcome! :smile:";
+                                    $message = 'User {USER} has joined the server. Welcome! :smile:';
                                 } else {
                                     $message = $dataFile['messages']['join'];
                                 }
 
-                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function($m) use ($member) {
+                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
                                     switch (strtolower($m[1])) {
                                         case 'user':
                                         return $member;
@@ -198,16 +196,14 @@ class Application
 
                             if (isset($dataFile['bot_spam_channel'])) {
                                 $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                // $channel->sendMessage("User $member has left the server. Awe...");
-
                                 if (!isset($dataFile['messages']['leave'])
                                     || $dataFile['messages']['leave'] == '') {
-                                    $message = "User {USER} has left the server. Awe...";
+                                    $message = 'User {USER} has left the server. Awe...';
                                 } else {
                                     $message = $dataFile['messages']['leave'];
                                 }
 
-                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function($m) use ($member) {
+                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
                                     switch (strtolower($m[1])) {
                                         case 'user':
                                         return $member;
