@@ -27,32 +27,34 @@ class BotMod extends Command
      */
     public function setbotspam(Parameters $p)
     {
-        if ($p->count() > 0) {
-            $channel = $this->guild->channels->get('name', $p->first());
+        if ($this->can('manage_server')) {
+            if ($p->count() > 0) {
+                $channel = $this->guild->channels->get('name', $p->first());
 
-            if (!is_null($channel)) {
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                if (!is_null($channel)) {
+                    $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-                if (isset($dataFile['bot_spam_channel'])) {
-                    if ($dataFile['bot_spam_channel']['id'] == $channel->id) {
-                        $this->message->reply('This channel is already set as the bot spam channel!');
+                    if (isset($dataFile['bot_spam_channel'])) {
+                        if ($dataFile['bot_spam_channel']['id'] == $channel->id) {
+                            $this->message->reply('This channel is already set as the bot spam channel!');
 
-                        return;
+                            return;
+                        }
                     }
-                }
 
-                $dataFile['bot_spam_channel'] = [
-                    'id'   => $channel->id,
-                    'name' => $channel->name,
-                ];
+                    $dataFile['bot_spam_channel'] = [
+                        'id'   => $channel->id,
+                        'name' => $channel->name,
+                    ];
 
-                // this command needs a really high priority.
-                // (admin or any who can manage server)
-                if ($this->can('manage_server')) {
-                    File::writeAsJson($this->guild->dataFile(), $dataFile);
-                    $this->message->reply('Bot spam channel changed to: #'.$channel->name.' (*'.$channel->id.'*)');
-                } else {
-                    $this->message->reply('You do not have permission to run this command!');
+                    // this command needs a really high priority.
+                    // (admin or any who can manage server)
+                    if ($this->can('manage_server')) {
+                        File::writeAsJson($this->guild->dataFile(), $dataFile);
+                        $this->message->reply('Bot spam channel changed to: #'.$channel->name.' (*'.$channel->id.'*)');
+                    } else {
+                        $this->message->reply('You do not have permission to run this command!');
+                    }
                 }
             }
         }
@@ -67,18 +69,20 @@ class BotMod extends Command
      */
     public function joinmsg(Parameters $p)
     {
-        if ($p->count() > 0) {
-            $message = rtrim(implode(' ', $p->all()), ' ');
-            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            if ($p->count() > 0) {
+                $message = rtrim(implode(' ', $p->all()), ' ');
+                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-            if (!isset($dataFile['messages'])) {
-                $dataFile['messages'] = ['join' => '', 'leave' => ''];
+                if (!isset($dataFile['messages'])) {
+                    $dataFile['messages'] = ['join' => '', 'leave' => ''];
+                }
+
+                $dataFile['messages']['join'] = $message;
+                File::writeAsJson($this->guild->dataFile(), $dataFile);
+
+                $this->message->reply('Welcome message now set!');
             }
-
-            $dataFile['messages']['join'] = $message;
-            File::writeAsJson($this->guild->dataFile(), $dataFile);
-
-            $this->message->reply('Welcome message now set!');
         }
     }
 
@@ -91,18 +95,20 @@ class BotMod extends Command
      */
     public function leavemsg(Parameters $p)
     {
-        if ($p->count() > 0) {
-            $message = rtrim(implode(' ', $p->all()), ' ');
-            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            if ($p->count() > 0) {
+                $message = rtrim(implode(' ', $p->all()), ' ');
+                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-            if (!isset($dataFile['messages'])) {
-                $dataFile['messages'] = ['join' => '', 'leave' => ''];
+                if (!isset($dataFile['messages'])) {
+                    $dataFile['messages'] = ['join' => '', 'leave' => ''];
+                }
+
+                $dataFile['messages']['leave'] = $message;
+                File::writeAsJson($this->guild->dataFile(), $dataFile);
+
+                $this->message->reply('Dismissal message now set!');
             }
-
-            $dataFile['messages']['leave'] = $message;
-            File::writeAsJson($this->guild->dataFile(), $dataFile);
-
-            $this->message->reply('Dismissal message now set!');
         }
     }
 
@@ -113,12 +119,14 @@ class BotMod extends Command
      */
     public function deljoinmsg()
     {
-        $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-        if (isset($dataFile['messages']['join'])) {
-            $dataFile['messages']['join'] = '';
-            File::writeAsJson($this->guild->dataFile(), $dataFile);
-            $this->message->reply('Custom welcome message removed and reset to default!');
+            if (isset($dataFile['messages']['join'])) {
+                $dataFile['messages']['join'] = '';
+                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->message->reply('Custom welcome message removed and reset to default!');
+            }
         }
     }
 
@@ -129,12 +137,14 @@ class BotMod extends Command
      */
     public function delleavemsg()
     {
-        $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-        if (isset($dataFile['messages']['leave'])) {
-            $dataFile['messages']['leave'] = '';
-            File::writeAsJson($this->guild->dataFile(), $dataFile);
-            $this->message->reply('Custom dismissal message removed and reset to default!');
+            if (isset($dataFile['messages']['leave'])) {
+                $dataFile['messages']['leave'] = '';
+                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->message->reply('Custom dismissal message removed and reset to default!');
+            }
         }
     }
 }
