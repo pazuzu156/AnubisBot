@@ -123,3 +123,6 @@ AnubisBot has support for adding custom Symfony commands. Just run: `$ php cli m
 
 ## Invite
 If you want to invite the bot instead of running it yourself, [click here](https://discordapp.com/oauth2/authorize?client_id=302580156176924672&scope=bot&permissions=36957190)
+
+## Documentation
+Documentation for AnubisBot can be found here: [https://api.kalebklein.com/anubisbot/docs/](https://api.kalebklein.com/anubisbot/docs/)
