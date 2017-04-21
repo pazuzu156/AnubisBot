@@ -166,7 +166,7 @@ class Roles extends Command
     {
         $joinableRoles = [];
         $filters = ['@everyone'];
-        
+
         foreach ($this->guild->roles as $guildRole) {
             if (!in_array(strtolower($guildRole->name), $filters)) {
                 $restricted = false;
