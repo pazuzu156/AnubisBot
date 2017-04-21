@@ -164,10 +164,24 @@ class Application
 
                             if (isset($dataFile['bot_spam_channel'])) {
                                 $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+                                // $channel->sendMessage("User $member has joined the server. Welcome! :smile:");
 
-                                dump($member->user);
+                                if (!isset($dataFile['messages']['join'])
+                                    || $dataFile['messages']['join'] == '') {
+                                    $message = "User {USER} has joined the server. Welcome! :smile:";
+                                } else {
+                                    $message = $dataFile['messages']['join'];
+                                }
 
-                                $channel->sendMessage("User $member has joined the server. Welcome! :smile:");
+                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function($m) use ($member) {
+                                    switch (strtolower($m[1])) {
+                                        case 'user':
+                                        return $member;
+                                        break;
+                                    }
+                                }, $message);
+
+                                $channel->sendMessage($message);
                             }
                         }
                     }
@@ -184,10 +198,24 @@ class Application
 
                             if (isset($dataFile['bot_spam_channel'])) {
                                 $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+                                // $channel->sendMessage("User $member has left the server. Awe...");
 
-                                dump($member->user);
+                                if (!isset($dataFile['messages']['leave'])
+                                    || $dataFile['messages']['leave'] == '') {
+                                    $message = "User {USER} has left the server. Awe...";
+                                } else {
+                                    $message = $dataFile['messages']['leave'];
+                                }
 
-                                $channel->sendMessage("User $member has left the server. Awe...");
+                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function($m) use ($member) {
+                                    switch (strtolower($m[1])) {
+                                        case 'user':
+                                        return $member;
+                                        break;
+                                    }
+                                }, $message);
+
+                                $channel->sendMessage($message);
                             }
                         }
                     }
