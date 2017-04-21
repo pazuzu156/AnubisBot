@@ -36,6 +36,7 @@ class SetBotSpam extends Command
                 if (isset($dataFile['bot_spam_channel'])) {
                     if ($dataFile['bot_spam_channel']['id'] == $channel->id) {
                         $this->message->reply('This channel is already set as the bot spam channel!');
+
                         return;
                     }
 

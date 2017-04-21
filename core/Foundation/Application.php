@@ -154,7 +154,7 @@ class Application
         });
 
         if (env('DISPLAY_USER_JOIN_LEAVE', true)) {
-            $this->_discord->on(Event::GUILD_MEMBER_ADD, function($member) use ($app) {
+            $this->_discord->on(Event::GUILD_MEMBER_ADD, function ($member) use ($app) {
                 foreach ($app->bot()->guilds as $guild) {
                     if ($guild->id == $member->guild_id) {
                         $g = new Guild($guild);
@@ -174,7 +174,7 @@ class Application
                 }
             });
 
-            $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function($member) use ($app) {
+            $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function ($member) use ($app) {
                 foreach ($app->bot()->guilds as $guild) {
                     if ($guild->id == $member->guild_id) {
                         $g = new Guild($guild);
