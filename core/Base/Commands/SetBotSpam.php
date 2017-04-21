@@ -39,12 +39,12 @@ class SetBotSpam extends Command
 
                         return;
                     }
-
-                    $dataFile['bot_spam_channel'] = [
-                        'id'   => $channel->id,
-                        'name' => $channel->name,
-                    ];
                 }
+
+                $dataFile['bot_spam_channel'] = [
+                    'id'   => $channel->id,
+                    'name' => $channel->name,
+                ];
 
                 // this command needs a really high priority.
                 // (admin or any who can manage server)
