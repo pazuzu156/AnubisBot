@@ -160,11 +160,11 @@ class Command
 
                         if ($method == 'index') {
                             $content = $class->getDescription()." ({PREFIX}$cmd)";
+
                             return rtrim($this->parseDescription($content), '.');
                         } else {
                             $reflection = new ReflectionMethod(get_class($class), $method);
                             $content = $this->getSubCommandDescription($class, $method, $reflection);
-
                             $content .= ' '.$this->parseDescription("({PREFIX}$cmd $method)");
 
                             return rtrim($content, '.');

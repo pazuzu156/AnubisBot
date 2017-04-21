@@ -42,7 +42,7 @@ class Help extends Command
 
             return;
         }
-        
+
         $msg = "```Commands list\n\n";
 
         // Display commands first

@@ -50,7 +50,7 @@ class Roles extends Command
             if ($roleToRestrict !== false && !$this->isRoleRestricted($roleToRestrict)) {
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);
                 $dataFile['restricted_roles'][] = [
-                    'id' => $roleToRestrict->id,
+                    'id'   => $roleToRestrict->id,
                     'name' => strtolower($roleToRestrict->name),
                 ];
 
