@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Base\Commands;
+namespace Core\Base\Commands\User;
 
 use Carbon\Carbon;
 use Core\Command\Command;

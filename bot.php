@@ -8,7 +8,7 @@ ini_set('memory_limit', '250M');
 $GLOBALS['START_TIME'] = time();
 
 use Core\Foundation\Application;
-use Core\Wrappers\FileSystemWrapper as File;
+use Core\Wrappers\File;
 
 $app = new Application();
 $app->setPresence(env('DEFAULT_BOT_PRESENCE', ''));

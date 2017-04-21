@@ -12,6 +12,16 @@ class Alias extends Command
     public $alias = '';
 
     /**
+     * Gets the alias' parent command.
+     *
+     * @return mixed
+     */
+    public function getParentCommand()
+    {
+        return $this->app->getCommandList()[$this->alias]['class'];
+    }
+
+    /**
      * Executes another command as an alias.
      *
      * @param string                    $command

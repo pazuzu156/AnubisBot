@@ -5,7 +5,7 @@ namespace Core\Wrappers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonoLogger;
 
-class LoggerWrapper
+class Logger
 {
     /**
      * Logger instance.

@@ -26,12 +26,10 @@ class Power extends Command
         if ($this->can('administrator')) {
             $bot = $this->app->bot();
             $logger = $this->logger;
-            $this->channel->sendMessage('Brining the bot offline...')->then(function ($msg) use ($bot, $logger) {
+            $this->channel->sendMessage('Bringing the bot offline...')->then(function ($msg) use ($bot, $logger) {
                 $logger->info('Shutting down bot');
                 $bot->close();
             });
-            // tsleep(1);
-            // $this->app->bot()->close();
         } else {
             $this->message->reply('You do not have permission to shutdown the bot!');
         }

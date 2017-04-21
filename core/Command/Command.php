@@ -3,6 +3,7 @@
 namespace Core\Command;
 
 use Core\Foundation\Application;
+use Core\Wrappers\Guild;
 use Discord\Parts\Channel\Channel;
 use ReflectionMethod;
 
@@ -85,7 +86,7 @@ class Command
      */
     private $_varRegex = [
         'default' => '/\{([a-zA-Z]+)\}/i',
-        'inherit' => '/\{(INHERIT)\_([A-Z\_]+)\_([A-Z\_]+)\}/i',
+        'inherit' => '/\{(INHERIT)\_([A-Z]+)(\_([A-Z\_]+))?\}/i',
     ];
 
     /**
@@ -144,13 +145,23 @@ class Command
 
             if ($m[1] == 'INHERIT') {
                 $command = strtolower($m[2]);
-                $method = strtolower($m[3]);
+
+                if (isset($m[3])) {
+                    if (str_replace('_', '', $m[3]) == $m[4]) {
+                        $method = strtolower($m[4]);
+                    }
+                } else {
+                    $method = 'index';
+                }
 
                 foreach ($app->getCommandList() as $cmd => $info) {
                     if ($command == $cmd) {
                         $class = $info['class'];
 
-                        if (in_array($method, $info['sub_commands']) && $method !== 'index') {
+                        if ($method == 'index') {
+                            $content = $class->getDescription()." ({PREFIX}$cmd)";
+                            return rtrim($this->parseDescription($content), '.');
+                        } else {
                             $reflection = new ReflectionMethod(get_class($class), $method);
                             $content = $this->getSubCommandDescription($class, $method, $reflection);
 
@@ -179,13 +190,23 @@ class Command
     }
 
     /**
-     * Gets the commands description.
+     * Gets the command's raw description.
      *
      * @return string
      */
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Gets the command's parsed description.
+     *
+     * @return string
+     */
+    public function getHelp()
+    {
+        return $this->app->bot()->getCommand($this->name)->description;
     }
 
     /**
@@ -200,7 +221,7 @@ class Command
         $this->message = $message;
         $this->channel = $this->message->channel;
         $this->author = $this->message->author;
-        $this->guild = $this->channel->guild;
+        $this->guild = new Guild($this->channel);
     }
 
     /**
@@ -212,8 +233,12 @@ class Command
      *
      * @return string
      */
-    public function getSubCommandDescription(Command $command, $subCommand, ReflectionMethod $reflection)
+    public function getSubCommandDescription(Command $command, $subCommand, ReflectionMethod $reflection = null)
     {
+        if (is_null($reflection)) {
+            $reflection = new ReflectionMethod(get_class($command), $subCommand);
+        }
+
         $doc = $reflection->getDocComment();
 
         $exp = explode("\r\n", $doc);

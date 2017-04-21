@@ -5,7 +5,7 @@ namespace Core\Wrappers;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
-class FileSystemWrapper
+class File
 {
     /**
      * Read file contents as an array.

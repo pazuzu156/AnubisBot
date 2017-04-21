@@ -5,8 +5,8 @@ namespace Core\Foundation;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
-use Core\Wrappers\FileSystemWrapper as File;
-use Core\Wrappers\LoggerWrapper as Logger;
+use Core\Wrappers\File;
+use Core\Wrappers\Logger;
 use Curl\Curl;
 use Discord\DiscordCommandClient;
 use Discord\Parts\Channel\Channel;
@@ -216,6 +216,7 @@ class Application
                 'logging' => env('LOG_DISCORDPHP', true),
                 'logger'  => $this->_logger->get(),
             ],
+            'defaultHelpCommand' => false,
         ];
 
         $this->_logger->info('Registering DiscordPHP bot');
@@ -274,7 +275,9 @@ class Application
                 }
 
                 if ($m != 'index') {
-                    $subCommandsArray[] = $m;
+                    if ($m != 'getParentCommand') {
+                        $subCommandsArray[] = $m;
+                    }
                 }
             }
 
@@ -300,6 +303,7 @@ class Application
             $this->_commands[$cmd->getName()] = [
                 'class'        => $cmd,
                 'sub_commands' => $subCommandsArray,
+                'is_alias'     => $alias,
             ];
         }
     }

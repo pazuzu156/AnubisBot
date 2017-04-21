@@ -16,7 +16,7 @@ class Configuration
         $item = str_replace('.', '/', $item);
         $items = explode('/', $item);
 
-        $config = require base_path().'/config.php';
+        $config = require base_path().'/registrar.php';
 
         switch (count($items)) {
             case 1:

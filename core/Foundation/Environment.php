@@ -2,8 +2,8 @@
 
 namespace Core\Foundation;
 
-use Core\Wrappers\FileSystemWrapper as File;
-use Core\Wrappers\LoggerWrapper as Logger;
+use Core\Wrappers\File;
+use Core\Wrappers\Logger;
 use Dotenv\Dotenv;
 
 class Environment

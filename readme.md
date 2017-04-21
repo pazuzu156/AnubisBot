@@ -22,8 +22,8 @@ for the master branch
 
 `dev-develop` is the most active branch. If you want to use `master`, `dev-develop` is merged into `master` daily, so while changes are always frequent, it's more stable than `dev-develop`
 
-## Config
-`config.php` holds commands to register 
+## Command Registrar
+`registrar.php` holds commands to register 
 
 A seperate .env file houses bot information  
 `DEBUG` Enables/disables debugging for bot  
@@ -99,7 +99,7 @@ public function newsubby(Parameters $p)
 ```
 
 ### Registering Commands/Aliases
-To register a command, inside `config.php` under `commands` add the PHP class calling method to the array:
+To register a command, inside `registrar.php` under `commands` add the PHP class calling method to the array:
 
 ```php
 ...
@@ -119,7 +119,7 @@ Run the bot with `$ php cli run`
 Running the above will also run the on-start changelog message. To disable this, add `false` at the end (Unless you set `DEBUG` equal to `true` inside your `.env` file)
 
 ## Custom CLI Console Commands
-AnubisBot has support for adding custom Symfony commands. Just run: `$ php cli make:console MyNewConsoleCommand` and add the command to `config.php` under the `console` array. Then just call `$ php cli <MYNEWCONSOLECOMMAND>` replaceing `<MYNEWCONSOLECOMMAND>` with whatever you used in the commands `$this->setName()` call.
+AnubisBot has support for adding custom Symfony commands. Just run: `$ php cli make:console MyNewConsoleCommand` and add the command to `registrar.php` under the `console` array. Then just call `$ php cli <MYNEWCONSOLECOMMAND>` replaceing `<MYNEWCONSOLECOMMAND>` with whatever you used in the commands `$this->setName()` call.
 
 ## Invite
 If you want to invite the bot instead of running it yourself, [click here](https://discordapp.com/oauth2/authorize?client_id=302580156176924672&scope=bot&permissions=36957190)
