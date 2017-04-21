@@ -11,6 +11,7 @@ return [
         Core\Base\Commands\Help::class,
         Core\Base\Commands\Messages::class,
         Core\Base\Commands\Power::class,
+        Core\Base\Commands\SetBotSpam::class,
         Core\Base\Commands\User\Roles::class,
         Core\Base\Commands\User\User::class,
         Core\Base\Commands\User\UserInfo::class,

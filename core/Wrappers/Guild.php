@@ -14,13 +14,13 @@ class Guild
     /**
      * Ctor.
      *
-     * @param \Discord\Parts\Channel\Channel
+     * @param \Discord\Parts\Guild\Guild $guild
      *
      * @return void
      */
-    public function __construct($channel)
+    public function __construct($guild)
     {
-        $this->_guild = $channel->guild;
+        $this->_guild = $guild;
     }
 
     /**

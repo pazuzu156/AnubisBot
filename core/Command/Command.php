@@ -221,7 +221,7 @@ class Command
         $this->message = $message;
         $this->channel = $this->message->channel;
         $this->author = $this->message->author;
-        $this->guild = new Guild($this->channel);
+        $this->guild = new Guild($this->channel->guild);
     }
 
     /**

@@ -6,11 +6,13 @@ use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
 use Core\Wrappers\File;
+use Core\Wrappers\Guild;
 use Core\Wrappers\Logger;
 use Curl\Curl;
 use Discord\DiscordCommandClient;
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\User\Game;
+use Discord\WebSockets\Event;
 use ReflectionMethod;
 
 class Application
@@ -112,7 +114,7 @@ class Application
             if ($startMessage) {
                 $app->logger()->info('Getting changelog to display to given bot-spam channel');
                 $channel = $discord->factory(Channel::class, [
-                    'id'   => env('BOTSPAM_CHANNEL_ID', ''),
+                    'id'   => env('CHANGELOG_CHANNEL', ''),
                     'type' => 'text',
                 ]);
 
@@ -150,6 +152,48 @@ class Application
             }
             exit;
         });
+
+        if (env('DISPLAY_USER_JOIN_LEAVE', true)) {
+            $this->_discord->on(Event::GUILD_MEMBER_ADD, function($member) use ($app) {
+                foreach ($app->bot()->guilds as $guild) {
+                    if ($guild->id == $member->guild_id) {
+                        $g = new Guild($guild);
+
+                        if (File::exists($g->dataFile())) {
+                            $dataFile = json_decode(File::get($g->dataFile()), true);
+
+                            if (isset($dataFile['bot_spam_channel'])) {
+                                $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+
+                                dump($member->user);
+
+                                $channel->sendMessage("User $member has joined the server. Welcome! :smile:");
+                            }
+                        }
+                    }
+                }
+            });
+
+            $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function($member) use ($app) {
+                foreach ($app->bot()->guilds as $guild) {
+                    if ($guild->id == $member->guild_id) {
+                        $g = new Guild($guild);
+
+                        if (File::exists($g->dataFile())) {
+                            $dataFile = json_decode(File::get($g->dataFile()), true);
+
+                            if (isset($dataFile['bot_spam_channel'])) {
+                                $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+
+                                dump($member->user);
+
+                                $channel->sendMessage("User $member has left the server. Awe...");
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         $this->_logger->info('Executing DiscordPHP');
         $this->_discord->run();
