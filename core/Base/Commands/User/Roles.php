@@ -26,7 +26,7 @@ class Roles extends Command
      */
     public function index(Parameters $p)
     {
-        $msg = "List of joinable roles:\n```";
+        $msg = "List of joinable roles:```\n";
 
         foreach ($this->getJoinableRoles() as $role) {
             $msg .= strtolower($role->name)."\n";
