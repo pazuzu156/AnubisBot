@@ -1,26 +1,26 @@
 <?php
 
-namespace Core\Base\Aliases\Roles;
+namespace Core\Base\Aliases\User;
 
 use Core\Command\Alias;
 use Core\Command\Parameters;
 
-class LeaveRole extends Alias
+class KickUser extends Alias
 {
     /**
      * {@inheritdoc}
      */
-    protected $name = 'leaverole';
+    protected $name = 'kickuser';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = '{INHERIT_ROLES_LEAVE}';
+    protected $description = '{INHERIT_USER_KICK}';
 
     /**
      * {@inheritdoc}
      */
-    public $alias = 'roles';
+    public $alias = 'user';
 
     /**
      * Default alias method.
@@ -31,6 +31,6 @@ class LeaveRole extends Alias
      */
     public function index(Parameters $p)
     {
-        $this->runCommand('leave', $p);
+        $this->runCommand('kick', $p);
     }
 }

@@ -26,6 +26,8 @@ return [
         Core\Base\Aliases\Roles\LeaveRole::class,
         Core\Base\Aliases\Roles\ListRoles::class,
         Core\Base\Aliases\Prune::class,
+        Core\Base\Aliases\User\BanUser::class,
+        Core\Base\Aliases\User\KickUser::class,
 
         // Register any of your custom command aliases here
     ],

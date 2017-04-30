@@ -18,14 +18,74 @@ class User extends Command
     protected $description = 'Manage the server\'s users';
 
     /**
-     * Default command method.
+     * Kicks a user.
      *
-     * @param \Core\Commands\Parameters $p
+     * @param \Core\Command\Parameters $p
      *
      * @return void
      */
-    public function index(Parameters $p)
+    public function kick(Parameters $p)
     {
-        dump($this);
+        if ($this->can('kick_members')) {
+            if ($p->count()) {
+                $id = $this->parseMemberId($p->first());
+                $member = $this->guild->members->get('id', $id);
+                $channel = $this->getBotSpam();
+                
+                // remove user id from params
+                $params = $p->all();
+                array_shift($params);
+
+                if ($member) {
+                    $this->guild->members->kick($member)->then(function ($member) use ($channel, $params) {
+                        $msg = "Kicked user: $member";
+
+                        if (count($params) > 0) {
+                            $msg .= ' | Reason: '.implode(' ', $params);
+                        }
+
+                        $channel->sendMessage($msg);
+                    });
+                } else {
+                    $this->message->reply('Sorry, but that user could not be found. Try again maybe?');
+                }
+            }
+        }
+    }
+
+    /**
+     * Bans a user.
+     *
+     * @param \Core\Command\Parameters $p
+     *
+     * @return void
+     */
+    public function ban(Parameters $p)
+    {
+        if ($this->can('ban_members')) {
+            if ($p->count()) {
+                $id = $this->parseMemberId($p->first());
+                $member = $this->guild->members->get('id', $id);
+                $channel = $this->getBotSpam();
+                
+                // remove user id from params
+                $params = $p->all();
+                array_shift($params);
+
+                if ($member) {
+                    $member->ban(10)->then(function ($ban) use ($member, $channel, $params) {
+                        $msg = "Banned user: $member";
+
+                        if (count($params) > 0) {
+                            $msg .= ' | Reason: '.implode(' ', $params);
+                        }
+
+                        $channel->sendMessage($msg);
+                    });
+                } else {
+                    $this->message->reply('Sorry, but that user could not be found. Try again maybe?');
+                }
+            }
+        }
     }
 }

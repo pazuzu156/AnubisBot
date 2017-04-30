@@ -3,6 +3,7 @@
 namespace Core\Command;
 
 use Core\Foundation\Application;
+use Core\Wrappers\File;
 use Core\Wrappers\Guild;
 use Discord\Parts\Channel\Channel;
 use ReflectionMethod;
@@ -59,13 +60,6 @@ class Command
     protected $author;
 
     /**
-     * Permissions instance.
-     *
-     * @var \Core\Command\Permissions
-     */
-    protected $permissions;
-
-    /**
      * Logger instance.
      *
      * @var \Core\Wrappers\LoggerWrapper
@@ -103,7 +97,6 @@ class Command
 
             $this->app = $app;
             $this->logger = $this->app->logger();
-            $this->permissions = new Permissions();
         }
     }
 
@@ -280,6 +273,42 @@ class Command
      */
     protected function can($permission)
     {
-        return $this->permissions->can($permission, $this->author);
+        foreach ($this->author->roles as $role) {
+            return $role->permissions->$permission;
+        }
+
+        return false;
+    }
+
+    /**
+     * Parses a Discord Member ID into the ID number.
+     *
+     * @param string $idstr
+     *
+     * @return string
+     */
+    protected function parseMemberId($idstr)
+    {
+        return rtrim(str_replace('<@', '', $idstr), '>');
+    }
+
+    /**
+     * Gets the server's bot spam channel (current if one isn't set).
+     *
+     * @return \Discord\Parts\Channel\Channel
+     */
+    protected function getBotSpam()
+    {
+        $isbsset = false;
+
+        if (File::exists($this->guild->dataFile())) {
+            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+
+            if (isset($dataFile['bot_spam_channel'])) {
+                return $this->guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+            } else {
+                return $this->channel;
+            }
+        }
     }
 }
