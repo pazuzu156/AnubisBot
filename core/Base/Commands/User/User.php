@@ -31,7 +31,7 @@ class User extends Command
                 $id = $this->parseMemberId($p->first());
                 $member = $this->guild->members->get('id', $id);
                 $channel = $this->getBotSpam();
-                
+
                 // remove user id from params
                 $params = $p->all();
                 array_shift($params);
@@ -67,7 +67,7 @@ class User extends Command
                 $id = $this->parseMemberId($p->first());
                 $member = $this->guild->members->get('id', $id);
                 $channel = $this->getBotSpam();
-                
+
                 // remove user id from params
                 $params = $p->all();
                 array_shift($params);
