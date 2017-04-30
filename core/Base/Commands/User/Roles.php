@@ -197,7 +197,7 @@ class Roles extends Command
             return json_decode(File::get($this->guild->dataFile()))->restricted_roles;
         }
 
-        File::writeAsJson($this->guildDataFile(), [
+        File::writeAsJson($this->guild->dataFile(), [
             'restricted_roles' => [],
         ]);
 
