@@ -1,5 +1,0 @@
-logs/*
-!logs/.gitkeep
-data/*
-!data/.gitkeep
-bot_online
