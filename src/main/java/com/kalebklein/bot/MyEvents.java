@@ -24,7 +24,7 @@ public class MyEvents
 
         if (argArray.length == 0) return;
 
-        if (!argArray[0].startsWith(BotUtils.BOT_PREFIX)) return;
+        if (!argArray[0].startsWith(new Config().get("prefix"))) return;
 
         String commandStr = argArray[0].substring(1);
 
