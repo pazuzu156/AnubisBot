@@ -1,0 +1,12 @@
+# IntelliJ
+.idea
+*.iml
+
+# Maven
+log/
+target/
+
+# Misc
+modules/
+bin/
+
