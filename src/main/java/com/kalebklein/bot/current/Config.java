@@ -1,9 +1,10 @@
-package com.kalebklein.bot;
+package com.kalebklein.bot.current;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Created by kaleb on 5/9/17.
@@ -25,5 +26,10 @@ public class Config
     public String get(String key)
     {
         return this._config.getString(key);
+    }
+
+    public boolean getBool(String key)
+    {
+        return this._config.getBoolean(key);
     }
 }
