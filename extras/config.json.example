@@ -1,0 +1,7 @@
+{
+    "name": "TestBot",
+    "prefix": "!",
+    "prefix_space": false,
+    "token": "TEST_TOKEN",
+    "defaultPresence": "Testing"
+}
