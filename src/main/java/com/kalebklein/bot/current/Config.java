@@ -23,7 +23,7 @@ public class Config
         }
         this._config = new JSONObject(jsonContent);
     }
-    public String get(String key)
+    public String getString(String key)
     {
         return this._config.getString(key);
     }

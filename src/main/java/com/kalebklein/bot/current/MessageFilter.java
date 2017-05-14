@@ -5,10 +5,18 @@ package com.kalebklein.bot.current;
  */
 public class MessageFilter
 {
+    /**
+     * Checks whether or not a given message is in fact in command structure.
+     *
+     * @param message
+     * @param filter
+     *
+     * @return
+     */
     public static boolean isCommand(String message, String filter)
     {
         Config c = new Config();
-        String prefix = c.get("prefix");
+        String prefix = c.getString("prefix");
         boolean prefixSpace = c.getBool("prefix_space");
 
         if (prefixSpace) {
