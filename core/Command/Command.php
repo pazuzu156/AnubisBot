@@ -274,7 +274,9 @@ class Command
     protected function can($permission)
     {
         foreach ($this->author->roles as $role) {
-            return $role->permissions->$permission;
+            if ($role->permissions->$permission) {
+                return true;
+            }
         }
 
         return false;
