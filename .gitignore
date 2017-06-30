@@ -1,18 +1,3 @@
-# IntelliJ
-.idea/
-*.iml
-
-# Maven
-log/
-target/
-
-# Gradle
-.gradle/
-build/
-
-# Misc
-modules/
-bin/
-
-# Project specific files
-extras/config.json
+vendor/
+.env
+composer.lock
