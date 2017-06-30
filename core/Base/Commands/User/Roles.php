@@ -36,7 +36,7 @@ class Roles extends Command
     }
 
     /**
-     * Adds a role to the server's restriction list.
+     * Adds a role, or roles to the server's restriction list.
      *
      * @param \Core\Command\Parameters $p
      *
@@ -47,24 +47,53 @@ class Roles extends Command
         if ($this->can('manage_roles') && $p->count() > 0) {
             $roleToRestrict = $this->getRoleFromParameter($p);
 
-            if ($roleToRestrict !== false && !$this->isRoleRestricted($roleToRestrict)) {
+            if ($roleToRestrict !== false) {
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);
-                $dataFile['restricted_roles'][] = [
-                    'id'   => $roleToRestrict->id,
-                    'name' => strtolower($roleToRestrict->name),
-                ];
+
+                if (is_array($roleToRestrict)) {
+                    foreach ($roleToRestrict as $role) {
+                        if (!$this->isRoleRestricted($role)) {
+                            $dataFile['restricted_roles'][] = [
+                                'id' => $role->id,
+                                'name' => strtolower($role->name),
+                            ];
+                        } else {
+                            $this->message->reply('That role is already restricted!');
+                        }
+                    }
+                } else {
+                    if (!$this->isRoleRestricted($roleToRestrict)) {
+                        $dataFile['restricted_roles'][] = [
+                            'id' => $roleToRestrict->id,
+                            'name' => strtolower($roleToRestrict->name),
+                        ];
+                    } else {
+                        $this->message->reply('That role is already restricted!');
+                    }
+                }
+
+                $dataFile['restricted_roles'] = array_values($dataFile['restricted_roles']);
 
                 File::writeAsJson($this->guild->dataFile(), $dataFile);
 
-                $this->message->reply('Role "'.$roleToRestrict->name.'" is now restricted!');
+                if ($p->count() == 1) {
+                    $this->message->reply('Role "'.$roleToRestrict->name.'" is now restricted!');
+                } else {
+                    $msg = 'Roles: ';
+                    foreach ($roleToRestrict as $role) {
+                        $msg .= "\"{$role->name}\", ";
+                    }
+                    $msg = rtrim($msg, ', ');
+                    $this->message->reply($msg.' are now restricted!');
+                }
             } else {
-                $this->message->reply("Either that role doesn't exist or it's already restricted!");
+                $this->message->reply('That role doesn\'t exist!');
             }
         }
     }
 
     /**
-     * Removes a role to the server's restriction list.
+     * Removes a role, or roles from the server's restriction list.
      *
      * @param \Core\Command\Parameters $p
      *
@@ -75,26 +104,57 @@ class Roles extends Command
         if ($this->can('manage_roles') && $p->count() > 0) {
             $roleToRemove = $this->getRoleFromParameter($p);
 
-            if ($roleToRemove !== false && $this->isRoleRestricted($roleToRemove)) {
+            if ($roleToRemove !== false) {
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
-                $keyToRemove = 0;
                 $restrictedRoles = $dataFile['restricted_roles'];
-                for ($i = 0; $i < count($restrictedRoles); $i++) {
-                    if ($roleToRemove->id == $restrictedRoles[$i]['id']) {
-                        $keyToRemove = $i;
-                        break;
+
+                if (is_array($roleToRemove)) {
+                    foreach ($roleToRemove as $role) {
+                        if ($this->isRoleRestricted($role)) {
+                            $keyToRemove = 0;
+                            for ($i = 0; $i < count($restrictedRoles); $i++) {
+                                if ($role->id == $restrictedRoles[$i]['id']) {
+                                    $keyToRemove = $i;
+                                    break;
+                                }
+                            }
+
+                            $name = $restrictedRoles[$keyToRemove]['name'];
+                            unset($dataFile['restricted_roles'][$keyToRemove]);
+                        }
+                    }
+                } else {
+                    if ($this->isRoleRestricted($roleToRemove)) {
+                        $keyToRemove = 0;
+                        for ($i = 0; $i < count($restrictedRoles); $i++) {
+                            if ($roleToRemove->id == $restrictedRoles[$i]['id']) {
+                                $keyToRemove = $i;
+                                break;
+                            }
+                        }
+
+                        $name = $restrictedRoles[$keyToRemove]['name'];
+                        unset($dataFile['restricted_roles'][$keyToRemove]);
                     }
                 }
 
-                $name = $restrictedRoles[$keyToRemove]['name'];
-                unset($dataFile['restricted_roles'][$keyToRemove]);
+                $dataFile['restricted_roles'] = array_values($dataFile['restricted_roles']);
 
                 File::writeAsJson($this->guild->dataFile(), $dataFile);
 
-                $this->message->reply('Role "'.$roleToRemove->name.'" is no longer restricted!');
+                if ($p->count() == 1) {
+                    $this->message->reply('Role "'.$roleToRemove->name.'" is no longer restricted!');
+                } else {
+                    $msg = 'Roles: ';
+                    foreach ($roleToRemove as $role) {
+                        $msg .= "\"{$role->name}\", ";
+                    }
+                    $msg = rtrim($msg, ', ');
+                    $this->message->reply($msg.' are no longer restricted!');
+                }
             } else {
-                $this->message->reply("Either that role doesn't exist or isn't restricted!");
+                $this->message->reply('That role doesn\'t exist!');
             }
         }
     }
@@ -213,15 +273,25 @@ class Roles extends Command
      */
     private function getRoleFromParameter(Parameters $p)
     {
-        $role = null;
+        $roles = null;
 
-        foreach ($this->guild->roles as $guildRole) {
-            if (strtolower($p->first()) == strtolower($guildRole->name)) {
-                $role = $guildRole;
+        if ($p->count() > 1) {
+            foreach ($this->guild->roles as $guildRole) {
+                for ($i = 0; $i < $p->count(); $i++) {
+                    if (strtolower($p->get($i)) == strtolower($guildRole->name)) {
+                        $roles[] = $guildRole;
+                    }
+                }
+            }
+        } else {
+            foreach ($this->guild->roles as $guildRole) {
+                if (strtolower($p->first()) == strtolower($guildRole->name)) {
+                    $roles = $guildRole;
+                }
             }
         }
 
-        return (!is_null($role)) ? $role : false;
+        return (!is_null($roles)) ? $roles : false;
     }
 
     /**
