@@ -3,7 +3,6 @@
 namespace Core\Foundation;
 
 use Core\Wrappers\File;
-use Core\Wrappers\Logger;
 use Dotenv\Dotenv;
 
 class Environment
