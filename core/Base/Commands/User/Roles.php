@@ -54,7 +54,7 @@ class Roles extends Command
                     foreach ($roleToRestrict as $role) {
                         if (!$this->isRoleRestricted($role)) {
                             $dataFile['restricted_roles'][] = [
-                                'id' => $role->id,
+                                'id'   => $role->id,
                                 'name' => strtolower($role->name),
                             ];
                         } else {
@@ -64,7 +64,7 @@ class Roles extends Command
                 } else {
                     if (!$this->isRoleRestricted($roleToRestrict)) {
                         $dataFile['restricted_roles'][] = [
-                            'id' => $roleToRestrict->id,
+                            'id'   => $roleToRestrict->id,
                             'name' => strtolower($roleToRestrict->name),
                         ];
                     } else {
