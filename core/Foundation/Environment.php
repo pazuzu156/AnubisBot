@@ -27,13 +27,8 @@ class Environment
      *
      * @return void
      */
-    public function __construct(Logger $logger = null)
+    public function __construct()
     {
-        if (!is_null($logger)) {
-            $this->_logger = $logger;
-            $logger->info('Loading application .env file');
-        }
-
         $this->_envFile = base_path().'/.env';
         if (File::exists($this->_envFile)) {
             $this->_env = new Dotenv(base_path());

@@ -73,8 +73,8 @@ class Application
      */
     public function __construct()
     {
+        $this->_env = new Environment();
         $this->_logger = new Logger(env('NAME', ''));
-        $this->_env = new Environment($this->_logger);
         $this->_config = new Configuration();
 
         $this->registerDiscordBot();

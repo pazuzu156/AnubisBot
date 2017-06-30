@@ -22,7 +22,7 @@ class About extends Command
      *
      * @var string
      */
-    private $_inviteLink = 'https://discord.gg/eanAmrs';
+    private $_inviteLink = 'https://discord.gg/Bg3wQs2';
 
     /**
      * Official AnubisBot Github repo url.
