@@ -122,7 +122,7 @@ Running the above will also run the on-start changelog message. To disable this,
 AnubisBot has support for adding custom Symfony commands. Just run: `$ php cli make:console MyNewConsoleCommand` and add the command to `registrar.php` under the `console` array. Then just call `$ php cli <MYNEWCONSOLECOMMAND>` replaceing `<MYNEWCONSOLECOMMAND>` with whatever you used in the commands `$this->setName()` call.
 
 ## Invite
-If you want to invite the bot instead of running it yourself, [click here](https://discordapp.com/oauth2/authorize?client_id=302580156176924672&scope=bot&permissions=506719238)
+If you want to invite the bot instead of running it yourself, [click here](https://discordapp.com/oauth2/authorize?permissions=268823574&scope=bot&client_id=327322469197283328)
 
 ## Documentation
 Documentation for AnubisBot can be found here: [https://api.kalebklein.com/anubisbot/docs/](https://api.kalebklein.com/anubisbot/docs/)
