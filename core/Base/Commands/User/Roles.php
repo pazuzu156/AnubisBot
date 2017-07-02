@@ -171,18 +171,47 @@ class Roles extends Command
         if ($p->count() > 0) {
             $roleToJoin = $this->getRoleFromParameter($p);
 
-            if ($roleToJoin !== false && !$this->isRoleRestricted($roleToJoin)) {
-                if (!$this->hasRole($roleToJoin)) {
-                    $this->author->addRole($roleToJoin);
+            if ($roleToJoin !== false) {
+                $msg = 'You have joined the role';
+                $goahead = true;
 
+                if (is_array($roleToJoin)) {
+                    $roles = '';
+
+                    foreach ($roleToJoin as $role) {
+                        if (!$this->isRoleRestricted($role)) {
+                            if (!$this->hasRole($role)) {
+                                $this->author->addRole($role);
+                                $roles .= $role->name.', ';
+                            } else {
+                                $goahead = false;
+                                $this->message->reply('You are already in the role: '.$role->name);
+                            }
+                        }
+                    }
+
+                    if ($roles !== '') {
+                        $msg .= 's: '.rtrim($roles, ', ');
+                    }
+                } else {
+                    if (!$this->isRoleRestricted($roleToJoin)) {
+                        if (!$this->hasRole($roleToJoin)) {
+                            $this->author->addRole($roleToJoin);
+                            $msg .= ': '.$roleToJoin->name;
+                        } else {
+                            $goahead = false;
+                            $this->message->reply('You already have that role!');
+                        }
+                    }
+                }
+
+                if ($goahead) {
                     $message = $this->message;
-                    $this->guild->members->save($this->author)->then(function ($user) use ($message, $roleToJoin) {
-                        $message->reply('You have joined the role: '.$roleToJoin->name);
+                    $this->guild->members->save($this->author)->then(function ($user) use ($message, $msg) {
+                        $message->reply($msg);
                     })->otherwise(function ($e) use ($message) {
                         $message->channel->sendMessage("```{$e->getMessage()}```");
                     });
-                } else {
-                    $this->message->reply('You already have that role!');
                 }
             }
         }
@@ -201,17 +230,46 @@ class Roles extends Command
             $roleToLeave = $this->getRoleFromParameter($p);
 
             if ($roleToLeave !== false) {
-                if ($this->hasRole($roleToLeave)) {
-                    $this->author->removeRole($roleToLeave);
+                $msg = 'You have left the role';
+                $goahead = true;
 
+                if (is_array($roleToLeave)) {
+                    $roles = '';
+
+                    foreach ($roleToLeave as $role) {
+                        if (!$this->isRoleRestricted($role)) {
+                            if ($this->hasRole($role)) {
+                                $this->author->removeRole($role);
+                                $roles .= $role->name.', ';
+                            } else {
+                                $goahead = false;
+                                $this->message->reply('You do not have the role: '.$role->name);
+                            }
+                        }
+                    }
+
+                    if ($roles !== '') {
+                        $msg .= 's: '.rtrim($roles, ', ');
+                    }
+                } else {
+                    if (!$this->isRoleRestricted($roleToLeave)) {
+                        if ($this->hasRole($roleToLeave)) {
+                            $this->author->removeRole($roleToLeave);
+                            $msg .= ': '.$roleToLeave->name;
+                        } else {
+                            $goahead = false;
+                            $this->message->reply('You do not have that role!');
+                        }
+                    }
+                }
+
+                if ($goahead) {
                     $message = $this->message;
-                    $this->guild->members->save($this->author)->then(function ($user) use ($message, $roleToLeave) {
-                        $message->reply('You have left the role: '.$roleToLeave->name);
+                    $this->guild->members->save($this->author)->then(function ($user) use ($message, $msg) {
+                        $message->reply($msg);
                     })->otherwise(function ($e) use ($message) {
                         $message->channel->sendMessage("```{$e->getMessage()}```");
                     });
-                } else {
-                    $this->message->reply('You do not have that role!');
                 }
             }
         }

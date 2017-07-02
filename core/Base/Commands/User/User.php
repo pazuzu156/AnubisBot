@@ -37,15 +37,23 @@ class User extends Command
                 array_shift($params);
 
                 if ($member) {
-                    $this->guild->members->kick($member)->then(function ($member) use ($channel, $params) {
-                        $msg = "Kicked user: $member";
+                	$msg = "{$this->author->user->username} kicked you.";
 
-                        if (count($params) > 0) {
-                            $msg .= ' | Reason: '.implode(' ', $params);
-                        }
+                	if (count($params) > 0) {
+                		$msg .= ' | Reason: '.implode(' ', $params);
+                	}
 
-                        $channel->sendMessage($msg);
-                    });
+                	$member->user->sendMessage($msg)->then(function () use ($channel, $member, $params) {
+                		$this->guild->members->kick($member)->then(function ($member) use ($channel, $params) {
+                			$msg = "Kicked user: $member";
+
+                			if (count($params) > 0) {
+                				$msg .= ' | Reason: '.implode(' ', $params);
+                			}
+
+                			$channel->sendMessage($msg);
+                		});
+                	});
                 } else {
                     $this->message->reply('Sorry, but that user could not be found. Try again maybe?');
                 }
@@ -73,17 +81,25 @@ class User extends Command
                 array_shift($params);
 
                 if ($member) {
-                    $member->ban(10)->then(function ($ban) use ($member, $channel, $params) {
-                        $msg = "Banned user: $member";
+                	$msg = "{$this->author->user->username} banned you.";
 
-                        if (count($params) > 0) {
-                            $msg .= ' | Reason: '.implode(' ', $params);
-                        }
+                	if (count($params) > 0) {
+                		$msg .= ' | Reason:'.implode(' ', $params);
+                	}
 
-                        $channel->sendMessage($msg);
-                    });
+                	$member->user->sendMessage($msg)->then(function () use ($channel, $member, $params) {
+                		$member->ban(10)->then(function () use ($member, $channel, $params) {
+                			$msg = "Banned user: $member";
+
+                			if (count($params) > 0) {
+                				$msg .= ' | Reason: '.implode(' ', $params);
+                			}
+
+                			$channel->sendMessage($msg);
+                		});
+                	});
                 } else {
-                    $this->message->reply('Sorry, but that user could not be found. Try again maybe?');
+                	$this->message->reply('Sorry, but that user could not be found. Try again maybe?');
                 }
             }
         }
