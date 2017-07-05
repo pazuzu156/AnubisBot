@@ -28,8 +28,7 @@ class User extends Command
     {
         if ($this->can('kick_members')) {
             if ($p->count()) {
-                $id = $this->parseMemberId($p->first());
-                $member = $this->guild->members->get('id', $id);
+                // $member = $this->getMemberFromMention($p->first());
                 $channel = $this->getBotSpam();
 
                 // remove user id from params
@@ -72,8 +71,7 @@ class User extends Command
     {
         if ($this->can('ban_members')) {
             if ($p->count()) {
-                $id = $this->parseMemberId($p->first());
-                $member = $this->guild->members->get('id', $id);
+                $member = $this->getMemberFromMention($p->first());
                 $channel = $this->getBotSpam();
 
                 // remove user id from params

@@ -4,7 +4,8 @@ namespace Core\Command;
 
 use Core\Foundation\Application;
 use Core\Wrappers\File;
-use Core\Wrappers\Guild;
+use Core\Wrappers\Parts\Guild;
+use Core\Wrappers\Parts\Member;
 use Discord\Parts\Channel\Channel;
 use ReflectionMethod;
 
@@ -283,18 +284,6 @@ class Command
     }
 
     /**
-     * Parses a Discord Member ID into the ID number.
-     *
-     * @param string $idstr
-     *
-     * @return string
-     */
-    protected function parseMemberId($idstr)
-    {
-        return rtrim(str_replace('<@', '', $idstr), '>');
-    }
-
-    /**
      * Gets the server's bot spam channel (current if one isn't set).
      *
      * @return \Discord\Parts\Channel\Channel
@@ -312,5 +301,10 @@ class Command
                 return $this->channel;
             }
         }
+    }
+
+    protected function member($member)
+    {
+        return new Member($this->guild, $member);
     }
 }

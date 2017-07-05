@@ -33,31 +33,31 @@ class Messages extends Command
      */
     public function prune(Parameters $p)
     {
-        $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
+        // $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
 
-        if ($this->can('manage_messages')) {
-            $channel = $this->channel;
-            $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel) {
-                $count = 0;
-                foreach ($msgs as $msg) {
-                    $count++;
+        // if ($this->can('manage_messages')) {
+        //     $channel = $this->channel;
+        //     $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel) {
+        //         $count = 0;
+        //         foreach ($msgs as $msg) {
+        //             $count++;
 
-                    if ($count % 5) {
-                        $channel->messages->delete($msg);
-                    } else {
-                        tsleep(1.5);
-                    }
-                }
+        //             if ($count % 5) {
+        //                 $channel->messages->delete($msg);
+        //             } else {
+        //                 tsleep(1.5);
+        //             }
+        //         }
 
-                if ($count == 1) {
-                    $channel->sendMessage('`Pruned 1 message`');
-                } else {
-                    $channel->sendMessage("`Pruned $count messages`");
-                }
-            });
-        } else {
-            $this->message->reply('You do not have permission to run this command!');
-        }
+        //         if ($count == 1) {
+        //             $channel->sendMessage('`Pruned 1 message`');
+        //         } else {
+        //             $channel->sendMessage("`Pruned $count messages`");
+        //         }
+        //     });
+        // } else {
+        //     $this->message->reply('You do not have permission to run this command!');
+        // }
     }
 
     /**
@@ -69,35 +69,33 @@ class Messages extends Command
      */
     public function pruneuser(Parameters $p)
     {
-        $limit = (!is_null($p->get(1))) ? (int) $p->get(1) : $this->_defaultLimit;
+    	$limit = (!is_null($p->get(1))) ? (int) $p->get(1) : $this->_defaultLimit;
 
         if ($this->can('manage_messages')) {
-            $userid = str_replace('<@', '', rtrim($p->get(0), '>'));
-            $user = $this->guild->members[$userid];
+        	$user = $this->member($p->first());
 
-            $channel = $this->channel;
-            $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $user) {
-                $count = 0;
-                foreach ($msgs as $msg) {
-                    if ($user->id == $msg->author->id) {
-                        $count++;
+        	if ($user) {
+        		$channel = $this->channel;
+        		$channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $user) {
+        			$count = 0;
 
-                        if ($count % 5) {
-                            $channel->messages->delete($msg);
-                        } else {
-                            tsleep(1.5);
-                        }
-                    }
-                }
+        			foreach ($msgs as $msg) {
+        				if ($user->id == $msg->author->id) {
+        					if ($count % 5) {
+        						$channel->messages->delete($msg);
+        					} else {
+        						tsleep(1.5);
+        					}
 
-                if ($count == 1) {
-                    $channel->sendMessage('`Pruned 1 message`');
-                } else {
-                    $channel->sendMessage("`Pruned $count messages`");
-                }
-            });
+        					$count++;
+        				}
+        			}
+        		});	
+        	} else {
+        		$this->message->reply('You either forgot to give the user, or the user does not exist!');
+        	}
         } else {
-            $this->message->reply('You do not have permission to prune messages!');
+        	$this->message->reply('You do not have permission to prune messages!');
         }
     }
 
@@ -110,32 +108,32 @@ class Messages extends Command
      */
     public function prunebot(Parameters $p)
     {
-        $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
+        // $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
 
-        $channel = $this->channel;
-        $bot = $this->app->getBotUser();
+        // $channel = $this->channel;
+        // $bot = $this->app->getBotUser();
 
-        if ($this->can('manage_messages')) {
-            $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $bot) {
-                $count = 0;
-                foreach ($msgs as $msg) {
-                    if ($bot->id == $msg->author->id) {
-                        $count++;
+        // if ($this->can('manage_messages')) {
+        //     $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $bot) {
+        //         $count = 0;
+        //         foreach ($msgs as $msg) {
+        //             if ($bot->id == $msg->author->id) {
+        //                 $count++;
 
-                        if ($count % 5) {
-                            $channel->messages->delete($msg);
-                        } else {
-                            tsleep(1.5);
-                        }
-                    }
-                }
+        //                 if ($count % 5) {
+        //                     $channel->messages->delete($msg);
+        //                 } else {
+        //                     tsleep(1.5);
+        //                 }
+        //             }
+        //         }
 
-                if ($count == 1) {
-                    $channel->sendMessage('`Pruned 1 message`');
-                } else {
-                    $channel->sendMessage("`Pruned $count messages`");
-                }
-            });
-        }
+        //         if ($count == 1) {
+        //             $channel->sendMessage('`Pruned 1 message`');
+        //         } else {
+        //             $channel->sendMessage("`Pruned $count messages`");
+        //         }
+        //     });
+        // }
     }
 }
