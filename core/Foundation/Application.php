@@ -9,9 +9,7 @@ use Core\Wrappers\File;
 use Core\Wrappers\Logger;
 use Core\Wrappers\Parts\Guild;
 use Core\Wrappers\Parts\Member;
-use Curl\Curl;
 use Discord\DiscordCommandClient;
-use Discord\Parts\Channel\Channel;
 use Discord\Parts\User\Game;
 use Discord\Parts\User\Member as DMember;
 use Discord\WebSockets\Event;
@@ -272,7 +270,7 @@ class Application
     }
 
     /**
-     * Returns an array of banned users (for users not currently in server)
+     * Returns an array of banned users (for users not currently in server).
      *
      * @param \Core\Wrappers\Parts\Guild $guild
      *

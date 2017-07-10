@@ -91,7 +91,7 @@ class Messages extends Command
                             $count++;
                         }
                     }
-                }); 
+                });
             } else {
                 $this->message->reply('You either forgot to give the user, or the user does not exist!');
             }

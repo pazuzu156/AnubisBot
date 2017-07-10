@@ -45,23 +45,23 @@ class User extends Command
                     $msg = "{$this->author->user->username} kicked you. | Reason: $reason";
 
                     $embed = $this->app->bot()->factory(Embed::class, [
-                        'title' => 'User '.$member->username.' was kicked',
-                        'type' => 'rich',
-                        'color' => Color::WARNING,
+                        'title'  => 'User '.$member->username.' was kicked',
+                        'type'   => 'rich',
+                        'color'  => Color::WARNING,
                         'author' => [
-                            'name' => $this->app->getBotUser()->username,
-                            'url' => 'https://github.com/pazuzu156/AnubisBot',
+                            'name'     => $this->app->getBotUser()->username,
+                            'url'      => 'https://github.com/pazuzu156/AnubisBot',
                             'icon_url' => $this->app->getBotUser()->avatar,
                         ],
                         'fields' => [
                             [
-                                'name' => 'Kicked By',
-                                'value' => $banner,
+                                'name'   => 'Kicked By',
+                                'value'  => $banner,
                                 'inline' => true,
                             ],
                             [
-                                'name' => 'Reason',
-                                'value' => $reason,
+                                'name'   => 'Reason',
+                                'value'  => $reason,
                                 'inline' => true,
                             ],
                         ],
@@ -136,28 +136,28 @@ class User extends Command
             $banner = $this->author->username;
             $params = $p->all();
             array_shift($params);
-            
+
             $reason = (empty($params)) ? 'None Given' : implode(' ', $params);
             $msg = "$banner banned you. | Reason: $reason";
-            
+
             $embed = $this->app->bot()->factory(Embed::class, [
-                'title' => 'User '.$member->username.' was banned',
-                'type' => 'rich',
-                'color' => Color::DANGER,
+                'title'  => 'User '.$member->username.' was banned',
+                'type'   => 'rich',
+                'color'  => Color::DANGER,
                 'author' => [
-                    'name' => $this->app->getBotUser()->username,
-                    'url' => 'https://github.com/pazuzu156/AnubisBot',
+                    'name'     => $this->app->getBotUser()->username,
+                    'url'      => 'https://github.com/pazuzu156/AnubisBot',
                     'icon_url' => $this->app->getBotUser()->avatar,
                 ],
                 'fields' => [
                     [
-                        'name' => 'Banned By',
-                        'value' => $banner,
+                        'name'   => 'Banned By',
+                        'value'  => $banner,
                         'inline' => true,
                     ],
                     [
-                        'name' => 'Reason',
-                        'value' => $reason,
+                        'name'   => 'Reason',
+                        'value'  => $reason,
                         'inline' => true,
                     ],
                 ],
