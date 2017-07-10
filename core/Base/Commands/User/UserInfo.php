@@ -33,9 +33,8 @@ class UserInfo extends Command
     public function index(Parameters $p)
     {
         if ($p->count()) {
-            $userid = str_replace('<@', '', rtrim($p->first(), '>'));
-            $user = $this->guild->members[$userid];
-            $this->channel->sendMessage('', false, $this->getUserInfo($user));
+            $user = $this->member($p->first());
+            $this->channel->sendMessage('', false, $this->getUserInfo($user->get()));
         } else {
             $this->me();
         }
@@ -48,7 +47,7 @@ class UserInfo extends Command
      */
     public function me()
     {
-        $this->channel->sendMessage('', false, $this->getUserInfo($this->author));
+        $this->channel->sendMessage('', false, $this->getUserInfo($this->author->get()));
     }
 
     /**

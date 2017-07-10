@@ -10,7 +10,7 @@ class BanUser extends Alias
     /**
      * {@inheritdoc}
      */
-    protected $name = 'banuser';
+    protected $name = 'ban';
 
     /**
      * {@inheritdoc}

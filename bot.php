@@ -13,10 +13,6 @@ use Core\Wrappers\File;
 $app = new Application();
 $app->setPresence(env('DEFAULT_BOT_PRESENCE', ''));
 
-if (!isset($bool)) {
-    $bool = !env('DEBUG', false);
-}
-
 $app->logger()->info('Making sure bot tells the world it\'s online');
 
 if (!File::exists(storage_path().'/bot_online') && !env('DEBUG', false)) {
@@ -24,4 +20,4 @@ if (!File::exists(storage_path().'/bot_online') && !env('DEBUG', false)) {
 }
 
 $app->logger()->info('Booting up bot application');
-$app->start($bool);
+$app->start();

@@ -49,14 +49,14 @@ class Command
     /**
      * The command's Guild instance.
      *
-     * @var \Discord\Pard\Channel\Guild
+     * @var \Core\Wrappers\Parts\Guild
      */
     protected $guild;
 
     /**
      * The command's Author instance.
      *
-     * @var \Discord\Parts\User\Member
+     * @var \Core\Wrappers\Parts\Member
      */
     protected $author;
 
@@ -214,8 +214,8 @@ class Command
     {
         $this->message = $message;
         $this->channel = $this->message->channel;
-        $this->author = $this->message->author;
         $this->guild = new Guild($this->channel->guild);
+        $this->author = new Member($this->guild, $this->message->author);
     }
 
     /**
@@ -303,8 +303,38 @@ class Command
         }
     }
 
+    /**
+     * Returns a Member part.
+     *
+     * @param mixed $member
+     *
+     * @return \Core\Wrappers\Parts\Member
+     */
     protected function member($member)
     {
         return new Member($this->guild, $member);
+    }
+
+    /**
+     * Returns a list of banned users.
+     *
+     * @return array
+     */
+    protected function getBannedUsers()
+    {
+        return $this->app->getBannedUsers($this->guild);
+    }
+
+    /**
+     * Bans a user.
+     *
+     * @param \Core\Wrappers\Parts\Member|\Discord\Parts\User\Member $member
+     * @param int                                                    $count
+     *
+     * @return \React\Promise\Promise
+     */
+    protected function banUser($member, $count = 50)
+    {
+        return $this->app->banUser($member, $count);
     }
 }

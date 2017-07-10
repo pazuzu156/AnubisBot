@@ -10,7 +10,7 @@ class KickUser extends Alias
     /**
      * {@inheritdoc}
      */
-    protected $name = 'kickuser';
+    protected $name = 'kick';
 
     /**
      * {@inheritdoc}

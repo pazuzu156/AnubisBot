@@ -4,6 +4,9 @@ namespace Core\Base\Commands\User;
 
 use Core\Command\Command;
 use Core\Command\Parameters;
+use Core\Utils\Color;
+use Core\Wrappers\File;
+use Discord\Parts\Embed\Embed;
 
 class User extends Command
 {
@@ -28,7 +31,7 @@ class User extends Command
     {
         if ($this->can('kick_members')) {
             if ($p->count()) {
-                // $member = $this->getMemberFromMention($p->first());
+                $member = $this->member($p->first());
                 $channel = $this->getBotSpam();
 
                 // remove user id from params
@@ -36,21 +39,40 @@ class User extends Command
                 array_shift($params);
 
                 if ($member) {
-                    $msg = "{$this->author->user->username} kicked you.";
+                    $banner = $this->author->username;
+                    $reason = (empty($params)) ? 'None Given' : implode(' ', $params);
 
-                    if (count($params) > 0) {
-                        $msg .= ' | Reason: '.implode(' ', $params);
-                    }
+                    $msg = "{$this->author->user->username} kicked you. | Reason: $reason";
 
-                    $member->user->sendMessage($msg)->then(function () use ($channel, $member, $params) {
-                        $this->guild->members->kick($member)->then(function ($member) use ($channel, $params) {
-                            $msg = "Kicked user: $member";
+                    $embed = $this->app->bot()->factory(Embed::class, [
+                        'title' => 'User '.$member->username.' was kicked',
+                        'type' => 'rich',
+                        'color' => Color::WARNING,
+                        'author' => [
+                            'name' => $this->app->getBotUser()->username,
+                            'url' => 'https://github.com/pazuzu156/AnubisBot',
+                            'icon_url' => $this->app->getBotUser()->avatar,
+                        ],
+                        'fields' => [
+                            [
+                                'name' => 'Kicked By',
+                                'value' => $banner,
+                                'inline' => true,
+                            ],
+                            [
+                                'name' => 'Reason',
+                                'value' => $reason,
+                                'inline' => true,
+                            ],
+                        ],
+                    ]);
 
-                            if (count($params) > 0) {
-                                $msg .= ' | Reason: '.implode(' ', $params);
-                            }
-
-                            $channel->sendMessage($msg);
+                    $ctx = $this;
+                    $member->user->sendMessage($msg)->then(function () use ($channel, $member, $embed, $ctx) {
+                        $ctx->guild->members->kick($member->get())->then(function () use ($channel, $embed) {
+                            $channel->sendMessage('', false, $embed);
+                        })->otherwise(function ($ex) use ($message) {
+                            $message->reply('```'.$ex->getMessage().'```');
                         });
                     });
                 } else {
@@ -71,35 +93,85 @@ class User extends Command
     {
         if ($this->can('ban_members')) {
             if ($p->count()) {
-                $member = $this->getMemberFromMention($p->first());
-                $channel = $this->getBotSpam();
-
-                // remove user id from params
-                $params = $p->all();
-                array_shift($params);
-
-                if ($member) {
-                    $msg = "{$this->author->user->username} banned you.";
-
-                    if (count($params) > 0) {
-                        $msg .= ' | Reason:'.implode(' ', $params);
-                    }
-
-                    $member->user->sendMessage($msg)->then(function () use ($channel, $member, $params) {
-                        $member->ban(10)->then(function () use ($member, $channel, $params) {
-                            $msg = "Banned user: $member";
-
-                            if (count($params) > 0) {
-                                $msg .= ' | Reason: '.implode(' ', $params);
-                            }
-
-                            $channel->sendMessage($msg);
-                        });
-                    });
+                if (substr($p->first(), 0, 2) == '<@') {
+                    $member = $this->member($p->first());
                 } else {
-                    $this->message->reply('Sorry, but that user could not be found. Try again maybe?');
+                    $member = $p->first();
+                }
+
+                if (is_string($member)) {
+                    $id = $member;
+                    $member = $this->member('<@'.$member.'>');
+                    if (!is_null($member->id)) {
+                        $this->handleBan($member, $p);
+                    } else {
+                        if (is_numeric($id)) {
+                            $bannedUsers = $this->getBannedUsers();
+                            $bannedUsers[] = $id;
+                            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                            $dataFile['banned_users'] = $bannedUsers;
+                            File::writeAsJson($this->guild->dataFile(), $dataFile);
+
+                            $this->message->reply('User ID "'.$id.'" added into ban list to auto-ban when they join');
+                        }
+                    }
+                } else {
+                    $this->handleBan($member, $p);
                 }
             }
+        }
+    }
+
+    /**
+     * Handles the banning of a user with a nice embed.
+     *
+     * @param \Core\Wrappers\Parts\Member $member
+     * @param \Core\Command\Parameters    $p
+     *
+     * @return void
+     */
+    private function handleBan($member, Parameters $p)
+    {
+        if ($member) {
+            $banner = $this->author->username;
+            $params = $p->all();
+            array_shift($params);
+            
+            $reason = (empty($params)) ? 'None Given' : implode(' ', $params);
+            $msg = "$banner banned you. | Reason: $reason";
+            
+            $embed = $this->app->bot()->factory(Embed::class, [
+                'title' => 'User '.$member->username.' was banned',
+                'type' => 'rich',
+                'color' => Color::DANGER,
+                'author' => [
+                    'name' => $this->app->getBotUser()->username,
+                    'url' => 'https://github.com/pazuzu156/AnubisBot',
+                    'icon_url' => $this->app->getBotUser()->avatar,
+                ],
+                'fields' => [
+                    [
+                        'name' => 'Banned By',
+                        'value' => $banner,
+                        'inline' => true,
+                    ],
+                    [
+                        'name' => 'Reason',
+                        'value' => $reason,
+                        'inline' => true,
+                    ],
+                ],
+            ]);
+            $channel = $this->getBotSpam();
+            $ctx = $this;
+
+            $member->user->sendMessage($msg)->then(function () use ($channel, $member, $embed, $ctx) {
+                $ctx->banUser($member, 50)->then(function () use ($channel, $embed) {
+                    $channel->sendMessage('', false, $embed);
+                });
+            });
+        } else {
+            $this->message->reply('Sorry, but that user could not be found.');
         }
     }
 }

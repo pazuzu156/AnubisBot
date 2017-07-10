@@ -40,6 +40,10 @@ class Part
      */
     public function __get($property)
     {
-        return $this->part->{$property};
+        try {
+            return $this->part->{$property};
+        } catch (\Exception $ex) {
+            return null;
+        }
     }
 }

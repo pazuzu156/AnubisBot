@@ -6,12 +6,14 @@ use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
 use Core\Wrappers\File;
-use Core\Wrappers\Guild;
 use Core\Wrappers\Logger;
+use Core\Wrappers\Parts\Guild;
+use Core\Wrappers\Parts\Member;
 use Curl\Curl;
 use Discord\DiscordCommandClient;
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\User\Game;
+use Discord\Parts\User\Member as DMember;
 use Discord\WebSockets\Event;
 use ReflectionMethod;
 
@@ -50,7 +52,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.2';
+    const VERSION = '1.3';
 
     /**
      * List of current active commands.
@@ -100,36 +102,15 @@ class Application
      *
      * @return void
      */
-    public function start($startMessage = true)
+    public function start()
     {
         $this->_logger->info('Starting DiscordPHP Loop');
         $app = $this;
 
         $this->_logger->info('Registering DiscordPHP\'s READY event');
-        $this->_discord->on('ready', function ($discord) use ($startMessage, $app) {
+        $this->_discord->on('ready', function ($discord) use ($app) {
             if (!is_null($this->_game)) {
                 $discord->updatePresence($this->_game);
-            }
-
-            if ($startMessage) {
-                $app->logger()->info('Getting changelog to display to given bot-spam channel');
-                $channel = $discord->factory(Channel::class, [
-                    'id'   => env('CHANGELOG_CHANNEL', ''),
-                    'type' => 'text',
-                ]);
-
-                $app->logger()->info('Opening up cURL connection');
-                $curl = new Curl();
-                $curl->get('https://cdn.kalebklein.com/anubisbot/changes.php');
-
-                $message = env('NAME', '').' is back online! Here are the new changes this update:'."\n\n";
-
-                $app->logger()->info('Parsing changelog');
-                $cmd = new Command();
-                $message .= $cmd->parseDescription($curl->response);
-
-                $app->logger()->info('Sending changelog');
-                $channel->sendMessage($message);
             }
 
             $msg = "\nBot is now online\n"
@@ -153,14 +134,25 @@ class Application
             exit;
         });
 
-        if (env('DISPLAY_USER_JOIN_LEAVE', true)) {
-            $this->_discord->on(Event::GUILD_MEMBER_ADD, function ($member) use ($app) {
-                foreach ($app->bot()->guilds as $guild) {
-                    if ($guild->id == $member->guild_id) {
-                        $g = new Guild($guild);
+        $this->_discord->on(Event::GUILD_MEMBER_ADD, function ($member) use ($app) {
+            foreach ($app->bot()->guilds as $guild) {
+                $guild = new Guild($guild);
+                if ($guild->id == $member->guild_id) {
+                    $member = new Member($guild, $member);
+                    $bannedUsers = $app->getBannedUsers($guild);
+                    $bannedUser = false;
 
-                        if (File::exists($g->dataFile())) {
-                            $dataFile = json_decode(File::get($g->dataFile()), true);
+                    foreach ($bannedUsers as $bu) {
+                        if ($member->id == $bu) {
+                            $app->banUser($member);
+                            $bannedUser = true;
+                        }
+                    }
+
+                    // only display if enabled. If enabled, don't show if a user is auto-banned
+                    if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
+                        if (File::exists($guild->dataFile())) {
+                            $dataFile = json_decode(File::get($guild->dataFile()), true);
 
                             if (isset($dataFile['bot_spam_channel'])) {
                                 $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
@@ -184,34 +176,50 @@ class Application
                         }
                     }
                 }
-            });
+            }
+        });
 
+        if (env('DISPLAY_USER_JOIN_LEAVE', true)) {
             $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function ($member) use ($app) {
                 foreach ($app->bot()->guilds as $guild) {
+                    $guild = new Guild($guild);
                     if ($guild->id == $member->guild_id) {
-                        $g = new Guild($guild);
+                        $bannedUsers = $app->getBannedUsers($guild);
+                        $removeUser = false;
 
-                        if (File::exists($g->dataFile())) {
-                            $dataFile = json_decode(File::get($g->dataFile()), true);
+                        foreach ($bannedUsers as $bu) {
+                            if ($member->user->id == $bu) {
+                                $removeUser = true;
+                            }
+                        }
 
-                            if (isset($dataFile['bot_spam_channel'])) {
-                                $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                if (!isset($dataFile['messages']['leave'])
-                                    || $dataFile['messages']['leave'] == '') {
-                                    $message = 'User {USER} has left the server. Awe...';
-                                } else {
-                                    $message = $dataFile['messages']['leave'];
-                                }
+                        dump($removeUser);
 
-                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
-                                    switch (strtolower($m[1])) {
-                                        case 'user':
-                                        return $member;
-                                        break;
+                        if ($removeUser) {
+                            $app->removeUserFromBanList($guild, $member);
+                        } else {
+                            if (File::exists($guild->dataFile())) {
+                                $dataFile = json_decode(File::get($guild->dataFile()), true);
+
+                                if (isset($dataFile['bot_spam_channel'])) {
+                                    $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+                                    if (!isset($dataFile['messages']['leave'])
+                                        || $dataFile['messages']['leave'] == '') {
+                                        $message = 'User {USER} has left the server. Awe...';
+                                    } else {
+                                        $message = $dataFile['messages']['leave'];
                                     }
-                                }, $message);
 
-                                $channel->sendMessage($message);
+                                    $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                                        switch (strtolower($m[1])) {
+                                            case 'user':
+                                            return $member;
+                                            break;
+                                        }
+                                    }, $message);
+
+                                    $channel->sendMessage($message);
+                                }
                             }
                         }
                     }
@@ -261,6 +269,61 @@ class Application
     public function logger()
     {
         return $this->_logger;
+    }
+
+    /**
+     * Returns an array of banned users (for users not currently in server)
+     *
+     * @param \Core\Wrappers\Parts\Guild $guild
+     *
+     * @return array
+     */
+    public function getBannedUsers($guild)
+    {
+        if (File::exists($guild->dataFile())) {
+            return json_decode(File::get($guild->dataFile()))->banned_users;
+        }
+
+        File::writeAsJson($guild->dataFile(), [
+            'banned_users' => [],
+        ]);
+
+        return $this->getBannedUsers();
+    }
+
+    /**
+     * Handles banning users.
+     *
+     * @param \Core\Wrappers\Parts\Member $member
+     * @param int                         $count
+     * @param bool                        $remove
+     *
+     * @return \React\Promise\Promise
+     */
+    public function banUser($member, $count = 50)
+    {
+        return $member->ban($count);
+    }
+
+    /**
+     * Removes a member from the auto-ban list.
+     *
+     * @param \Core\Wrappers\Parts\Guild $guild
+     * @param \Discord\Parts\User\Member $member
+     *
+     * @return void
+     */
+    public function removeUserFromBanList($guild, DMember $member)
+    {
+        $dataFile = json_decode(File::get($guild->dataFile()), true);
+
+        for ($i = 0; $i < count($dataFile['banned_users']); $i++) {
+            if ($dataFile['banned_users'][$i] == $member->user->id) {
+                unset($dataFile['banned_users'][$i]);
+            }
+        }
+
+        File::writeAsJson($guild->dataFile(), $dataFile);
     }
 
     /**
