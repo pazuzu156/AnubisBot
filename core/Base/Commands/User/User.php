@@ -71,8 +71,6 @@ class User extends Command
                     $member->user->sendMessage($msg)->then(function () use ($channel, $member, $embed, $ctx) {
                         $ctx->guild->members->kick($member->get())->then(function () use ($channel, $embed) {
                             $channel->sendMessage('', false, $embed);
-                        })->otherwise(function ($ex) use ($message) {
-                            $message->reply('```'.$ex->getMessage().'```');
                         });
                     });
                 } else {
