@@ -4,19 +4,19 @@ namespace Core\Wrappers\Parts;
 
 class Part
 {
-	protected $part;
+    protected $part;
 
-	/**
-	 * Ctor.
-	 *
-	 * @param mixed \Discord\Parts\Part
-	 *
-	 * @return void
-	 */
-	public function __construct($part)
-	{
-		$this->part = $part;
-	}
+    /**
+     * Ctor.
+     *
+     * @param mixed \Discord\Parts\Part
+     *
+     * @return void
+     */
+    public function __construct($part)
+    {
+        $this->part = $part;
+    }
 
     /**
      * Used to dynamically call on Part class methods.
@@ -43,7 +43,7 @@ class Part
         try {
             return $this->part->{$property};
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
 }

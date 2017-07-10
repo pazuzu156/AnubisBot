@@ -56,7 +56,7 @@ class Member extends Part
 
             return $this->part->{$property};
         } catch (\Exception $ex) {
-            return null;
+            return;
         }
     }
 
