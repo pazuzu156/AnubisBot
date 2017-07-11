@@ -50,7 +50,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.3.1';
+    const VERSION = '1.3.2';
 
     /**
      * List of current active commands.
@@ -65,6 +65,13 @@ class Application
      * @var \Core\Wrappers\LoggerWrapper
      */
     private $_logger;
+
+    /**
+     * Preset variables to parse in bot.
+     *
+     * @var array
+     */
+    private $_presets = ['NUMBER_OF_GUILDS', 'S'];
 
     /**
      * Ctor.
@@ -108,6 +115,23 @@ class Application
         $this->_logger->info('Registering DiscordPHP\'s READY event');
         $this->_discord->on('ready', function ($discord) use ($app) {
             if (!is_null($this->_game)) {
+                $ctx = $this;
+                $presets = $this->_presets;
+                $this->_game->name = preg_replace_callback('/\{([A-Z\_]+)\}/i', function ($m) use ($ctx, $presets) {
+                    foreach ($presets as $preset) {
+                        if ($m[1] == $preset) {
+                            switch ($m[1]) {
+                                case "NUMBER_OF_GUILDS":
+                                    return $ctx->numberOfGuilds();
+                                case "S":
+                                    return ($ctx->numberOfGuilds() == 1) ? '' : 's';
+                            }
+                        }
+                    }
+                }, $this->_game->name);
+
+                dump($this->_game);
+
                 $discord->updatePresence($this->_game);
             }
 
@@ -462,5 +486,20 @@ class Application
                 $class->$method();
             }
         }
+    }
+
+    /**
+     * Returns the number of guilds the bot is registered to.
+     *
+     * @return int
+     */
+    private function numberOfGuilds()
+    {
+        $i = 0;
+        foreach ($this->bot()->guilds as $guild) {
+            $i++;
+        }
+
+        return $i;
     }
 }

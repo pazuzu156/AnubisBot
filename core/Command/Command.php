@@ -126,13 +126,10 @@ class Command
                         }
 
                         return $prefix;
-                        break;
                         case 'NAME':
                         return env('NAME', '');
-                        break;
                         case 'VERSION':
                         return version();
-                        break;
                     }
                 }
             }
