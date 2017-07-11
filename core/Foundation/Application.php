@@ -121,9 +121,9 @@ class Application
                     foreach ($presets as $preset) {
                         if ($m[1] == $preset) {
                             switch ($m[1]) {
-                                case "NUMBER_OF_GUILDS":
+                                case 'NUMBER_OF_GUILDS':
                                     return $ctx->numberOfGuilds();
-                                case "S":
+                                case 'S':
                                     return ($ctx->numberOfGuilds() == 1) ? '' : 's';
                             }
                         }
