@@ -130,8 +130,6 @@ class Application
                     }
                 }, $this->_game->name);
 
-                dump($this->_game);
-
                 $discord->updatePresence($this->_game);
             }
 
