@@ -46,7 +46,6 @@ class Messages extends Command
                         $channel->messages->delete($msg);
                     } else {
                         tsleep(1.5);
-                        $channel->messages->delete($msg);
                     }
                 }
 
@@ -87,7 +86,6 @@ class Messages extends Command
                                 $channel->messages->delete($msg);
                             } else {
                                 tsleep(1.5);
-                                $channel->messages->delete($msg);
                             }
 
                             $count++;
@@ -127,7 +125,6 @@ class Messages extends Command
                             $channel->messages->delete($msg);
                         } else {
                             tsleep(1.5);
-                            $channel->messages->delete($msg);
                         }
                     }
                 }

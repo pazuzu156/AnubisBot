@@ -271,13 +271,19 @@ class Command
      */
     protected function can($permission)
     {
+        // bot owner is always true
+        if (env('BOT_OWNER') == $this->author->id && env('OVERRIDE_PERMISSIONS')) {
+            return true;
+        }
+
+        $can = false;
         foreach ($this->author->roles as $role) {
-            if ($role->permissions->$permission) {
-                return true;
+            if ($role->permissions->{$permission}) {
+                $can = true;
             }
         }
 
-        return false;
+        return $can;
     }
 
     /**
