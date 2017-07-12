@@ -27,7 +27,7 @@ class BotMod extends Command
      */
     public function setbotspam(Parameters $p)
     {
-        if ($this->can('manage_server')) {
+        if ($this->can('manage_server') && env('BOT_OWNER') == $this->author->id) {
             if ($p->count() > 0) {
                 $channel = $this->guild->channels->get('name', $p->first());
 
@@ -69,7 +69,7 @@ class BotMod extends Command
      */
     public function joinmsg(Parameters $p)
     {
-        if ($this->can('manage_server')) {
+        if ($this->can('manage_server') && env('BOT_OWNER') == $this->author->id) {
             if ($p->count() > 0) {
                 $message = rtrim(implode(' ', $p->all()), ' ');
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);
@@ -95,7 +95,7 @@ class BotMod extends Command
      */
     public function leavemsg(Parameters $p)
     {
-        if ($this->can('manage_server')) {
+        if ($this->can('manage_server') && env('BOT_OWNER') == $this->author->id) {
             if ($p->count() > 0) {
                 $message = rtrim(implode(' ', $p->all()), ' ');
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);

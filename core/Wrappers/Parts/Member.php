@@ -4,7 +4,7 @@ namespace Core\Wrappers\Parts;
 
 class Member extends Part
 {
-    private $_member = ['user', 'id', 'username', 'avatar', 'discriminator'];
+    private $_member = ['id', 'username', 'discriminator'];
 
     /**
      * {@inheritdoc}
@@ -26,6 +26,21 @@ class Member extends Part
     public function get()
     {
         return $this->part;
+    }
+
+    /**
+     * Returns the user's avatar with a custom size.
+     *
+     * @param int $size
+     *
+     * @return string
+     */
+    public function avatar($size = 256)
+    {
+        $avatar = $this->user->avatar;
+        $avatar = str_replace('=1024', '='.$size, $avatar);
+
+        return $avatar;
     }
 
     /**
