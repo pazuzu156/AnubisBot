@@ -34,7 +34,7 @@ class UserInfo extends Command
     {
         if ($p->count()) {
             $user = $this->member($p->first());
-            $this->channel->sendMessage('', false, $this->getUserInfo($user->get()));
+            $this->channel->sendMessage('', false, $this->getUserInfo($user));
         } else {
             $this->me();
         }
@@ -47,7 +47,7 @@ class UserInfo extends Command
      */
     public function me()
     {
-        $this->channel->sendMessage('', false, $this->getUserInfo($this->author->get()));
+        $this->channel->sendMessage('', false, $this->getUserInfo($this->author));
     }
 
     /**

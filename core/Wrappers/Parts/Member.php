@@ -2,6 +2,9 @@
 
 namespace Core\Wrappers\Parts;
 
+/**
+ * Issues with this part, leaving alone for now.
+ */
 class Member extends Part
 {
     private $_member = ['id', 'username', 'discriminator'];

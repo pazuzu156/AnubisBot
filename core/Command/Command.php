@@ -212,7 +212,8 @@ class Command
         $this->message = $message;
         $this->channel = $this->message->channel;
         $this->guild = new Guild($this->channel->guild);
-        $this->author = new Member($this->guild, $this->message->author);
+        // $this->author = new Member($this->guild, $this->message->author);
+        $this->author = $this->message->author;
     }
 
     /**
@@ -272,7 +273,7 @@ class Command
     protected function can($permission)
     {
         // bot owner is always true
-        if (env('BOT_OWNER') == $this->author->id && env('OVERRIDE_PERMISSIONS')) {
+        if (env('BOT_OWNER') == $this->author->user->id && env('OVERRIDE_PERMISSIONS')) {
             return true;
         }
 
@@ -315,7 +316,9 @@ class Command
      */
     protected function member($member)
     {
-        return new Member($this->guild, $member);
+        // return new Member($this->guild, $member);
+        $id = rtrim(str_replace('<@', '', $member), '>');
+        return $this->guild->members->get('id', $id);
     }
 
     /**

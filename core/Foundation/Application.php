@@ -158,12 +158,12 @@ class Application
             foreach ($app->bot()->guilds as $guild) {
                 $guild = new Guild($guild);
                 if ($guild->id == $member->guild_id) {
-                    $member = new Member($guild, $member);
+                    // $member = new Member($guild, $member);
                     $bannedUsers = $app->getBannedUsers($guild);
                     $bannedUser = false;
 
                     foreach ($bannedUsers as $bu) {
-                        if ($member->id == $bu) {
+                        if ($member->user->id == $bu) {
                             $app->banUser($member);
                             $bannedUser = true;
                         }
