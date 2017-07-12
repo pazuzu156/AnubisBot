@@ -347,6 +347,26 @@ class Application
     }
 
     /**
+     * Returns the branch for the git repo if the .git dir exists.
+     * Returns master otherwise.
+     *
+     * @return string
+     */
+    public function branch()
+    {
+        if (file_exists(base_path().'/.git/HEAD')) {
+            $sff = file(base_path().'/.git/HEAD', FILE_USE_INCLUDE_PATH);
+            $fl = $sff[0];
+            $es = explode('/', $fl, 3);
+            $b = $es[2];
+
+            return str_replace("\n", '', $b);
+        }
+
+        return 'master';
+    }
+
+    /**
      * Registers the bot.
      *
      * @return void

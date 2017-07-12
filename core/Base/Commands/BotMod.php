@@ -27,6 +27,7 @@ class BotMod extends Command
      */
     public function setbotspam(Parameters $p)
     {
+        dump(env('BOT_OWNER') == $this->author->id);
         if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
             if ($p->count() > 0) {
                 $channel = $this->guild->channels->get('name', $p->first());
@@ -47,16 +48,12 @@ class BotMod extends Command
                         'name' => $channel->name,
                     ];
 
-                    // this command needs a really high priority.
-                    // (admin or any who can manage server)
-                    if ($this->can('manage_server')) {
-                        File::writeAsJson($this->guild->dataFile(), $dataFile);
-                        $this->message->reply('Bot spam channel changed to: #'.$channel->name.' (*'.$channel->id.'*)');
-                    } else {
-                        $this->message->reply('You do not have permission to run this command!');
-                    }
+                    File::writeAsJson($this->guild->dataFile(), $dataFile);
+                    $this->message->reply('Bot spam channel changed to: #'.$channel->name.' (*'.$channel->id.'*)');
                 }
             }
+        } else {
+            $this->message->reply('You do not have permission to run this command!');
         }
     }
 

@@ -174,6 +174,14 @@ if (!function_exists('version')) {
      */
     function version()
     {
-        return Application::VERSION;
+        $version = Application::VERSION;
+        $app = new \Core\Foundation\Application();
+
+        if ($app->branch() == 'develop') {
+            $version .= ' dev-develop';
+        }
+
+        return $version;
+        // return Application::VERSION;
     }
 }
