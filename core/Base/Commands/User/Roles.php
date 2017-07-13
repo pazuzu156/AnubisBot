@@ -207,7 +207,7 @@ class Roles extends Command
 
                 if ($goahead) {
                     $message = $this->message;
-                    $member = $this->author->get();
+                    $member = $this->author;
                     $this->guild->members->save($member)->then(function ($user) use ($message, $msg) {
                         $message->reply($msg);
                     })->otherwise(function ($e) use ($message) {
@@ -266,7 +266,7 @@ class Roles extends Command
 
                 if ($goahead) {
                     $message = $this->message;
-                    $member = $this->author->get();
+                    $member = $this->author;
                     $this->guild->members->save($member)->then(function ($user) use ($message, $msg) {
                         $message->reply($msg);
                     })->otherwise(function ($e) use ($message) {
