@@ -318,6 +318,7 @@ class Command
     {
         // return new Member($this->guild, $member);
         $id = rtrim(str_replace('<@', '', $member), '>');
+
         return $this->guild->members->get('id', $id);
     }
 
