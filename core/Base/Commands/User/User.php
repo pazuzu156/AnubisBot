@@ -69,7 +69,7 @@ class User extends Command
 
                     $ctx = $this;
                     $member->user->sendMessage($msg)->then(function () use ($channel, $member, $embed, $ctx) {
-                        $ctx->guild->members->kick($member->get())->then(function () use ($channel, $embed) {
+                        $ctx->guild->members->kick($member)->then(function () use ($channel, $embed) {
                             $channel->sendMessage('', false, $embed);
                         });
                     });
@@ -120,6 +120,32 @@ class User extends Command
         }
     }
 
+    public function unban(Parameters $p)
+    {
+        if ($this->can('ban_members')) {
+            if ($p->count()) {
+                $embed = $this->app->bot()->factory(Embed::class, [
+                    'title'  => 'Ban on user '.$p->first().' lifted',
+                    'type'   => 'rich',
+                    'color'  => Color::PRIMARY,
+                    'author' => [
+                        'name'     => $this->app->getBotUser()->username,
+                        'url'      => 'https://github.com/pazuzu156/AnubisBot',
+                        'icon_url' => $this->app->getBotUser()->avatar,
+                    ],
+                    'fields' => [
+                        [
+                            'name'   => 'Ban lifted by',
+                            'value'  => $this->author->user->username,
+                            'inline' => true,
+                        ],
+                    ],
+                ]);
+                $channel = $this->getBotSpam();
+            }
+        }
+    }
+
     /**
      * Handles the banning of a user with a nice embed.
      *
@@ -131,7 +157,7 @@ class User extends Command
     private function handleBan($member, Parameters $p)
     {
         if ($member) {
-            $banner = $this->author->username;
+            $banner = $this->author->user->username;
             $params = $p->all();
             array_shift($params);
 

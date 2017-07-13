@@ -27,7 +27,6 @@ class BotMod extends Command
      */
     public function setbotspam(Parameters $p)
     {
-        dump(env('BOT_OWNER') == $this->author->id);
         if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
             if ($p->count() > 0) {
                 $channel = $this->guild->channels->get('name', $p->first());

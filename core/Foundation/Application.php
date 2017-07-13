@@ -199,25 +199,23 @@ class Application
             }
         });
 
-        if (env('DISPLAY_USER_JOIN_LEAVE', true)) {
-            $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function ($member) use ($app) {
-                foreach ($app->bot()->guilds as $guild) {
-                    $guild = new Guild($guild);
-                    if ($guild->id == $member->guild_id) {
-                        $bannedUsers = $app->getBannedUsers($guild);
-                        $removeUser = false;
+        $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function ($member) use ($app) {
+            foreach ($app->bot()->guilds as $guild) {
+                $guild = new Guild($guild);
+                if ($guild->id == $member->guild_id) {
+                    $bannedUsers = $app->getBannedUsers($guild);
+                    $removeUser = false;
 
-                        foreach ($bannedUsers as $bu) {
-                            if ($member->user->id == $bu) {
-                                $removeUser = true;
-                            }
+                    foreach ($bannedUsers as $bu) {
+                        if ($member->user->id == $bu) {
+                            $removeUser = true;
                         }
+                    }
 
-                        dump($removeUser);
-
-                        if ($removeUser) {
-                            $app->removeUserFromBanList($guild, $member);
-                        } else {
+                    if ($removeUser) {
+                        $app->removeUserFromBanList($guild, $member);
+                    } else {
+                        if (env('DISPLAY_USER_JOIN_LEAVE', false)) {
                             if (File::exists($guild->dataFile())) {
                                 $dataFile = json_decode(File::get($guild->dataFile()), true);
 
@@ -244,8 +242,8 @@ class Application
                         }
                     }
                 }
-            });
-        }
+            }
+        });
 
         $this->_logger->info('Executing DiscordPHP');
         $this->_discord->run();
@@ -316,7 +314,6 @@ class Application
      *
      * @param \Core\Wrappers\Parts\Member $member
      * @param int                         $count
-     * @param bool                        $remove
      *
      * @return \React\Promise\Promise
      */

@@ -32,6 +32,20 @@ class About extends Command
     private $_sourceUrl = 'https://github.com/pazuzu156/anubisbot';
 
     /**
+     * Bot's client id.
+     *
+     * @var string
+     */
+    private $_clientId = '327322469197283328';
+
+    /**
+     * Bots permissions bitwise value.
+     *
+     * @var string
+     */
+    private $_permissions = '268823574';
+
+    /**
      * Default command method.
      *
      * @return void
@@ -55,6 +69,7 @@ class About extends Command
         $this->uptime();
         $this->source();
         $this->invite();
+        $this->invitebot();
     }
 
     /**
@@ -152,5 +167,18 @@ class About extends Command
         $message = 'If you\'re on my server, you can invite using the invite link. If you\'re not on my server, you\'re welcome to join by also using the invite link.';
 
         $this->channel->sendMessage($message."\n".$this->_inviteLink);
+    }
+
+    /**
+     * Brings up an invite link for {NAME}.
+     *
+     * @return void
+     */
+    public function invitebot()
+    {
+        $baseurl = 'https://discordapp.com/oauth2/authorize?scope=bot';
+        $url = $baseurl.'&client_id='.$this->_clientId.'&permissions='.$this->_permissions;
+
+        dump($url);
     }
 }
