@@ -61,7 +61,7 @@ class Color
     public static function rgbToInt($red, $green, $blue)
     {
         return (($red & 0x0ff) << 16)
-            | (( $green & 0x0ff) << 8)
+            | (($green & 0x0ff) << 8)
             | ($blue & 0x0ff);
     }
 
