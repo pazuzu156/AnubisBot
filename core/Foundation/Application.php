@@ -50,7 +50,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.3.2';
+    const VERSION = '1.3.3';
 
     /**
      * List of current active commands.
@@ -349,7 +349,7 @@ class Application
      *
      * @return string
      */
-    public function branch()
+    public static function branch()
     {
         if (file_exists(base_path().'/.git/HEAD')) {
             $sff = file(base_path().'/.git/HEAD', FILE_USE_INCLUDE_PATH);

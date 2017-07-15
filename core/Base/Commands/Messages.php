@@ -80,7 +80,6 @@ class Messages extends Command
                     $count = 0;
 
                     foreach ($msgs as $msg) {
-                        $s = "ID: {$user->id} | ID2: {$msg->author->id}";
                         if ($user->id == $msg->author->id) {
                             if ($count % 5) {
                                 $channel->messages->delete($msg);

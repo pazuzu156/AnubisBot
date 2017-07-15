@@ -2,6 +2,7 @@
 
 use Core\Foundation\Application;
 use Core\Foundation\Environment;
+use Core\Utils\Color;
 use Core\Utils\Configuration;
 
 // This file houses a host of helper functions.
@@ -175,13 +176,41 @@ if (!function_exists('version')) {
     function version()
     {
         $version = Application::VERSION;
-        $app = new \Core\Foundation\Application();
 
-        if ($app->branch() == 'develop') {
+        if (Application::branch() == 'develop') {
             $version .= ' dev-develop';
         }
 
         return $version;
-        // return Application::VERSION;
+    }
+}
+
+if (!function_exists('rgb_to_int')) {
+    /**
+     * Returns an RGB value in integer format.
+     *
+     * @param int $red
+     * @param int $green
+     * @param int blue
+     *
+     * @return int
+     */
+    function rgb_to_int($red, $green, $blue)
+    {
+        return Color::rgbToInt($red, $green, $blue);
+    }
+}
+
+if (!function_exists('int_to_rgb')) {
+    /**
+     * Returns an array of RGB values from an integer formated color.
+     *
+     * @param int $int
+     *
+     * @return int
+     */
+    function int_to_rgb($int)
+    {
+        return Color::intToRgb($int);
     }
 }

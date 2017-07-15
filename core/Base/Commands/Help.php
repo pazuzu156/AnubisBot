@@ -35,8 +35,15 @@ class Help extends Command
 
         if ($p->count() > 0) {
             foreach ($commands as $name => $command) {
-                if ($name == strtolower($p->first())) {
-                    $this->displayCommandHelp($command, $prefix);
+                if (strtolower($p->first()) === $name) {
+                    if ($name == 'help') {
+                        $class = $command['class'];
+                        $msg = "$prefix{$class->getName()} - {$class->getHelp()}\n"
+                            ."\nSub Commands:\n\t$prefix{$class->getName()} {COMMAND} - Display the help for a given command.";
+                        $this->channel->sendMessage("```$msg```");
+                    } else {
+                        $this->displayCommandHelp($command, $prefix);
+                    }
                 }
             }
 

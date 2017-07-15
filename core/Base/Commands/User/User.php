@@ -120,32 +120,6 @@ class User extends Command
         }
     }
 
-    public function unban(Parameters $p)
-    {
-        if ($this->can('ban_members')) {
-            if ($p->count()) {
-                $embed = $this->app->bot()->factory(Embed::class, [
-                    'title'  => 'Ban on user '.$p->first().' lifted',
-                    'type'   => 'rich',
-                    'color'  => Color::PRIMARY,
-                    'author' => [
-                        'name'     => $this->app->getBotUser()->username,
-                        'url'      => 'https://github.com/pazuzu156/AnubisBot',
-                        'icon_url' => $this->app->getBotUser()->avatar,
-                    ],
-                    'fields' => [
-                        [
-                            'name'   => 'Ban lifted by',
-                            'value'  => $this->author->user->username,
-                            'inline' => true,
-                        ],
-                    ],
-                ]);
-                $channel = $this->getBotSpam();
-            }
-        }
-    }
-
     /**
      * Handles the banning of a user with a nice embed.
      *

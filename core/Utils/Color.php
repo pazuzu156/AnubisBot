@@ -48,4 +48,36 @@ class Color
      * @var int
      */
     const INFO = 2839703;
+
+    /**
+     * Returns an RGB value in integer format.
+     *
+     * @param int $red
+     * @param int $green
+     * @param int blue
+     *
+     * @return int
+     */
+    public static function rgbToInt($red, $green, $blue)
+    {
+        return (($red & 0x0ff) << 16)
+            | (( $green & 0x0ff) << 8)
+            | ($blue & 0x0ff);
+    }
+
+    /**
+     * Returns an array of RGB values from an integer formated color.
+     *
+     * @param int $int
+     *
+     * @return int
+     */
+    public static function intToRgb($int)
+    {
+        return [
+            'red'   => ($int >> 16) & 255,
+            'green' => ($int >> 8) & 255,
+            'blue'  => $int & 255,
+        ];
+    }
 }
