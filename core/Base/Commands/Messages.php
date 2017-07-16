@@ -40,13 +40,8 @@ class Messages extends Command
             $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel) {
                 $count = 0;
                 foreach ($msgs as $msg) {
+                    $channel->messages->delete($msg);
                     $count++;
-
-                    if ($count % 5) {
-                        $channel->messages->delete($msg);
-                    } else {
-                        tsleep(1.5);
-                    }
                 }
 
                 if ($count == 1) {
@@ -76,20 +71,18 @@ class Messages extends Command
 
             if ($user) {
                 $channel = $this->channel;
-                $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $user) {
+                $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $user, $limit) {
                     $count = 0;
 
                     foreach ($msgs as $msg) {
                         if ($user->id == $msg->author->id) {
-                            if ($count % 5) {
-                                $channel->messages->delete($msg);
-                            } else {
-                                tsleep(1.5);
-                            }
-
+                            $channel->messages->delete($msg);
                             $count++;
                         }
                     }
+
+                    $l = ($limit == 1) ? 'message' : 'messages';
+                    $channel->sendMessage("`Prunned $count out of $limit total requested $l`");
                 });
             } else {
                 $this->message->reply('You either forgot to give the user, or the user does not exist!');
@@ -114,25 +107,18 @@ class Messages extends Command
         $bot = $this->app->getBotUser();
 
         if ($this->can('manage_messages')) {
-            $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $bot) {
+            $channel->getMessageHistory(['limit' => $limit])->then(function ($msgs) use ($channel, $bot, $limit) {
                 $count = 0;
+
                 foreach ($msgs as $msg) {
                     if ($bot->id == $msg->author->id) {
+                        $channel->messages->delete($msg);
                         $count++;
-
-                        if ($count % 5) {
-                            $channel->messages->delete($msg);
-                        } else {
-                            tsleep(1.5);
-                        }
                     }
                 }
 
-                if ($count == 1) {
-                    $channel->sendMessage('`Pruned 1 message`');
-                } else {
-                    $channel->sendMessage("`Pruned $count messages`");
-                }
+                $l = ($limit == 1) ? 'message' : 'messages';
+                $channel->sendMessage("`Prunned $count out of $limit total requested $l`");
             });
         }
     }
