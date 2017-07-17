@@ -33,7 +33,7 @@ class Messages extends Command
      */
     public function prune(Parameters $p)
     {
-        $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
+        $limit = (($p->count()) ? (int) $p->first() : $this->_defaultLimit) + 1; // +1 adds prune command message too
 
         if ($this->can('manage_messages')) {
             $channel = $this->channel;
@@ -64,7 +64,7 @@ class Messages extends Command
      */
     public function pruneuser(Parameters $p)
     {
-        $limit = (!is_null($p->get(1))) ? (int) $p->get(1) : $this->_defaultLimit;
+        $limit = ((!is_null($p->get(1))) ? (int) $p->get(1) : $this->_defaultLimit) + 1;
 
         if ($this->can('manage_messages')) {
             $user = $this->member($p->first());
@@ -101,7 +101,7 @@ class Messages extends Command
      */
     public function prunebot(Parameters $p)
     {
-        $limit = ($p->count()) ? (int) $p->first() : $this->_defaultLimit;
+        $limit = (($p->count()) ? (int) $p->first() : $this->_defaultLimit) + 1;
 
         $channel = $this->channel;
         $bot = $this->app->getBotUser();
