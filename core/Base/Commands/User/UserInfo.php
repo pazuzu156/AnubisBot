@@ -8,7 +8,6 @@ use Core\Command\Parameters;
 use Core\Utils\Color;
 use Curl\Curl;
 use Discord\Parts\Embed\Embed;
-use Discord\Parts\Embed\Image;
 use Discord\Parts\User\Member;
 
 class UserInfo extends Command
@@ -149,9 +148,9 @@ class UserInfo extends Command
         }
 
         return $this->createEmbed([
-            'color' => Color::INFO,
+            'color'     => Color::INFO,
             'thumbnail' => $this->embedImage($user->avatar),
-            'fields' => $fields,
+            'fields'    => $fields,
         ]);
     }
 }

@@ -73,7 +73,7 @@ class About extends Command
             [
                 'name'  => 'ID',
                 'value' => $bot->id,
-            ]
+            ],
         ];
 
         if (!is_null($member->nick)) {
@@ -98,10 +98,10 @@ class About extends Command
         }
 
         $embed = $this->createEmbed([
-            'title'     => 'About '.env('NAME', ''),
-            'color'     => Color::INFO,
-            'thumbnail' => $this->embedImage($bot->avatar),
-            'fields'    => $fields,
+            'title'       => 'About '.env('NAME', ''),
+            'color'       => Color::INFO,
+            'thumbnail'   => $this->embedImage($bot->avatar),
+            'fields'      => $fields,
             'description' => env('NAME', '').' is a bot written in PHP. Version: v'.$version,
         ]);
 
@@ -112,7 +112,7 @@ class About extends Command
                 $prefix = $prefix.' ';
             }
 
-            $acmds = ['all','uptime','source','invite','invitebot'];
+            $acmds = ['all', 'uptime', 'source', 'invite', 'invitebot'];
             $cmds = '`';
 
             $x = 1;

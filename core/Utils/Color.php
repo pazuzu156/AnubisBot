@@ -129,9 +129,9 @@ class Color
         }
 
         return [
-            'red' => hexdec(substr($hex, 0, 2)),
+            'red'   => hexdec(substr($hex, 0, 2)),
             'green' => hexdec(substr($hex, 2, 2)),
-            'blue' => hexdec(substr($hex, 4, 2)),
+            'blue'  => hexdec(substr($hex, 4, 2)),
         ];
     }
 

@@ -45,8 +45,8 @@ class User extends Command
                     $msg = "{$this->author->user->username} kicked you. | Reason: $reason";
 
                     $embed = $this->createEmbed([
-                        'title' => 'User '.$member->username.' was kicked',
-                        'color' => Color::WARNING,
+                        'title'  => 'User '.$member->username.' was kicked',
+                        'color'  => Color::WARNING,
                         'author' => [
                             'name'     => $this->app->getBotUser()->username,
                             'url'      => 'https://github.com/pazuzu156/AnubisBot',
@@ -138,8 +138,8 @@ class User extends Command
             $msg = "$banner banned you. | Reason: $reason";
 
             $embed = $this->createEmbed([
-                'title' => 'User '.$member->username.' was banned',
-                'color' => Color::WARNING,
+                'title'  => 'User '.$member->username.' was banned',
+                'color'  => Color::WARNING,
                 'author' => [
                     'name'     => $this->app->getBotUser()->username,
                     'url'      => 'https://github.com/pazuzu156/AnubisBot',
