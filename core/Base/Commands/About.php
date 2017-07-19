@@ -111,6 +111,7 @@ class About extends Command
             if (env('PREFIX_SPACE', false)) {
                 $prefix = $prefix.' ';
             }
+            $prefix .= 'about ';
 
             $acmds = ['all', 'uptime', 'source', 'invite', 'invitebot'];
             $cmds = '`';
