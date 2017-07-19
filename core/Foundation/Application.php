@@ -50,7 +50,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.3.4';
+    const VERSION = '1.3.5';
 
     /**
      * List of current active commands.

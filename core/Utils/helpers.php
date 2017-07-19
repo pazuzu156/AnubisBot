@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Core\Foundation\Application;
 use Core\Foundation\Environment;
 use Core\Utils\Color;
@@ -187,7 +188,7 @@ if (!function_exists('version')) {
 
 if (!function_exists('rgb_to_int')) {
     /**
-     * Returns an RGB value in integer format.
+     * Returns an RGB color to an integer color.
      *
      * @param int $red
      * @param int $green
@@ -201,16 +202,92 @@ if (!function_exists('rgb_to_int')) {
     }
 }
 
+if (!function_exists('rgb_to_hex')) {
+    /**
+     * Converts an RGB color to a hexadecimal color.
+     *
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     *
+     * @return string
+     */
+    function rgb_to_hex($red, $green, $blue)
+    {
+        return Color::rgbToHex($red, $green, $blue);
+    }
+}
+
 if (!function_exists('int_to_rgb')) {
     /**
-     * Returns an array of RGB values from an integer formated color.
+     * Converts an integer color to an RGB color.
      *
      * @param int $int
      *
-     * @return int
+     * @return array
      */
     function int_to_rgb($int)
     {
         return Color::intToRgb($int);
+    }
+}
+
+if (!function_exists('int_to_hex')) {
+    /**
+     * Converts integer color to a hexadecimal color.
+     *
+     * @param int $int
+     *
+     * @return string
+     */
+    function int_to_hex($int)
+    {
+        return Color::intToHex($int);
+    }
+}
+
+if (!function_exists('hex_to_rgb')) {
+    /**
+     * Converts hexadecimal color to RGB.
+     *
+     * @param string $hex
+     *
+     * @return array
+     */
+    function hex_to_rgb($hex)
+    {
+        return Color::hexToRgb($hex);
+    }
+}
+
+if (!function_exists('hex_to_int')) {
+    /**
+     * Converts hexadecimal color to an integer color.
+     *
+     * @param string $hex
+     *
+     * @return int
+     */
+    function hex_to_int($hex)
+    {
+        return Color::hexToInt($hex);
+    }
+}
+
+if (!function_exists('carbon')) {
+    /**
+     * Creates a new Carbon instance.
+     *
+     * @param int $timestamp
+     *
+     * @return \Carbon\Carbon
+     */
+    function carbon($timestamp = 0)
+    {
+        if ($timestamp == 0) {
+            $timestamp = time();
+        }
+
+        return Carbon::createFromTimestamp($timestamp);
     }
 }

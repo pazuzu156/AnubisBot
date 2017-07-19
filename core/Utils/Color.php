@@ -50,7 +50,7 @@ class Color
     const INFO = 2839703;
 
     /**
-     * Returns an RGB value in integer format.
+     * Returns an RGB color to an integer color.
      *
      * @param int $red
      * @param int $green
@@ -66,11 +66,29 @@ class Color
     }
 
     /**
-     * Returns an array of RGB values from an integer formated color.
+     * Converts an RGB color to a hexadecimal color.
+     *
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     *
+     * @return string
+     */
+    public static function rgbToHex($red, $green, $blue)
+    {
+        $red = dechex($red);
+        $green = dechex($green);
+        $blue = dechex($blue);
+
+        return strtoupper('#'.$red.$green.$blue);
+    }
+
+    /**
+     * Converts an integer color to an RGB color.
      *
      * @param int $int
      *
-     * @return int
+     * @return array
      */
     public static function intToRgb($int)
     {
@@ -79,5 +97,55 @@ class Color
             'green' => ($int >> 8) & 255,
             'blue'  => $int & 255,
         ];
+    }
+
+    /**
+     * Converts integer color to a hexadecimal color.
+     *
+     * @param int $int
+     *
+     * @return string
+     */
+    public static function intToHex($int)
+    {
+        $rgb = self::intToRgb($int);
+
+        return self::rgbToHex($rgb['red'], $rgb['green'], $rgb['blue']);
+    }
+
+    /**
+     * Converts hexadecimal color to RGB.
+     *
+     * @param string $hex
+     *
+     * @return array
+     */
+    public static function hexToRgb($hex)
+    {
+        $hex = ltrim($hex, '#');
+
+        if (strlen($hex) == 3) {
+            $hex .= $hex;
+        }
+
+        return [
+            'red' => hexdec(substr($hex, 0, 2)),
+            'green' => hexdec(substr($hex, 2, 2)),
+            'blue' => hexdec(substr($hex, 4, 2)),
+        ];
+    }
+
+    /**
+     * Converts hexadecimal color to an integer color.
+     *
+     * @param string $hex
+     *
+     * @return int
+     */
+    public static function hexToInt($hex)
+    {
+        $rgb = self::hexToRgb($hex);
+
+        return self::rgbToInt($rgb['red'], $rgb['green'], $rgb['blue']);
     }
 }

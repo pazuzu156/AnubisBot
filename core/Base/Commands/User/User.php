@@ -44,10 +44,9 @@ class User extends Command
 
                     $msg = "{$this->author->user->username} kicked you. | Reason: $reason";
 
-                    $embed = $this->app->bot()->factory(Embed::class, [
-                        'title'  => 'User '.$member->username.' was kicked',
-                        'type'   => 'rich',
-                        'color'  => Color::WARNING,
+                    $embed = $this->createEmbed([
+                        'title' => 'User '.$member->username.' was kicked',
+                        'color' => Color::WARNING,
                         'author' => [
                             'name'     => $this->app->getBotUser()->username,
                             'url'      => 'https://github.com/pazuzu156/AnubisBot',
@@ -138,10 +137,9 @@ class User extends Command
             $reason = (empty($params)) ? 'None Given' : implode(' ', $params);
             $msg = "$banner banned you. | Reason: $reason";
 
-            $embed = $this->app->bot()->factory(Embed::class, [
-                'title'  => 'User '.$member->username.' was banned',
-                'type'   => 'rich',
-                'color'  => Color::DANGER,
+            $embed = $this->createEmbed([
+                'title' => 'User '.$member->username.' was banned',
+                'color' => Color::WARNING,
                 'author' => [
                     'name'     => $this->app->getBotUser()->username,
                     'url'      => 'https://github.com/pazuzu156/AnubisBot',

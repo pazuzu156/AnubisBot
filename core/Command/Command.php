@@ -7,6 +7,8 @@ use Core\Wrappers\File;
 use Core\Wrappers\Parts\Guild;
 use Core\Wrappers\Parts\Member;
 use Discord\Parts\Channel\Channel;
+use Discord\Parts\Embed\Embed;
+use Discord\Parts\Embed\Image;
 use ReflectionMethod;
 
 class Command
@@ -343,5 +345,63 @@ class Command
     protected function banUser($member, $count = 50)
     {
         return $this->app->banUser($member, $count);
+    }
+
+    /**
+     * Creates a new Discord Embed.
+     *
+     * @param array $options
+     *
+     * @return \Discord\Parts\Embed\Embed
+     */
+    protected function createEmbed(array $options)
+    {
+        $options['timestamp'] = carbon()->toIso8601String();
+
+        if (!isset($options['type'])) {
+            $options['type'] = 'rich';
+        }
+
+        // handle colors
+        if (isset($options['color'])) {
+            if (substr($options['color'], 0, 1) == '#') {
+                $options['color'] = hex_to_int($options['color']);
+            }
+        }
+
+        return $this->app->bot()->factory(Embed::class, $options);
+    }
+
+    /**
+     * Creates a new Embed Image.
+     *
+     * @param string $url
+     * @param array  $options
+     *
+     * @return \Discord\Parts\Embed\Image
+     */
+    protected function embedImage($url, array $options = [])
+    {
+        $image = $this->app->bot()->factory(Image::class, [
+            'url' => $url,
+        ]);
+
+        if (!empty($options)) {
+            foreach ($options as $key => $value) {
+                switch ($key) {
+                    case 'proxy_url':
+                        $image->proxy_url = $value;
+                        break;
+                    case 'width':
+                        $image->width = $value;
+                        break;
+                    case 'height':
+                        $image->height = $value;
+                        break;
+                }
+            }
+        }
+
+        return $image;
     }
 }

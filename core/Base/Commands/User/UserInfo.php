@@ -111,8 +111,7 @@ class UserInfo extends Command
             $nick = $member->nick;
         }
 
-        $timestamp = strtotime($member->joined_at);
-        $carbon = Carbon::createFromTimestamp($timestamp);
+        $carbon = carbon(strtotime($member->joined_at));
         $date = $carbon->toRfc2822String();
 
         $fields = [
@@ -149,16 +148,10 @@ class UserInfo extends Command
             ];
         }
 
-        $embed = $this->app->bot()->factory(Embed::class, [
-            'title'     => '',
-            'type'      => 'rich',
-            'color'     => Color::INFO,
-            'thumbnail' => $this->app->bot()->factory(Image::class, [
-                'url' => $user->avatar,
-            ]),
+        return $this->createEmbed([
+            'color' => Color::INFO,
+            'thumbnail' => $this->embedImage($user->avatar),
             'fields' => $fields,
         ]);
-
-        return $embed;
     }
 }

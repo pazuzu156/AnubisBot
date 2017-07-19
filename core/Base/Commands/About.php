@@ -3,6 +3,7 @@
 namespace Core\Base\Commands;
 
 use Core\Command\Command;
+use Core\Utils\Color;
 use DateTime;
 
 class About extends Command
@@ -52,10 +53,82 @@ class About extends Command
      */
     public function index()
     {
-        $name = env('NAME', '');
         $version = version();
+        $bot = $this->app->getBotUser();
+        $member = $this->member($bot->id);
 
-        $this->channel->sendMessage("$name is a bot written in PHP. Current version: v$version");
+        $userRolesArr = [];
+        foreach ($member->roles as $role) {
+            $userRolesArr[] = $role->name;
+        }
+
+        $roles = implode(', ', $userRolesArr);
+        $roles = rtrim($roles, ', ');
+
+        $fields = [
+            [
+                'name'  => 'Name',
+                'value' => $bot->username.'#'.$bot->discriminator,
+            ],
+            [
+                'name'  => 'ID',
+                'value' => $bot->id,
+            ]
+        ];
+
+        if (!is_null($member->nick)) {
+            $fields[] = [
+                'name'  => 'Nickname',
+                'value' => $member->nick,
+            ];
+        }
+
+        if (!is_null($member->game->name)) {
+            $fields[] = [
+                'name'  => 'Current Presence',
+                'value' => $member->game->name,
+            ];
+        }
+
+        if (!is_null($roles) && $roles !== '') {
+            $fields[] = [
+                'name'  => 'Roles',
+                'value' => $roles,
+            ];
+        }
+
+        $embed = $this->createEmbed([
+            'title'     => 'About '.env('NAME', ''),
+            'color'     => Color::INFO,
+            'thumbnail' => $this->embedImage($bot->avatar),
+            'fields'    => $fields,
+            'description' => env('NAME', '').' is a bot written in PHP. Version: v'.$version,
+        ]);
+
+        $c = $this->channel;
+        $c->sendMessage('', false, $embed)->then(function () use ($c) {
+            $prefix = env('PREFIX');
+            if (env('PREFIX_SPACE', false)) {
+                $prefix = $prefix.' ';
+            }
+
+            $acmds = ['all','uptime','source','invite','invitebot'];
+            $cmds = '`';
+
+            $x = 1;
+            foreach ($acmds as $cmd) {
+                if ($x == count($acmds)) {
+                    $cmds .= ' or `'.$prefix.$cmd.'`';
+                } else {
+                    $cmds .= ' `'.$prefix.$cmd.'`,';
+                }
+
+                $x++;
+            }
+
+            $msg = 'Want to find out more about '.env('NAME').'? Type '.$cmds;
+            $c->sendMessage($msg);
+        });
     }
 
     /**
@@ -65,7 +138,7 @@ class About extends Command
      */
     public function all()
     {
-        $this->index();
+        // $this->index();
         $this->uptime();
         $this->source();
         $this->invite();
