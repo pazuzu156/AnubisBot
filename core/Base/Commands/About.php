@@ -127,7 +127,7 @@ class About extends Command
                 $x++;
             }
 
-            $msg = 'Want to find out more about '.env('NAME').'? Type '.$cmds;
+            $msg = 'Want to find out more about '.env('NAME')."?\nType $cmds";
             $c->sendMessage($msg);
         });
     }
