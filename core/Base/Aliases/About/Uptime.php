@@ -3,7 +3,6 @@
 namespace Core\Base\Aliases\About;
 
 use Core\Command\Alias;
-use Core\Command\Parameters;
 
 class Uptime extends Alias
 {
