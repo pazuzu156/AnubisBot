@@ -30,7 +30,7 @@ class Alias extends Command
      *
      * @return void
      */
-    protected function runCommand($method, Parameters $params)
+    protected function runCommand($method, Parameters $params = null)
     {
         foreach ($this->app->getCommandList() as $cmd => $value) {
             if ($cmd == $this->alias) {

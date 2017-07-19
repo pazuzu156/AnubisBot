@@ -22,6 +22,8 @@ return [
     // All command aliases are registered here
     'aliases' => [
         // All built-in command aliases are registered here
+        Core\Base\Aliases\About\Source::class,
+        Core\Base\Aliases\About\Uptime::class,
         Core\Base\Aliases\Roles\JoinRole::class,
         Core\Base\Aliases\Roles\LeaveRole::class,
         Core\Base\Aliases\Roles\ListRoles::class,

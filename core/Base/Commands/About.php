@@ -253,6 +253,6 @@ class About extends Command
         $baseurl = 'https://discordapp.com/oauth2/authorize?scope=bot';
         $url = $baseurl.'&client_id='.$this->_clientId.'&permissions='.$this->_permissions;
 
-        dump($url);
+        $this->channel->sendMessage("You can use this url: $url to invite the bot to your server");
     }
 }
