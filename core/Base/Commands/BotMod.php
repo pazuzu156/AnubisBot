@@ -67,20 +67,23 @@ class BotMod extends Command
     {
         if ($this->can('manage_server')) {
             if ($p->count() > 0) {
-                switch ($p->first()) {
-                    case 'true':
-                        $enable = true;
-                    default:
-                        $enable = false;
+                if ($p->first() == 'true') {
+                    $enable = true;
+                } else {
+                    $enable = false;
                 }
 
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);
 
                 if (isset($dataFile['display_join_leave_msg'])) {
-                    $dfEnabled = $dataFile['display_join_leave_msg'];
-
-                    if ($enable == $dfEnabled) {
-                        $this->message->reply('Welcome messages are already enabled!');
+                    $dfEnable = $dataFile['display_join_leave_msg'];
+                    
+                    if ($enable == $dfEnable) {
+                        if ($enable) {
+                            $this->message->reply('Welcome messages are already enabled!');
+                        } else {
+                            $this->message->reply('Welcome messages are already disabled!');
+                        }
 
                         return;
                     }
