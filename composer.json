@@ -27,7 +27,8 @@
         "php-curl-class/php-curl-class": "^7.2",
         "symfony/console": "^3.2",
         "symfony/var-dumper": "^3.2",
-        "illuminate/filesystem": "^5.4"
+        "illuminate/filesystem": "^5.4",
+        "norkunas/youtube-dl-php": "dev-master"
     },
     "autoload": {
         "psr-4": {

@@ -27,11 +27,7 @@ class Help extends Command
     public function index(Parameters $p)
     {
         $commands = $this->app->getCommandList();
-        $prefix = env('PREFIX', '');
-
-        if (env('PREFIX_SPACE', false)) {
-            $prefix = $prefix.' ';
-        }
+        $prefix = $this->getPrefix();
 
         if ($p->count() > 0) {
             foreach ($commands as $name => $command) {
@@ -42,7 +38,7 @@ class Help extends Command
                             ."\nSub Commands:\n\t$prefix{$class->getName()} {COMMAND} - Display the help for a given command.";
                         $this->channel->sendMessage("```$msg```");
                     } else {
-                        $this->displayCommandHelp($command, $prefix);
+                        $this->displayCommandHelp($command);
                     }
                 }
             }
@@ -76,22 +72,22 @@ class Help extends Command
      * Displays the help message on the requested command.
      *
      * @param array  $commandInfo
-     * @param string $prefix
      *
      * @return void
      */
-    private function displayCommandHelp(array $commandInfo, $prefix)
+    private function displayCommandHelp(array $commandInfo)
     {
         $command = $commandInfo['class'];
         $alias = $commandInfo['is_alias'];
+        $prefix = $this->getPrefix();
 
-        $msg = "```{$prefix}{$command->getName()} - {$command->getHelp()}\n";
+        $msg = "```$prefix{$command->getName()} - {$command->getHelp()}\n";
 
         if (count($commandInfo['sub_commands']) > 0) {
             $msg .= "\nSub commands:\n";
             foreach ($commandInfo['sub_commands'] as $scname) {
                 $desc = $command->getSubCommandDescription($command, $scname);
-                $msg .= "\t{$prefix}{$command->getName()} {$scname} - $desc\n";
+                $msg .= "\t$prefix{$command->getName()} {$scname} - $desc\n";
             }
         }
 

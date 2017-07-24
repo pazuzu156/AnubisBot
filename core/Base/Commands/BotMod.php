@@ -23,11 +23,11 @@ class BotMod extends Command
      *
      * @param \Core\Command\Parameters $p
      *
-     * @return mixed
+     * @return null
      */
     public function setbotspam(Parameters $p)
     {
-        if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
+        if ($this->can('manage_server')) {
             if ($p->count() > 0) {
                 $channel = $this->guild->channels->get('name', $p->first());
 
@@ -57,6 +57,49 @@ class BotMod extends Command
     }
 
     /**
+     * Enable/Disable member join/leave messages.
+     *
+     * @param \Core\Command\Parameters $p
+     *
+     * @return null
+     */
+    public function enablemessages(Parameters $p)
+    {
+        if ($this->can('manage_server')) {
+            if ($p->count() > 0) {
+                switch ($p->first()) {
+                    case 'true':
+                        $enable = true;
+                    default:
+                        $enable = false;
+                }
+
+                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+
+                if (isset($dataFile['display_join_leave_msg'])) {
+                    $dfEnabled = $dataFile['display_join_leave_msg'];
+
+                    if ($enable == $dfEnabled) {
+                        $this->message->reply('Welcome messages are already enabled!');
+
+                        return;
+                    }
+                }
+
+                $dataFile['display_join_leave_msg'] = $enable;
+
+                File::writeAsJson($this->guild->dataFile(), $dataFile);
+
+                if ($enable) {
+                    $this->message->reply('Join/Leave messages have been enabled');
+                } else {
+                    $this->message->reply('Join/Leave messages have been disabled');
+                }
+            }
+        }
+    }
+
+    /**
      * Sets the message displayed when a user joines the server.
      *
      * @param \Core\Command\Parameters $p
@@ -65,7 +108,7 @@ class BotMod extends Command
      */
     public function joinmsg(Parameters $p)
     {
-        if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
+        if ($this->can('manage_server')) {
             if ($p->count() > 0) {
                 $message = rtrim(implode(' ', $p->all()), ' ');
                 $dataFile = json_decode(File::get($this->guild->dataFile()), true);

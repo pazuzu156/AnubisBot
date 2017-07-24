@@ -107,11 +107,7 @@ class About extends Command
 
         $c = $this->channel;
         $c->sendMessage('', false, $embed)->then(function () use ($c) {
-            $prefix = env('PREFIX');
-            if (env('PREFIX_SPACE', false)) {
-                $prefix = $prefix.' ';
-            }
-            $prefix .= 'about ';
+            $prefix = $this->getPrefix().'about ';
 
             $acmds = ['all', 'uptime', 'source', 'invite', 'invitebot'];
             $cmds = '`';

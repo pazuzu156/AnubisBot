@@ -122,12 +122,7 @@ class Command
                 if ($m[1] == $preset) {
                     switch ($preset) {
                         case 'PREFIX':
-                        $prefix = env('PREFIX', '!');
-                        if (env('PREFIX_SPACE', false)) {
-                            $prefix = $prefix.' ';
-                        }
-
-                        return $prefix;
+                        return $this->getPrefix();
                         case 'NAME':
                         return env('NAME', '');
                         case 'VERSION':
@@ -275,7 +270,7 @@ class Command
     protected function can($permission)
     {
         // bot owner is always true
-        if (env('BOT_OWNER') == $this->author->user->id && env('OVERRIDE_PERMISSIONS')) {
+        if (env('BOT_OWNER') == $this->author->user->id && env('OVERRIDE_PERMISSIONS', false)) {
             return true;
         }
 
@@ -403,5 +398,15 @@ class Command
         }
 
         return $image;
+    }
+
+    /**
+     * Returns the bot's prefix and space if required.
+     *
+     * @return string
+     */
+    protected function getPrefix()
+    {
+        return $this->app->getPrefix();
     }
 }

@@ -174,24 +174,27 @@ class Application
                         if (File::exists($guild->dataFile())) {
                             $dataFile = json_decode(File::get($guild->dataFile()), true);
 
-                            if (isset($dataFile['bot_spam_channel'])) {
-                                $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                if (!isset($dataFile['messages']['join'])
-                                    || $dataFile['messages']['join'] == '') {
-                                    $message = 'User {USER} has joined the server. Welcome! :smile:';
-                                } else {
-                                    $message = $dataFile['messages']['join'];
-                                }
-
-                                $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
-                                    switch (strtolower($m[1])) {
-                                        case 'user':
-                                        return $member;
-                                        break;
+                            if (!isset($dataFile['display_join_leave_msg'])
+                                || $dataFile['display_join_leave_msg'] == true) {
+                                if (isset($dataFile['bot_spam_channel'])) {
+                                    $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+                                    if (!isset($dataFile['messages']['join'])
+                                        || $dataFile['messages']['join'] == '') {
+                                        $message = 'User {USER} has joined the server. Welcome! :smile:';
+                                    } else {
+                                        $message = $dataFile['messages']['join'];
                                     }
-                                }, $message);
 
-                                $channel->sendMessage($message);
+                                    $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                                        switch (strtolower($m[1])) {
+                                            case 'user':
+                                            return $member;
+                                            break;
+                                        }
+                                    }, $message);
+
+                                    $channel->sendMessage($message);
+                                }
                             }
                         }
                     }
@@ -219,24 +222,27 @@ class Application
                             if (File::exists($guild->dataFile())) {
                                 $dataFile = json_decode(File::get($guild->dataFile()), true);
 
-                                if (isset($dataFile['bot_spam_channel'])) {
-                                    $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                    if (!isset($dataFile['messages']['leave'])
-                                        || $dataFile['messages']['leave'] == '') {
-                                        $message = 'User {USER} has left the server. Awe...';
-                                    } else {
-                                        $message = $dataFile['messages']['leave'];
-                                    }
-
-                                    $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
-                                        switch (strtolower($m[1])) {
-                                            case 'user':
-                                            return $member;
-                                            break;
+                                if (!isset($dataFile['display_join_leave_msg'])
+                                    || $dataFile['display_join_leave_msg'] == true) {
+                                    if (isset($dataFile['bot_spam_channel'])) {
+                                        $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
+                                        if (!isset($dataFile['messages']['leave'])
+                                            || $dataFile['messages']['leave'] == '') {
+                                            $message = 'User {USER} has left the server. Awe...';
+                                        } else {
+                                            $message = $dataFile['messages']['leave'];
                                         }
-                                    }, $message);
 
-                                    $channel->sendMessage($message);
+                                        $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                                            switch (strtolower($m[1])) {
+                                                case 'user':
+                                                return $member;
+                                                break;
+                                            }
+                                        }, $message);
+
+                                        $channel->sendMessage($message);
+                                    }
                                 }
                             }
                         }
@@ -364,20 +370,31 @@ class Application
     }
 
     /**
+     * Returns the bot's prefix and space if required.
+     *
+     * @return string
+     */
+    public function getPrefix()
+    {
+        $prefix = env('PREFIX', '!');
+
+        if (env('PREFIX_SPACE', false)) {
+            $prefix = " $prefix";
+        }
+
+        return $prefix;
+    }
+
+    /**
      * Registers the bot.
      *
      * @return void
      */
     private function registerDiscordBot()
     {
-        $prefix_space = $this->_env->get('PREFIX_SPACE', false);
-        $prefix = $this->_env->get('PREFIX', '');
-
-        $prefix = ($prefix_space == 'true') ? $prefix.' ' : $prefix;
-
         $opts = [
             'token'          => $this->_env->get('TOKEN', ''),
-            'prefix'         => $prefix,
+            'prefix'         => $this->getPrefix(),
             'name'           => $this->_env->get('NAME', ''),
             'description'    => $this->_env->get('DESCRIPTION', 'AnubisBot is a Discord bot built in PHP').' // Version: '.self::VERSION,
             'discordOptions' => [

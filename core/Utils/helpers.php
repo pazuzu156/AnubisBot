@@ -96,6 +96,18 @@ if (!function_exists('data_path')) {
     }
 }
 
+if (!function_exists('tmp_path')) {
+    /**
+     * Gets the guild data.
+     *
+     * @return string
+     */
+    function tmp_path()
+    {
+        return storage_path().'/tmp';
+    }
+}
+
 if (!function_exists('env')) {
     /**
      * Gets and environment variable.

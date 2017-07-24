@@ -17,6 +17,7 @@ return [
         Core\Base\Commands\User\UserInfo::class,
 
         // Register any of your custom commands here
+        // Core\Base\Commands\Youtube::class, // Testing class
     ],
 
     // All command aliases are registered here
