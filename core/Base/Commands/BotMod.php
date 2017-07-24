@@ -43,8 +43,8 @@ class BotMod extends Command
                     }
 
                     $dataFile['bot_spam_channel'] = [
-                        'id'   => $channel->id,
-                        'name' => $channel->name,
+                    'id'   => $channel->id,
+                    'name' => $channel->name,
                     ];
 
                     File::writeAsJson($this->guild->dataFile(), $dataFile);
@@ -77,7 +77,7 @@ class BotMod extends Command
 
                 if (isset($dataFile['display_join_leave_msg'])) {
                     $dfEnable = $dataFile['display_join_leave_msg'];
-                    
+
                     if ($enable == $dfEnable) {
                         if ($enable) {
                             $this->message->reply('Welcome messages are already enabled!');

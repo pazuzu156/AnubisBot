@@ -71,7 +71,7 @@ class Help extends Command
     /**
      * Displays the help message on the requested command.
      *
-     * @param array  $commandInfo
+     * @param array $commandInfo
      *
      * @return void
      */
