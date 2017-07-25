@@ -9,7 +9,6 @@ use Core\Utils\Color;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 
 class UserInfo extends Command
 {
@@ -74,7 +73,7 @@ class UserInfo extends Command
         if (!is_null($user)) {
             $client = new Client();
             $response = $client->get('https://api.kalebklein.com/steam/public/getid?username='.$user);
-            
+
             $content = @json_decode($response->getBody()->getContents());
 
             if ($content->error) {
