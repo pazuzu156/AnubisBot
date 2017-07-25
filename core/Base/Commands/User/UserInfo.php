@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Color;
-use Curl\Curl;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\User\Member;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 
 class UserInfo extends Command
 {
@@ -68,19 +69,21 @@ class UserInfo extends Command
      */
     public function steam(Parameters $p)
     {
-        $curl = new Curl();
         $user = $p->first();
 
-        if (is_null($user)) {
-            $this->message->reply('You forgot to give the username!');
-        } else {
-            $curl->get("https://api.kalebklein.com/steam/public/getid?username=$user");
+        if (!is_null($user)) {
+            $client = new Client();
+            $response = $client->get('https://api.kalebklein.com/steam/public/getid?username='.$user);
+            
+            $content = @json_decode($response->getBody()->getContents());
 
-            if ($curl->response->error) {
-                $this->message->reply("Error getting user ID: {$curl->response->message}");
+            if ($content->error) {
+                $this->message->reply("Error getting user ID: {$content->message}");
             } else {
-                $this->message->reply("$user's Steam64 ID is: {$curl->response->steam64}");
+                $this->message->reply("$user's Steam64 ID is: {$content->steam64}");
             }
+        } else {
+            $this->message->reply('You forgot to give the username!');
         }
     }
 
