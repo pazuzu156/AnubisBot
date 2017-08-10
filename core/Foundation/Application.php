@@ -6,6 +6,7 @@ use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
 use Core\Wrappers\File;
+use Core\Wrappers\NewFile;
 use Core\Wrappers\Logger;
 use Core\Wrappers\Parts\Guild;
 use Core\Wrappers\Parts\Member;
@@ -528,12 +529,15 @@ class Application
     private function numberOfGuilds()
     {
         $i = 0;
+
+        // Used a new file class for this.....
         foreach ($this->bot()->guilds as $guild) {
             $g = new Guild($guild);
-            $dataFile = json_decode(File::get($g->dataFile()), true);
-            $dataFile['guild_name'] = $guild->name;
-            ksort($dataFile);
-            File::writeAsJson($g->dataFile(), $dataFile);
+
+            $dataFile = NewFile::getAsArray($g->dataFile());
+            $dataFile['guild_name'] = $g->name;
+
+            NewFile::writeAsJson($g->dataFile(), $dataFile);
             $i++;
         }
 
