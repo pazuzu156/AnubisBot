@@ -39,7 +39,7 @@ class NewFile
      */
     public static function open($filename, $mode = 'r')
     {
-        return new NewFile($filename, $mode);
+        return new self($filename, $mode);
     }
 
     /**
@@ -78,7 +78,7 @@ class NewFile
 
     /**
      * Statically get content in JSON format.
-     * (Assumes the file is already in JSON format)
+     * (Assumes the file is already in JSON format).
      *
      * @param string $filename
      *
@@ -86,7 +86,7 @@ class NewFile
      */
     public static function getAsJson($filename)
     {
-        $file = NewFile::open($filename, 'r');
+        $file = self::open($filename, 'r');
         $content = $file->read();
         $file->close();
 
@@ -134,7 +134,7 @@ class NewFile
             ksort($content);
         }
 
-        $file = NewFile::open($filename, 'w');
+        $file = self::open($filename, 'w');
         $file->write(json_encode($content));
         $file->close();
     }
