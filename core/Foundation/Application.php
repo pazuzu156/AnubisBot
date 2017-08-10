@@ -529,6 +529,11 @@ class Application
     {
         $i = 0;
         foreach ($this->bot()->guilds as $guild) {
+            $g = new Guild($guild);
+            $dataFile = json_decode(File::get($g->dataFile()), true);
+            $dataFile['guild_name'] = $guild->name;
+            ksort($dataFile);
+            File::writeAsJson($g->dataFile(), $dataFile);
             $i++;
         }
 
