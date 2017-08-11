@@ -8,6 +8,9 @@
 
 A Discord bot built in PHP
 
+## NOTICE
+### It's currently storing in my area, so expect some bot downtime for the next few hours. Sorry.
+
 ## Install
 Use composer to install the latest stable version of AnubisBot
 
