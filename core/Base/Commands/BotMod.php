@@ -74,7 +74,7 @@ class BotMod extends Command
                     $enable = false;
                 }
 
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                $dataFile = $this->guild->dataFile()->getAsArray();
 
                 if (isset($dataFile['display_join_leave_msg'])) {
                     $dfEnable = $dataFile['display_join_leave_msg'];
@@ -92,7 +92,7 @@ class BotMod extends Command
 
                 $dataFile['display_join_leave_msg'] = $enable;
 
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
 
                 if ($enable) {
                     $this->message->reply('Join/Leave messages have been enabled');
@@ -115,14 +115,14 @@ class BotMod extends Command
         if ($this->can('manage_server')) {
             if ($p->count() > 0) {
                 $message = rtrim(implode(' ', $p->all()), ' ');
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                $dataFile = $this->guild->dataFile()->getAsArray();
 
                 if (!isset($dataFile['messages'])) {
                     $dataFile['messages'] = ['join' => '', 'leave' => ''];
                 }
 
                 $dataFile['messages']['join'] = $message;
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
 
                 $this->message->reply('Welcome message now set!');
             }
@@ -138,17 +138,17 @@ class BotMod extends Command
      */
     public function leavemsg(Parameters $p)
     {
-        if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
+        if ($this->can('manage_server')) {
             if ($p->count() > 0) {
                 $message = rtrim(implode(' ', $p->all()), ' ');
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                $dataFile = $this->guild->dataFile()->getAsArray();
 
                 if (!isset($dataFile['messages'])) {
                     $dataFile['messages'] = ['join' => '', 'leave' => ''];
                 }
 
                 $dataFile['messages']['leave'] = $message;
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
 
                 $this->message->reply('Dismissal message now set!');
             }
@@ -162,12 +162,12 @@ class BotMod extends Command
      */
     public function deljoinmsg()
     {
-        if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
-            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            $dataFile = $this->guild->dataFile()->getAsArray();
 
             if (isset($dataFile['messages']['join'])) {
                 $dataFile['messages']['join'] = '';
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
                 $this->message->reply('Custom welcome message removed and reset to default!');
             }
         }
@@ -180,12 +180,12 @@ class BotMod extends Command
      */
     public function delleavemsg()
     {
-        if ($this->can('manage_server') || env('BOT_OWNER') == $this->author->id) {
-            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->can('manage_server')) {
+            $dataFile = $this->guild->dataFile()->getAsArray();
 
             if (isset($dataFile['messages']['leave'])) {
                 $dataFile['messages']['leave'] = '';
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
                 $this->message->reply('Custom dismissal message removed and reset to default!');
             }
         }

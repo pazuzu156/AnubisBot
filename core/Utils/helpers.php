@@ -125,23 +125,6 @@ if (!function_exists('env')) {
     }
 }
 
-if (!function_exists('env_set')) {
-    /**
-     * Sets an environment variable and saves it into .env.
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return bool
-     */
-    function env_set($key, $value)
-    {
-        $env = new Environment();
-
-        return $env->set($key, $value);
-    }
-}
-
 if (!function_exists('logs_path')) {
     /**
      * Gets the logger's logs path.

@@ -115,9 +115,26 @@ class File
      *
      * @return array
      */
-    public static function getAsArray($filename)
+    public static function getAsArray($filename, $json = true)
     {
-        return self::getAsObject($filename, true);
+        if ($json) {
+            return self::getAsObject($filename, true);
+        }
+
+        $content = self::get($filename);
+        $exp = explode("\r\n", $content);
+        if (count($exp) == 0 || count($exp) == 1) {
+            $exp = explode("\n", $content);
+        }
+
+        // Remove empty new lines
+        foreach ($exp as $key => $value) {
+            if ($value == '') {
+                unset($exp[$key]);
+            }
+        }
+
+        return $exp;
     }
 
     /**
@@ -134,9 +151,32 @@ class File
             ksort($content);
         }
 
+        self::writeTo($filename, json_encode($content));
+    }
+
+    /**
+     * Statically write content to a file.
+     *
+     * @param string $filename
+     * @param string $content
+     *
+     * @return void
+     */
+    public static function writeTo($filename, $content)
+    {
         $file = self::open($filename, 'w');
-        $file->write(json_encode($content));
+        $file->write($content);
         $file->close();
+    }
+
+    public static function copy($source, $destination)
+    {
+        return copy($source, $destination);
+    }
+
+    public static function move($source, $destination)
+    {
+        return rename($source, $destination);
     }
 
     /**
@@ -148,7 +188,18 @@ class File
      */
     public static function exists($filename)
     {
-        return true;
-        // return file_exists($filename);
+        return file_exists($filename);
+    }
+
+    /**
+     * Deletes a file.
+     *
+     * @param string $filename
+     *
+     * @return bool
+     */
+    public static function delete($filename)
+    {
+        return unlink($filename);
     }
 }

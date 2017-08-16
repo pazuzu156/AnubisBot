@@ -23,7 +23,7 @@ class Power extends Command
      */
     public function shutdown()
     {
-        if ($this->can('administrator') && env('BOT_OWNER') == $this->author->id) {
+        if ($this->can('administrator') && $this->isBotOwner()) {
             $bot = $this->app->bot();
             $logger = $this->logger;
             $this->channel->sendMessage('Bringing the bot offline...')->then(function ($msg) use ($bot, $logger) {

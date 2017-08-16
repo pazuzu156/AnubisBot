@@ -105,9 +105,9 @@ class User extends Command
                         if (is_numeric($id)) {
                             $bannedUsers = $this->getBannedUsers();
                             $bannedUsers[] = $id;
-                            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                            $dataFile = $this->guild->dataFile()->getAsArray();
                             $dataFile['banned_users'] = $bannedUsers;
-                            File::writeAsJson($this->guild->dataFile(), $dataFile);
+                            $this->guild->dataFile()->write($dataFile);
 
                             $this->message->reply('User ID "'.$id.'" added into ban list to auto-ban when they join');
                         }

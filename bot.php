@@ -8,16 +8,9 @@ ini_set('memory_limit', '250M');
 $GLOBALS['START_TIME'] = time();
 
 use Core\Foundation\Application;
-use Core\Wrappers\File;
 
 $app = new Application();
 $app->setPresence(env('DEFAULT_BOT_PRESENCE', ''));
-
-$app->logger()->info('Making sure bot tells the world it\'s online');
-
-if (!File::exists(storage_path().'/bot_online') && !env('DEBUG', false)) {
-    File::write(storage_path().'/bot_online', 'Online');
-}
 
 $app->logger()->info('Booting up bot application');
 $app->start();

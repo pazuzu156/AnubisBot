@@ -45,13 +45,13 @@ trait Roleable
      */
     private function getRestrictedRoles()
     {
-        if (File::exists($this->guild->dataFile())) {
-            return json_decode(File::get($this->guild->dataFile()))->restricted_roles;
+        $dataFile = $this->guild->dataFile();
+
+        if ($dataFile->exists()) {
+            return $dataFile->getAsObject()->restricted_roles;
         }
 
-        File::writeAsJson($this->guild->dataFile(), [
-            'restricted_roles' => [],
-        ]);
+        $dataFile->write(['restricted_roles' => []]);
 
         return $this->getRestrictedRoles();
     }
@@ -124,9 +124,15 @@ trait Roleable
         return false;
     }
 
+    /**
+     * Returns the roles of the given member, or the message author.
+     *
+     * @param \Discord\Parts\User\Member $member
+     *
+     * @return \Discord\Repository\Guild\RoleRepository
+     */
     private function getUserRoles(Member $member = null)
     {
-        // return $this->author->roles;
         return (is_null($member)) ? $this->author->roles : $member->roles;
     }
 }

@@ -51,7 +51,7 @@ class Roles extends Command
             $roleToRestrict = $this->getRoleFromParameter($p);
 
             if ($roleToRestrict !== false) {
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                $dataFile = $this->guild->dataFile()->getAsArray();
 
                 if (is_array($roleToRestrict)) {
                     foreach ($roleToRestrict as $role) {
@@ -77,7 +77,7 @@ class Roles extends Command
 
                 $dataFile['restricted_roles'] = array_values($dataFile['restricted_roles']);
 
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
 
                 if ($p->count() == 1) {
                     $this->message->reply('Role "'.$roleToRestrict->name.'" is now restricted!');
@@ -108,7 +108,7 @@ class Roles extends Command
             $roleToRemove = $this->getRoleFromParameter($p);
 
             if ($roleToRemove !== false) {
-                $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                $dataFile = $this->guild->dataFile()->getAsArray();
 
                 $restrictedRoles = $dataFile['restricted_roles'];
 
@@ -144,7 +144,7 @@ class Roles extends Command
 
                 $dataFile['restricted_roles'] = array_values($dataFile['restricted_roles']);
 
-                File::writeAsJson($this->guild->dataFile(), $dataFile);
+                $this->guild->dataFile()->write($dataFile);
 
                 if ($p->count() == 1) {
                     $this->message->reply('Role "'.$roleToRemove->name.'" is no longer restricted!');

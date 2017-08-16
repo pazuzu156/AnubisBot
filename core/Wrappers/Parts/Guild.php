@@ -19,11 +19,10 @@ class Guild extends Part
     /**
      * Gets the Guild's data file location.
      *
-     * @return string
+     * @return \Core\Utils\DataFile
      */
     public function dataFile()
     {
         return new DataFile(data_path().'/'.$this->getHashedId());
-        // return data_path().'/'.$this->getHashedId();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Core\Foundation;
 
-use Core\Wrappers\File;
+use Core\Utils\File;
 use Dotenv\Dotenv;
 
 class Environment
@@ -72,37 +72,6 @@ class Environment
     {
         if (!is_null($this->_env)) {
             return getenv($key) ? true : false;
-        }
-
-        return false;
-    }
-
-    /**
-     * Sets an environment variable in .env.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return bool
-     */
-    public function set($key, $value)
-    {
-        if (!is_null($this->_env)) {
-            $env = File::getAsArray($this->_envFile, '=');
-
-            foreach ($env as $k => $v) {
-                if ($key == $k) {
-                    $val = (is_bool($value)) ? var_export($value, true) : $value;
-                    $env[$k] = $val;
-                }
-            }
-
-            $lines = [];
-            foreach ($env as $k => $v) {
-                $lines[] = "$k=$v";
-            }
-
-            return (File::write($this->_envFile, implode(PHP_EOL, $lines)) !== 0) ? true : false;
         }
 
         return false;

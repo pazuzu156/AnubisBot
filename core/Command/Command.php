@@ -270,7 +270,7 @@ class Command
     protected function can($permission)
     {
         // bot owner is always true
-        if (env('BOT_OWNER') == $this->author->user->id && env('OVERRIDE_PERMISSIONS', false)) {
+        if ($this->isBotOwner() && env('OVERRIDE_PERMISSIONS', false)) {
             return true;
         }
 
@@ -282,6 +282,20 @@ class Command
         }
 
         return $can;
+    }
+
+    /**
+     * Returns whether or not the author is the bot owner
+     *
+     * @return bool
+     */
+    protected function isBotOwner()
+    {
+        if (env('BOT_OWNER') == $this->author->user->id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

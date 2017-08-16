@@ -2,7 +2,7 @@
 
 namespace Core\Console\Alias;
 
-use Core\Wrappers\File;
+use Core\Utils\File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -66,7 +66,7 @@ class $name extends Alias
     /**
      * Default alias method.
      *
-     * @param \Core\Commands\Parameters $p
+     * @param \Core\Commands\Parameters \$p
      *
      * @return void
      */
@@ -85,7 +85,7 @@ EOF;
         $filepath = $cpath.'/'.$filename;
 
         if (!File::exists($filepath)) {
-            File::write($filepath, $content);
+            File::writeTo($filepath, $content);
 
             $output->writeln("<info>Alias: $name created</>");
 
