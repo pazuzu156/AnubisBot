@@ -5,7 +5,6 @@ namespace Core\Base\Commands\User;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Color;
-use Core\Wrappers\File;
 use Discord\Parts\Embed\Embed;
 
 class User extends Command

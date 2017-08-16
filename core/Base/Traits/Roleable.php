@@ -3,7 +3,6 @@
 namespace Core\Base\Traits;
 
 use Core\Command\Parameters;
-use Core\Wrappers\File;
 use Discord\Parts\Guild\Role;
 use Discord\Parts\User\Member;
 

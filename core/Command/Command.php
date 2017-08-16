@@ -285,7 +285,7 @@ class Command
     }
 
     /**
-     * Returns whether or not the author is the bot owner
+     * Returns whether or not the author is the bot owner.
      *
      * @return bool
      */
