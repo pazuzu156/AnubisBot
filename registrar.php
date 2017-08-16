@@ -1,6 +1,6 @@
 <?php
 
-// Commands registrar
+// Commands register
 
 return [
     // All commands are registered here
@@ -23,6 +23,7 @@ return [
     // All command aliases are registered here
     'aliases' => [
         // All built-in command aliases are registered here
+        Core\Base\Aliases\About\Changes::class,
         Core\Base\Aliases\About\Source::class,
         Core\Base\Aliases\About\Uptime::class,
         Core\Base\Aliases\Roles\JoinRole::class,

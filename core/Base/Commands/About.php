@@ -5,6 +5,7 @@ namespace Core\Base\Commands;
 use Core\Command\Command;
 use Core\Utils\Color;
 use DateTime;
+use GuzzleHttp\Client;
 
 class About extends Command
 {
@@ -250,5 +251,22 @@ class About extends Command
         $url = $baseurl.'&client_id='.$this->_clientId.'&permissions='.$this->_permissions;
 
         $this->channel->sendMessage("You can use this url: $url to invite the bot to your server");
+    }
+
+    /**
+     * Gets the latest changelog.
+     *
+     * @return void
+     */
+    public function changes()
+    {
+        $client = new Client();
+        $response = $client->get('https://api.kalebklein.com/anubisbot/changes');
+
+        $content = $response->getBody()->getContents();
+
+        dump($content);
+
+        $this->channel->sendMessage($content);
     }
 }

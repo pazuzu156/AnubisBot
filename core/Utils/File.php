@@ -2,7 +2,7 @@
 
 namespace Core\Utils;
 
-class NewFile
+class File
 {
     /**
      * File handle instance.
@@ -84,7 +84,7 @@ class NewFile
      *
      * @return string
      */
-    public static function getAsJson($filename)
+    public static function get($filename)
     {
         $file = self::open($filename, 'r');
         $content = $file->read();
@@ -103,7 +103,7 @@ class NewFile
      */
     public static function getAsObject($filename, $assoc = false)
     {
-        $content = self::getAsJson($filename);
+        $content = self::get($filename);
 
         return json_decode($content, $assoc);
     }
@@ -137,5 +137,18 @@ class NewFile
         $file = self::open($filename, 'w');
         $file->write(json_encode($content));
         $file->close();
+    }
+
+    /**
+     * Check if a file exists.
+     *
+     * @param string $filename
+     *
+     * @return bool
+     */
+    public static function exists($filename)
+    {
+        return true;
+        // return file_exists($filename);
     }
 }

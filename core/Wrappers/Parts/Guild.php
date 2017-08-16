@@ -2,6 +2,8 @@
 
 namespace Core\Wrappers\Parts;
 
+use Core\Utils\DataFile;
+
 class Guild extends Part
 {
     /**
@@ -21,6 +23,7 @@ class Guild extends Part
      */
     public function dataFile()
     {
-        return data_path().'/'.$this->getHashedId();
+        return new DataFile(data_path().'/'.$this->getHashedId());
+        // return data_path().'/'.$this->getHashedId();
     }
 }

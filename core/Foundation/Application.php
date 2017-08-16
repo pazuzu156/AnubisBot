@@ -5,14 +5,12 @@ namespace Core\Foundation;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
-use Core\Utils\NewFile;
-use Core\Wrappers\File;
+use Core\Utils\File;
 use Core\Wrappers\Logger;
 use Core\Wrappers\Parts\Guild;
-use Core\Wrappers\Parts\Member;
 use Discord\DiscordCommandClient;
 use Discord\Parts\User\Game;
-use Discord\Parts\User\Member as DMember;
+use Discord\Parts\User\Member;
 use Discord\WebSockets\Event;
 use ReflectionMethod;
 
@@ -147,56 +145,50 @@ class Application
             echo $msg;
         });
 
-        $this->_logger->info('Registering DiscordPHP CLOSED event');
-        $this->_discord->on('closed', function ($discord) {
-            if (File::exists(storage_path().'/bot_online')) {
-                File::delete(storage_path().'/bot_online');
-            }
-            exit;
-        });
+        // $this->_logger->info('Registering DiscordPHP CLOSED event');
+        // $this->_discord->on('closed', function ($discord) {
+        //     if (File::exists(storage_path().'/bot_online')) {
+        //         File::delete(storage_path().'/bot_online');
+        //     }
+        //     exit;
+        // });
 
         $this->_discord->on(Event::GUILD_MEMBER_ADD, function ($member) use ($app) {
-            foreach ($app->bot()->guilds as $guild) {
-                $guild = new Guild($guild);
-                if ($guild->id == $member->guild_id) {
-                    // $member = new Member($guild, $member);
-                    $bannedUsers = $app->getBannedUsers($guild);
-                    $bannedUser = false;
+            $guild = new Guild($member->guild);
+            $bannedUsers = $app->getBannedUsers($guild);
+            $bannedUser = false;
 
-                    foreach ($bannedUsers as $bu) {
-                        if ($member->user->id == $bu) {
-                            $app->banUser($member);
-                            $bannedUser = true;
-                        }
-                    }
+            foreach ($bannedUsers as $bu) {
+                if ($member->user->id == $bu) {
+                    $app->banUser($member);
+                    $bannedUser = true;
+                }
+            }
 
-                    // only display if enabled. If enabled, don't show if a user is auto-banned
-                    if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
-                        if (File::exists($guild->dataFile())) {
-                            $dataFile = json_decode(File::get($guild->dataFile()), true);
+            if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
+                if ($guild->dataFile()->exists()) {
+                    $dataFile = $guild->dataFile();
 
-                            if (!isset($dataFile['display_join_leave_msg'])
-                                || $dataFile['display_join_leave_msg'] == true) {
-                                if (isset($dataFile['bot_spam_channel'])) {
-                                    $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                    if (!isset($dataFile['messages']['join'])
-                                        || $dataFile['messages']['join'] == '') {
-                                        $message = 'User {USER} has joined the server. Welcome! :smile:';
-                                    } else {
-                                        $message = $dataFile['messages']['join'];
-                                    }
+                    if ($dataFile->get('display_join_leave_msg')) {
+                        if ($bsc = $dataFile->get('bot_spam_channel')) {
+                            $channel = $guild->channels->get('id', $bsc['id']);
 
-                                    $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
-                                        switch (strtolower($m[1])) {
-                                            case 'user':
-                                            return $member;
-                                            break;
-                                        }
-                                    }, $message);
-
-                                    $channel->sendMessage($message);
-                                }
+                            if ($msg = $dataFile->get('messages')
+                                && $msg['join'] !== '') {
+                                $message = $msg['join'];
+                            } else {
+                                $message = 'User {USER} has joined the server. Welcome! :smile:';
                             }
+
+                            $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                                switch (strtolower($m[1])) {
+                                    case 'user':
+                                    return $member;
+                                    break;
+                                }
+                            }, $message);
+
+                            $channel->sendMessage($message);
                         }
                     }
                 }
@@ -204,48 +196,41 @@ class Application
         });
 
         $this->_discord->on(Event::GUILD_MEMBER_REMOVE, function ($member) use ($app) {
-            foreach ($app->bot()->guilds as $guild) {
-                $guild = new Guild($guild);
-                if ($guild->id == $member->guild_id) {
-                    $bannedUsers = $app->getBannedUsers($guild);
-                    $removeUser = false;
+            $guild = new Guild($member->guild);
+            $bannedUsers = $app->getBannedUsers($guild);
+            $bannedUser = false;
 
-                    foreach ($bannedUsers as $bu) {
-                        if ($member->user->id == $bu) {
-                            $removeUser = true;
-                        }
-                    }
+            foreach ($bannedUsers as $bu) {
+                if ($member->user->id == $bu) {
+                    $app->banUser($member);
+                    $bannedUser = true;
+                }
+            }
 
-                    if ($removeUser) {
-                        $app->removeUserFromBanList($guild, $member);
-                    } else {
-                        if (env('DISPLAY_USER_JOIN_LEAVE', false)) {
-                            if (File::exists($guild->dataFile())) {
-                                $dataFile = json_decode(File::get($guild->dataFile()), true);
+            if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
+                if ($guild->dataFile()->exists()) {
+                    $dataFile = $guild->dataFile();
 
-                                if (!isset($dataFile['display_join_leave_msg'])
-                                    || $dataFile['display_join_leave_msg'] == true) {
-                                    if (isset($dataFile['bot_spam_channel'])) {
-                                        $channel = $guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-                                        if (!isset($dataFile['messages']['leave'])
-                                            || $dataFile['messages']['leave'] == '') {
-                                            $message = 'User {USER} has left the server. Awe...';
-                                        } else {
-                                            $message = $dataFile['messages']['leave'];
-                                        }
+                    if ($dataFile->get('display_join_leave_msg')) {
+                        if ($bsc = $dataFile->get('bot_spam_channel')) {
+                            $channel = $guild->channels->get('id', $bsc['id']);
 
-                                        $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
-                                            switch (strtolower($m[1])) {
-                                                case 'user':
-                                                return $member;
-                                                break;
-                                            }
-                                        }, $message);
-
-                                        $channel->sendMessage($message);
-                                    }
-                                }
+                            if ($msg = $dataFile->get('messages')
+                                && $msg['leave'] !== '') {
+                                $message = $msg['leave'];
+                            } else {
+                                $message = 'User {USER} has left the server. Awe...';
                             }
+
+                            $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                                switch (strtolower($m[1])) {
+                                    case 'user':
+                                    return $member;
+                                    break;
+                                }
+                            }, $message);
+
+                            $channel->sendMessage($message);
                         }
                     }
                 }
@@ -305,13 +290,11 @@ class Application
      */
     public function getBannedUsers($guild)
     {
-        if (File::exists($guild->dataFile())) {
-            return json_decode(File::get($guild->dataFile()))->banned_users;
+        if ($guild->dataFile()->exists()) {
+            return $guild->dataFile()->getAsObject()->banned_users;
         }
 
-        File::writeAsJson($guild->dataFile(), [
-            'banned_users' => [],
-        ]);
+        $guild->dataFile->write(['banned_users' => []]);
 
         return $this->getBannedUsers();
     }
@@ -337,9 +320,9 @@ class Application
      *
      * @return void
      */
-    public function removeUserFromBanList($guild, DMember $member)
+    public function removeUserFromBanList($guild, Member $member)
     {
-        $dataFile = json_decode(File::get($guild->dataFile()), true);
+        $dataFile = $guild->dataFile()->getAsArray();
 
         for ($i = 0; $i < count($dataFile['banned_users']); $i++) {
             if ($dataFile['banned_users'][$i] == $member->user->id) {
@@ -347,7 +330,7 @@ class Application
             }
         }
 
-        File::writeAsJson($guild->dataFile(), $dataFile);
+        $guild->dataFile()->write($dataFile);
     }
 
     /**
@@ -358,13 +341,12 @@ class Application
      */
     public static function branch()
     {
-        if (file_exists(base_path().'/.git/HEAD')) {
-            $sff = file(base_path().'/.git/HEAD', FILE_USE_INCLUDE_PATH);
-            $fl = $sff[0];
-            $es = explode('/', $fl, 3);
-            $b = $es[2];
+        $head = base_path().'/.git/HEAD';
+        
+        if (File::exists($head)) {
+            $exp = explode('/', File::get($head));
 
-            return str_replace("\n", '', $b);
+            return str_replace("\n", '', $exp[2]);
         }
 
         return 'master';
@@ -530,14 +512,13 @@ class Application
     {
         $i = 0;
 
-        // Used a new file class for this.....
         foreach ($this->bot()->guilds as $guild) {
             $g = new Guild($guild);
-
-            $dataFile = NewFile::getAsArray($g->dataFile());
+            
+            $dataFile = $g->dataFile()->getAsArray();
             $dataFile['guild_name'] = $g->name;
 
-            NewFile::writeAsJson($g->dataFile(), $dataFile);
+            $g->dataFile()->write($dataFile);
             $i++;
         }
 

@@ -3,6 +3,7 @@
 namespace Core\Base\Commands\User;
 
 use Carbon\Carbon;
+use Core\Base\Traits\Roleable;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Color;
@@ -12,6 +13,8 @@ use GuzzleHttp\Client;
 
 class UserInfo extends Command
 {
+    use Roleable;
+
     /**
      * {@inheritdoc}
      */
@@ -99,7 +102,7 @@ class UserInfo extends Command
         $bot = $this->app->getBotUser();
 
         $userRolesArr = [];
-        foreach ($member->roles as $role) {
+        foreach ($this->getUserRoles($member) as $role) {
             $userRolesArr[] = $role->name;
         }
 

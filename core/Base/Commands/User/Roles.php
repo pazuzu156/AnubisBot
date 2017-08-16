@@ -2,6 +2,7 @@
 
 namespace Core\Base\Commands\User;
 
+use Core\Base\Traits\Roleable;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Wrappers\File;
@@ -9,6 +10,8 @@ use Discord\Parts\Guild\Role;
 
 class Roles extends Command
 {
+    use Roleable;
+
     /**
      * {@inheritdoc}
      */
@@ -275,120 +278,5 @@ class Roles extends Command
                 }
             }
         }
-    }
-
-    /**
-     * Returns a list of joinable roles.
-     *
-     * @return array
-     */
-    private function getJoinableRoles()
-    {
-        $joinableRoles = [];
-        $filters = ['@everyone'];
-
-        foreach ($this->guild->roles as $guildRole) {
-            if (!in_array(strtolower($guildRole->name), $filters)) {
-                $restricted = false;
-
-                foreach ($this->getRestrictedRoles() as $restrictedRole) {
-                    if ($guildRole->id == $restrictedRole->id) {
-                        $restricted = true;
-                    }
-                }
-
-                if (!$restricted) {
-                    $joinableRoles[] = $guildRole;
-                }
-            }
-        }
-
-        return $joinableRoles;
-    }
-
-    /**
-     * Gets the requested role from the Guild object.
-     *
-     * @return mixed
-     */
-    private function getRestrictedRoles()
-    {
-        if (File::exists($this->guild->dataFile())) {
-            return json_decode(File::get($this->guild->dataFile()))->restricted_roles;
-        }
-
-        File::writeAsJson($this->guild->dataFile(), [
-            'restricted_roles' => [],
-        ]);
-
-        return $this->getRestrictedRoles();
-    }
-
-    /**
-     * Gets the requested role from the Guild object.
-     *
-     * @param \Core\Command\Parameters $p
-     *
-     * @return mixed
-     */
-    private function getRoleFromParameter(Parameters $p)
-    {
-        $roles = null;
-
-        if ($p->count() > 1) {
-            foreach ($this->guild->roles as $guildRole) {
-                for ($i = 0; $i < $p->count(); $i++) {
-                    if (strtolower($p->get($i)) == strtolower($guildRole->name)) {
-                        $roles[] = $guildRole;
-                    }
-                }
-            }
-        } else {
-            foreach ($this->guild->roles as $guildRole) {
-                if (strtolower($p->first()) == strtolower($guildRole->name)) {
-                    $roles = $guildRole;
-                }
-            }
-        }
-
-        return (!is_null($roles)) ? $roles : false;
-    }
-
-    /**
-     * Checks wheter a role is restricted or not.
-     *
-     * @param \Discord\Parts\Guild\Role
-     *
-     * @return mixed
-     */
-    private function isRoleRestricted(Role $role)
-    {
-        foreach ($this->getRestrictedRoles() as $restrictedRole) {
-            $arr = (array) $restrictedRole;
-
-            if (strtolower($role->name) == strtolower($arr['name'])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks whether a user has the requested role or not.
-     *
-     * @param \Discord\Parts\User\Role $role
-     *
-     * @return bool
-     */
-    private function hasRole(Role $role)
-    {
-        foreach ($this->author->roles as $userRole) {
-            if ($role->id == $userRole->id) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -32,22 +32,23 @@ class BotMod extends Command
                 $channel = $this->guild->channels->get('name', $p->first());
 
                 if (!is_null($channel)) {
-                    $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+                    $dataFile = $this->guild->dataFile();
 
-                    if (isset($dataFile['bot_spam_channel'])) {
-                        if ($dataFile['bot_spam_channel']['id'] == $channel->id) {
+                    if ($bsc = $dataFile->get('bot_spam_channel')) {
+                        if ($bsc['id'] == $channel->id) {
                             $this->message->reply('This channel is already set as the bot spam channel!');
 
                             return;
                         }
                     }
 
-                    $dataFile['bot_spam_channel'] = [
-                    'id'   => $channel->id,
-                    'name' => $channel->name,
+                    $data = $dataFile->getAsArray();
+                    $data['bot_spam_channel'] = [
+                        'id'   => $channel->id,
+                        'name' => $channel->name,
                     ];
 
-                    File::writeAsJson($this->guild->dataFile(), $dataFile);
+                    $dataFile->write($data);
                     $this->message->reply('Bot spam channel changed to: #'.$channel->name.' (*'.$channel->id.'*)');
                 }
             }
