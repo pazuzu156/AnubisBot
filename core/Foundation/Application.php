@@ -342,7 +342,7 @@ class Application
     public static function branch()
     {
         $head = base_path().'/.git/HEAD';
-        
+
         if (File::exists($head)) {
             $exp = explode('/', File::get($head));
 
@@ -514,7 +514,7 @@ class Application
 
         foreach ($this->bot()->guilds as $guild) {
             $g = new Guild($guild);
-            
+
             $dataFile = $g->dataFile()->getAsArray();
             $dataFile['guild_name'] = $g->name;
 

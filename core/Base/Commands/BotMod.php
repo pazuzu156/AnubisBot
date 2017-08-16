@@ -4,7 +4,6 @@ namespace Core\Base\Commands;
 
 use Core\Command\Command;
 use Core\Command\Parameters;
-use Core\Wrappers\File;
 
 class BotMod extends Command
 {
