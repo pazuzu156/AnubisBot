@@ -265,8 +265,6 @@ class About extends Command
 
         $content = $response->getBody()->getContents();
 
-        dump($content);
-
         $this->channel->sendMessage($content);
     }
 }
