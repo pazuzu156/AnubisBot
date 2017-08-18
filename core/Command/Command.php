@@ -3,7 +3,6 @@
 namespace Core\Command;
 
 use Core\Foundation\Application;
-use Core\Wrappers\File;
 use Core\Wrappers\Parts\Guild;
 use Core\Wrappers\Parts\Member;
 use Discord\Parts\Channel\Channel;
