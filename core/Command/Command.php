@@ -307,15 +307,15 @@ class Command
     {
         $isbsset = false;
 
-        if (File::exists($this->guild->dataFile())) {
-            $dataFile = json_decode(File::get($this->guild->dataFile()), true);
+        if ($this->guild->dataFile()->exists()) {
+            $dataFile = $this->guild->dataFile()->getAsArray();
 
             if (isset($dataFile['bot_spam_channel'])) {
                 return $this->guild->channels->get('id', $dataFile['bot_spam_channel']['id']);
-            } else {
-                return $this->channel;
             }
         }
+
+        return $this->channel;
     }
 
     /**
@@ -327,7 +327,6 @@ class Command
      */
     protected function member($member)
     {
-        // return new Member($this->guild, $member);
         $id = rtrim(str_replace('<@', '', $member), '>');
 
         return $this->guild->members->get('id', $id);

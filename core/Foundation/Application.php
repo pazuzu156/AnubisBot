@@ -172,9 +172,9 @@ class Application
                     if ($dataFile->get('display_join_leave_msg')) {
                         if ($bsc = $dataFile->get('bot_spam_channel')) {
                             $channel = $guild->channels->get('id', $bsc['id']);
+                            $msg = $dataFile->get('messages');
 
-                            if ($msg = $dataFile->get('messages')
-                                && $msg['join'] !== '') {
+                            if ($msg && ($msg['join'] !== '')) {
                                 $message = $msg['join'];
                             } else {
                                 $message = 'User {USER} has joined the server. Welcome! :smile:';
@@ -187,6 +187,8 @@ class Application
                                     break;
                                 }
                             }, $message);
+
+                            dump($message);
 
                             $channel->sendMessage($message);
                         }
@@ -214,9 +216,9 @@ class Application
                     if ($dataFile->get('display_join_leave_msg')) {
                         if ($bsc = $dataFile->get('bot_spam_channel')) {
                             $channel = $guild->channels->get('id', $bsc['id']);
+                            $msg = $dataFile->get('messages');
 
-                            if ($msg = $dataFile->get('messages')
-                                && $msg['leave'] !== '') {
+                            if ($msg && ($msg['leave'] !== '')) {
                                 $message = $msg['leave'];
                             } else {
                                 $message = 'User {USER} has left the server. Awe...';
