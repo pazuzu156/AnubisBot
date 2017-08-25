@@ -96,7 +96,6 @@ class Help extends Command
                 $msg .= "\t$prefix{$command->getName()} {$scname} - $desc\n";
 
                 if ($command->getExample($scname)) {
-                    
                     $msg .= "\t\tUsage: {$command->getExample($scname)}\n\n";
                 } else {
                     $msg .= "\n";
