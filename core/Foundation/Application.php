@@ -98,6 +98,7 @@ class Application
         $this->_logger->info('Setting bot\'s presence');
         $this->_game = $this->_discord->factory(Game::class, [
             'name' => $gameName,
+            'type' => Game::TYPE_PLAYING,
         ]);
     }
 
