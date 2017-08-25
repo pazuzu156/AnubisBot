@@ -146,14 +146,6 @@ class Application
             echo $msg;
         });
 
-        // $this->_logger->info('Registering DiscordPHP CLOSED event');
-        // $this->_discord->on('closed', function ($discord) {
-        //     if (File::exists(storage_path().'/bot_online')) {
-        //         File::delete(storage_path().'/bot_online');
-        //     }
-        //     exit;
-        // });
-
         $this->_discord->on(Event::GUILD_MEMBER_ADD, function ($member) use ($app) {
             $guild = new Guild($member->guild);
             $bannedUsers = $app->getBannedUsers($guild);
@@ -188,8 +180,6 @@ class Application
                                     break;
                                 }
                             }, $message);
-
-                            dump($message);
 
                             $channel->sendMessage($message);
                         }
@@ -403,6 +393,8 @@ class Application
     /**
      * Registers all bot commands.
      *
+     * @param bool $alias
+     *
      * @return void
      */
     private function registerCommands($alias = false)
@@ -417,13 +409,14 @@ class Application
 
         foreach ($commands as $command) {
             $cmd = new $command($this);
-            $desc = ($cmd->getDescription() == '') ? 'No description provided' : $cmd->getDescription();
+            $descr = ($cmd->getDescription() == '') ? 'No description provided' : $cmd->getDescription();
 
             $this->_logger->info("Registering $logstr {$cmd->getName()}");
 
             $app = $this;
 
-            $desc = $cmd->parseDescription($desc);
+            $desc = $cmd->parseDescription($descr);
+            $example = $cmd->parseDescription($descr, 'example');
 
             $command = $this->_discord->registerCommand($cmd->getName(), function ($message, $params) use ($cmd, $app) {
                 $cmd->setMessage($message);
@@ -435,7 +428,8 @@ class Application
                     echo "{$cmd->getname()} doesn't have [index] method and is not calling a sub command!";
                 }
             }, [
-                'description' => $cmd->parseDescription($desc, true).'.',
+                'description' => $cmd->parseDescription($desc, 'inherit').'.',
+                'usage' => (substr($example, 0, 8) == '{INHERIT') ? '' : $example.'.',
             ]);
 
             $methods = get_class_methods($cmd);

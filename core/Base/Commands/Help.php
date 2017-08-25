@@ -20,6 +20,8 @@ class Help extends Command
     /**
      * Default command method.
      *
+     * @example {COMMAND} [command]
+     *
      * @param \Core\Commands\Parameters $p
      *
      * @return void
@@ -35,7 +37,7 @@ class Help extends Command
                     if ($name == 'help') {
                         $class = $command['class'];
                         $msg = "$prefix{$class->getName()} - {$class->getHelp()}\n"
-                            ."\nSub Commands:\n\t$prefix{$class->getName()} {COMMAND} - Display the help for a given command.";
+                            ."\tUsage: {$prefix}help [COMMAND] - Display the help for a given command.";
                         $this->channel->sendMessage("```$msg```");
                     } else {
                         $this->displayCommandHelp($command);
@@ -83,11 +85,22 @@ class Help extends Command
 
         $msg = "```$prefix{$command->getName()} - {$command->getHelp()}\n";
 
+        if ($command->getExample($command->getName())) {
+            $msg .= "\tUsage: {$command->getExample($command->getName())}\n";
+        }
+
         if (count($commandInfo['sub_commands']) > 0) {
             $msg .= "\nSub commands:\n";
             foreach ($commandInfo['sub_commands'] as $scname) {
                 $desc = $command->getSubCommandDescription($command, $scname);
                 $msg .= "\t$prefix{$command->getName()} {$scname} - $desc\n";
+
+                if ($command->getExample($scname)) {
+                    
+                    $msg .= "\t\tUsage: {$command->getExample($scname)}\n\n";
+                } else {
+                    $msg .= "\n";
+                }
             }
         }
 
@@ -105,7 +118,7 @@ class Help extends Command
             }
 
             if ($aliases !== '') {
-                $msg .= "\nCommand aliases:\n$aliases";
+                $msg .= "Command aliases:\n$aliases";
             }
         }
 

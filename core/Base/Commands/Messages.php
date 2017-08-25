@@ -27,6 +27,8 @@ class Messages extends Command
     /**
      * Prune messages.
      *
+     * @example {COMMAND} prune [LIMIT]
+     *
      * @param \Core\Commands\Parameters $p
      *
      * @return void
@@ -57,6 +59,8 @@ class Messages extends Command
 
     /**
      * Prune user messages.
+     *
+     * @example {COMMAND} pruneuser <USER> [LIMIT]
      *
      * @param \Core\Commands\Parameters $p
      *
@@ -94,6 +98,8 @@ class Messages extends Command
 
     /**
      * Prune bot messages.
+     *
+     * @example {COMMAND} prunebot [LIMIT]
      *
      * @param \Core\Commands\Parameters $p
      *

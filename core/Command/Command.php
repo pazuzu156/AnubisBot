@@ -27,6 +27,13 @@ class Command
     protected $description = '';
 
     /**
+     * Command/Sub Command exmaples array.
+     *
+     * @var array
+     */
+    protected $examples = [];
+
+    /**
      * Application instance.
      *
      * @var \Core\Foundation\Application
@@ -73,7 +80,7 @@ class Command
      *
      * @var array
      */
-    private $_presets = ['PREFIX', 'NAME', 'VERSION'];
+    private $_presets = ['PREFIX', 'NAME', 'VERSION', 'COMMAND'];
 
     /**
      * Variable regex array.
@@ -83,6 +90,7 @@ class Command
     private $_varRegex = [
         'default' => '/\{([a-zA-Z]+)\}/i',
         'inherit' => '/\{(INHERIT)\_([A-Z]+)(\_([A-Z\_]+))?\}/i',
+        'example' => '/@example\s\{([a-zA-Z]+)\}/i',
     ];
 
     /**
@@ -106,14 +114,15 @@ class Command
      * Parses a command description.
      *
      * @param string $description
+     * @param string $regex
      *
      * @return string
      */
-    public function parseDescription($description, $inherit = false)
+    public function parseDescription($description, $regex = 'default')
     {
         $presets = $this->_presets;
 
-        $regex = ($inherit) ? $this->_varRegex['inherit'] : $this->_varRegex['default'];
+        $regex = $this->_varRegex[$regex];
 
         $app = $this->app;
         $description = preg_replace_callback($regex, function ($m) use ($presets, $app) {
@@ -126,6 +135,8 @@ class Command
                         return env('NAME', '');
                         case 'VERSION':
                         return version();
+                        case 'COMMAND':
+                        return $this->getPrefix().$this->name;
                     }
                 }
             }
@@ -146,13 +157,13 @@ class Command
                         $class = $info['class'];
 
                         if ($method == 'index') {
-                            $content = $class->getDescription()." ({PREFIX}$cmd)";
+                            $content = $class->getDescription()." ({COMMAND})";
 
                             return rtrim($this->parseDescription($content), '.');
                         } else {
                             $reflection = new ReflectionMethod(get_class($class), $method);
                             $content = $this->getSubCommandDescription($class, $method, $reflection);
-                            $content .= ' '.$this->parseDescription("({PREFIX}$cmd $method)");
+                            $content .= ' '.$this->parseDescription("({COMMAND} $method)");
 
                             return rtrim($content, '.');
                         }
@@ -160,7 +171,7 @@ class Command
                 }
             }
 
-            return $m[0];
+            return str_replace('@example ', '', $m[0]);
         }, $description);
 
         return $description;
@@ -184,6 +195,22 @@ class Command
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Returns a command exmaple.
+     *
+     * @param string $key
+     *
+     * @return string|bool
+     */
+    public function getExample($key)
+    {
+        if (isset($this->examples[$key])) {
+            return $this->examples[$key];
+        }
+
+        return false;
     }
 
     /**
@@ -246,8 +273,10 @@ class Command
                     $line = $this->parseDescription($line);
                     $lines[] = $line;
                 } elseif (preg_match($this->_varRegex['inherit'], $line)) {
-                    $line = $this->parseDescription($line, true);
+                    $line = $this->parseDescription($line, 'inherit');
                     $lines[] = $line;
+                } elseif (preg_match($this->_varRegex['example'], $line)) {
+                    $this->examples[$subCommand] = $this->parseDescription($line, 'example');
                 }
             }
         }
