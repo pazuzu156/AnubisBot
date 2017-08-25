@@ -157,7 +157,7 @@ class Command
                         $class = $info['class'];
 
                         if ($method == 'index') {
-                            $content = $class->getDescription()." ({COMMAND})";
+                            $content = $class->getDescription().' ({COMMAND})';
 
                             return rtrim($this->parseDescription($content), '.');
                         } else {

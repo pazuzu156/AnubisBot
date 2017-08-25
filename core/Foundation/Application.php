@@ -429,7 +429,7 @@ class Application
                 }
             }, [
                 'description' => $cmd->parseDescription($desc, 'inherit').'.',
-                'usage' => (substr($example, 0, 8) == '{INHERIT') ? '' : $example.'.',
+                'usage'       => (substr($example, 0, 8) == '{INHERIT') ? '' : $example.'.',
             ]);
 
             $methods = get_class_methods($cmd);
