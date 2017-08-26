@@ -61,6 +61,11 @@ class $name extends Alias
     /**
      * {@inheritdoc}
      */
+    protected \$usage = '';
+
+    /**
+     * {@inheritdoc}
+     */
     public \$alias = '';
 
     /**

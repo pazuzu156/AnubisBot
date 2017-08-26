@@ -59,6 +59,11 @@ class $name extends Command
     protected \$description = '';
 
     /**
+     * {@inheritdoc}
+     */
+    protected \$usage = '';
+
+    /**
      * Default command method.
      *
      * @param \Core\Commands\Parameters \$p
