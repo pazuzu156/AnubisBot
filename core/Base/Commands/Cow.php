@@ -27,6 +27,8 @@ class Cow extends Command
     /**
      * Displays animal with your message in a speech bubble.
      *
+     * @example {COMMAND} say [ANIMAL] <MESSAGE>
+     *
      * @param \Core\Command\Parameters $p
      *
      * @return void
@@ -62,6 +64,8 @@ class Cow extends Command
 
     /**
      * Displays animal with your message in a thought bubble.
+     *
+     * @example {COMMAND} think [ANIMAL] <MESSAGE>
      *
      * @param \Core\Command\Parameters $p
      *

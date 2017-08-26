@@ -20,6 +20,11 @@ class JoinRole extends Alias
     /**
      * {@inheritdoc}
      */
+    protected $usage = '{COMMAND} <ROLE|LIST OF ROLES>';
+
+    /**
+     * {@inheritdoc}
+     */
     public $alias = 'roles';
 
     /**

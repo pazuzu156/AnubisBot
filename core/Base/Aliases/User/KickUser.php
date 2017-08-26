@@ -20,6 +20,11 @@ class KickUser extends Alias
     /**
      * {@inheritdoc}
      */
+    protected $usage = '{COMMAND} <USER>';
+
+    /**
+     * {@inheritdoc}
+     */
     public $alias = 'user';
 
     /**

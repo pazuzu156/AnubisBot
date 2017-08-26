@@ -103,7 +103,7 @@ class Help extends Command
 
         if ($alias) {
             $parent = $command->getParentCommand()->getName();
-            $msg .= "\nAlias to: $prefix$parent\n";
+            $msg .= "Alias to: $prefix$parent\n";
         } else {
             $aliases = '';
             foreach ($this->app->getCommandList() as $name => $alias) {

@@ -164,13 +164,13 @@ class Command
                         $class = $info['class'];
 
                         if ($method == 'index') {
-                            $content = $class->getDescription().' ({COMMAND})';
+                            $content = $class->getDescription().' ({PREFIX}'.$cmd.')';
 
                             return rtrim($this->parseDescription($content), '.');
                         } else {
                             $reflection = new ReflectionMethod(get_class($class), $method);
                             $content = $this->getSubCommandDescription($class, $method, $reflection);
-                            $content .= ' '.$this->parseDescription("({COMMAND} $method)");
+                            $content .= ' '.$this->parseDescription("({PREFIX}$cmd $method)");
 
                             return rtrim($content, '.');
                         }
@@ -217,7 +217,6 @@ class Command
      */
     public function getExample($key)
     {
-        dump($this->examples);
         if (isset($this->examples[$key])) {
             return $this->examples[$key];
         }

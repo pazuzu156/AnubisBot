@@ -20,6 +20,11 @@ class Prune extends Alias
     /**
      * {@inheritdoc}
      */
+    protected $usage = '{COMMAND} [LIMIT]';
+
+    /**
+     * {@inheritdoc}
+     */
     public $alias = 'msg';
 
     /**
@@ -37,6 +42,8 @@ class Prune extends Alias
     /**
      * {INHERIT_MSG_PRUNEUSER}.
      *
+     * @example {COMMAND} <USER> [LIMIT]
+     *
      * @param \Core\Commands\Parameters $p
      *
      * @return void
@@ -48,6 +55,8 @@ class Prune extends Alias
 
     /**
      * {INHERIT_MSG_PRUNEBOT}.
+     *
+     * @example {COMMAND} [LIMIT]
      *
      * @param \Core\Commands\Parameters $p
      *

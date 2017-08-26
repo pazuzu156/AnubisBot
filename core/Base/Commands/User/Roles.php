@@ -42,7 +42,7 @@ class Roles extends Command
     /**
      * Adds a role, or roles to the server's restriction list.
      *
-     * @example {COMMAND} restrict <ROLE>
+     * @example {COMMAND} restrict <ROLE|LIST OF ROLES>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -101,7 +101,7 @@ class Roles extends Command
     /**
      * Removes a role, or roles from the server's restriction list.
      *
-     * @example {COMMAND} unrestrict <ROLE>
+     * @example {COMMAND} unrestrict <ROLE|LIST OF ROLES>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -170,7 +170,7 @@ class Roles extends Command
     /**
      * Join a role.
      *
-     * @example {COMMAND} join <ROLE>
+     * @example {COMMAND} join <ROLE|LIST OF ROLES>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -231,7 +231,7 @@ class Roles extends Command
     /**
      * Leave a role.
      *
-     * @example {COMMAND} leave <ROLE>
+     * @example {COMMAND} leave <ROLE|LIST OF ROLES>
      *
      * @param \Core\Command\Parameters $p
      *

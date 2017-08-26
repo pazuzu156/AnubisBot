@@ -19,6 +19,8 @@ class Power extends Command
     /**
      * Shuts down the bot.
      *
+     * @example {COMMAND} shutdown
+     *
      * @return void
      */
     public function shutdown()
