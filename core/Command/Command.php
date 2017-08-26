@@ -27,6 +27,13 @@ class Command
     protected $description = '';
 
     /**
+     * The command's usage example to serve in the help.
+     *
+     * @var string
+     */
+    protected $usage = '';
+
+    /**
      * Command/Sub Command exmaples array.
      *
      * @var array
@@ -190,11 +197,15 @@ class Command
     /**
      * Gets the command's raw description.
      *
-     * @return string
+     * @return string|bool
      */
     public function getDescription()
     {
-        return $this->description;
+        if (!empty($this->description)) {
+            return $this->description;
+        }
+
+        return false;
     }
 
     /**
@@ -206,8 +217,23 @@ class Command
      */
     public function getExample($key)
     {
+        dump($this->examples);
         if (isset($this->examples[$key])) {
             return $this->examples[$key];
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the command's raw usage example.
+     *
+     * @return string|bool
+     */
+    public function getUsage()
+    {
+        if (!empty($this->usage)) {
+            return $this->usage;
         }
 
         return false;

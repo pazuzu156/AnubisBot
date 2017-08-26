@@ -24,6 +24,8 @@ class Roles extends Command
     /**
      * Default index method.
      *
+     * @example {COMMAND} roles
+     *
      * @return void
      */
     public function index(Parameters $p)
@@ -39,6 +41,8 @@ class Roles extends Command
 
     /**
      * Adds a role, or roles to the server's restriction list.
+     *
+     * @example {COMMAND} restrict <ROLE>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -96,6 +100,8 @@ class Roles extends Command
 
     /**
      * Removes a role, or roles from the server's restriction list.
+     *
+     * @example {COMMAND} unrestrict <ROLE>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -164,6 +170,8 @@ class Roles extends Command
     /**
      * Join a role.
      *
+     * @example {COMMAND} join <ROLE>
+     *
      * @param \Core\Command\Parameters $p
      *
      * @return void
@@ -222,6 +230,8 @@ class Roles extends Command
 
     /**
      * Leave a role.
+     *
+     * @example {COMMAND} leave <ROLE>
      *
      * @param \Core\Command\Parameters $p
      *

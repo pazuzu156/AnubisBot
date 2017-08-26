@@ -132,6 +132,8 @@ class About extends Command
     /**
      * Runs all of the about sub commands.
      *
+     * @example {COMMAND} all
+     *
      * @return void
      */
     public function all()
@@ -146,6 +148,8 @@ class About extends Command
     /**
      * Gives the GitHub link to the source code.
      *
+     * @example {COMMAND} source
+     *
      * @return void
      */
     public function source()
@@ -155,6 +159,8 @@ class About extends Command
 
     /**
      * Displays the amount of time the bot has been live.
+     *
+     * @example {COMMAND} uptime
      *
      * @return void
      */
@@ -231,6 +237,8 @@ class About extends Command
     /**
      * Gives the official server's invite link.
      *
+     * @example {COMMAND} invite
+     *
      * @return void
      */
     public function invite()
@@ -242,6 +250,8 @@ class About extends Command
 
     /**
      * Brings up an invite link for {NAME}.
+     *
+     * @example {COMMAND} invitebot
      *
      * @return void
      */
@@ -255,6 +265,8 @@ class About extends Command
 
     /**
      * Gets the latest changelog.
+     *
+     * @example {COMMAND} changes
      *
      * @return void
      */

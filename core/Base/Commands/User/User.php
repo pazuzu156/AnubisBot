@@ -22,6 +22,8 @@ class User extends Command
     /**
      * Kicks a user.
      *
+     * @example {COMMAND} kick <USER>
+     *
      * @param \Core\Command\Parameters $p
      *
      * @return void
@@ -80,6 +82,8 @@ class User extends Command
 
     /**
      * Bans a user.
+     *
+     * @example {COMMAND} ban <USER>
      *
      * @param \Core\Command\Parameters $p
      *

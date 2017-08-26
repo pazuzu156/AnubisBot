@@ -20,6 +20,8 @@ class BotMod extends Command
     /**
      * Sets the default bot-spam channel.
      *
+     * @example {COMMAND} setbotspam <CHANNEL>
+     *
      * @param \Core\Command\Parameters $p
      *
      * @return null
@@ -58,6 +60,8 @@ class BotMod extends Command
 
     /**
      * Enable/Disable member join/leave messages.
+     *
+     * @example {COMMAND} enablemessages <true|false>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -105,6 +109,8 @@ class BotMod extends Command
     /**
      * Sets the message displayed when a user joines the server.
      *
+     * @example {COMMAND} joinmsg <JOIN MESSAGE>
+     *
      * @param \Core\Command\Parameters $p
      *
      * @return void
@@ -130,6 +136,8 @@ class BotMod extends Command
 
     /**
      * Sets the message displayed when a user leaves the server.
+     *
+     * @example {COMMAND} leavemsg <LEAVE MESSAGE>
      *
      * @param \Core\Command\Parameters $p
      *
@@ -157,6 +165,8 @@ class BotMod extends Command
     /**
      * Resets the welcome message to the default.
      *
+     * @example {COMMAND} deljoinmsg
+     *
      * @return void
      */
     public function deljoinmsg()
@@ -174,6 +184,8 @@ class BotMod extends Command
 
     /**
      * Resets the dismissal message to the default.
+     *
+     * @example {COMMAND} delleavemsg
      *
      * @return void
      */

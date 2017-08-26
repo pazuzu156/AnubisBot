@@ -409,14 +409,14 @@ class Application
 
         foreach ($commands as $command) {
             $cmd = new $command($this);
-            $descr = ($cmd->getDescription() == '') ? 'No description provided' : $cmd->getDescription();
+            $descr = (!$cmd->getDescription()) ? 'No description provided' : $cmd->getDescription();
+            $usage = (!$cmd->getUsage()) ? '' : $cmd->getUsage();
 
             $this->_logger->info("Registering $logstr {$cmd->getName()}");
 
             $app = $this;
 
             $desc = $cmd->parseDescription($descr);
-            $example = $cmd->parseDescription($descr, 'example');
 
             $command = $this->_discord->registerCommand($cmd->getName(), function ($message, $params) use ($cmd, $app) {
                 $cmd->setMessage($message);
@@ -429,7 +429,7 @@ class Application
                 }
             }, [
                 'description' => $cmd->parseDescription($desc, 'inherit').'.',
-                'usage'       => (substr($example, 0, 8) == '{INHERIT') ? '' : $example.'.',
+                'usage'       => $cmd->parseDescription($usage),
             ]);
 
             $methods = get_class_methods($cmd);

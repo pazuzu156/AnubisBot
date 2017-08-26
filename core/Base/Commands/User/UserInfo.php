@@ -26,6 +26,11 @@ class UserInfo extends Command
     protected $description = 'Get user info for yourself or an @Mention';
 
     /**
+     * {@inheritdoc}
+     */
+    protected $usage = '{COMMAND} <USER>';
+
+    /**
      * Default command method.
      *
      * @param \Core\Commands\Parameters $p
@@ -45,6 +50,8 @@ class UserInfo extends Command
     /**
      * Returns your user info in a nice little box.
      *
+     * @example {COMMAND} me
+     *
      * @return void
      */
     public function me()
@@ -55,6 +62,8 @@ class UserInfo extends Command
     /**
      * Gets your ID and sends it to you in a DM.
      *
+     * @example {COMMAND} getid
+     *
      * @return void
      */
     public function getid()
@@ -64,6 +73,8 @@ class UserInfo extends Command
 
     /**
      * Returns the given user's Steam64 ID.
+     *
+     * @example {COMMAND} steam <STEAM_USERNAME>
      *
      * @param \Core\Commands\Parameters $p
      *
