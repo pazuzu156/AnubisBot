@@ -6,10 +6,10 @@ return [
     // All commands are registered here
     'commands' => [
         // All built-in commands are registered here
-        Core\Base\Commands\About::class,
         Core\Base\Commands\BotMod::class,
         Core\Base\Commands\Cow::class,
-        Core\Base\Commands\Help::class,
+        Core\Base\Commands\Info\About::class,
+        Core\Base\Commands\Info\Help::class,
         Core\Base\Commands\Messages::class,
         Core\Base\Commands\Power::class,
         Core\Base\Commands\User\Roles::class,
@@ -23,7 +23,6 @@ return [
     // All command aliases are registered here
     'aliases' => [
         // All built-in command aliases are registered here
-        Core\Base\Aliases\About\Changes::class,
         Core\Base\Aliases\About\Source::class,
         Core\Base\Aliases\About\Uptime::class,
         Core\Base\Aliases\Roles\JoinRole::class,

@@ -34,6 +34,13 @@ class Command
     protected $usage = '';
 
     /**
+     * Whether or not the command should be hidden in the help output.
+     *
+     * @var bool
+     */
+    protected $hidden = false;
+
+    /**
      * Command/Sub Command exmaples array.
      *
      * @var array
@@ -246,6 +253,16 @@ class Command
     public function getHelp()
     {
         return $this->app->bot()->getCommand($this->name)->description;
+    }
+
+    /**
+     * Returns whether or not a command is hidden in the help output.
+     *
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
     }
 
     /**

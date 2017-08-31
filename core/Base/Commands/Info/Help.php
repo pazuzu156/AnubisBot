@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Base\Commands;
+namespace Core\Base\Commands\Info;
 
 use Core\Command\Command;
 use Core\Command\Parameters;
@@ -51,7 +51,8 @@ class Help extends Command
         // Display commands first
         foreach ($commands as $command) {
             // Don't display sub commands. We'll do those upon request!
-            if (!$command['is_alias']) {
+            // Also, don't display hidden commands
+            if (!$command['is_alias'] && !($command['class']->isHidden())) {
                 $msg .= $prefix.$command['class']->getName().' - '.$command['class']->getHelp()."\n";
             }
         }

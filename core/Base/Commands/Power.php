@@ -17,6 +17,11 @@ class Power extends Command
     protected $description = 'Handles the bots power';
 
     /**
+     * {@inheritdoc}
+     */
+    protected $hidden = true;
+
+    /**
      * Shuts down the bot.
      *
      * @example {COMMAND} shutdown

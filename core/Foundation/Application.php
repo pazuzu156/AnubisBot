@@ -283,7 +283,8 @@ class Application
      */
     public function getBannedUsers($guild)
     {
-        if ($guild->dataFile()->exists()) {
+        if ($guild->dataFile()->exists()
+            && isset($guild->dataFile()->getAsObject()->banned_users)) {
             return $guild->dataFile()->getAsObject()->banned_users;
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Base\Commands;
+namespace Core\Base\Commands\Info;
 
 use Core\Command\Command;
 use Core\Utils\Color;
