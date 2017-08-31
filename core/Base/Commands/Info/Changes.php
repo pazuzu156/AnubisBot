@@ -3,7 +3,6 @@
 namespace Core\Base\Commands\Info;
 
 use Core\Command\Command;
-use Core\Command\Parameters;
 use GuzzleHttp\Client as Guzzle;
 
 class Changes extends Command

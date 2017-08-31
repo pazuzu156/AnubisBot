@@ -363,7 +363,7 @@ class Application
     }
 
     /**
-     * Shutsdown the bot
+     * Shuts down the bot.
      *
      * @return void
      */
