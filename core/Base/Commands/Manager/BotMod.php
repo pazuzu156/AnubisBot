@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Base\Commands;
+namespace Core\Base\Commands\Manager;
 
 use Core\Command\Command;
 use Core\Command\Parameters;

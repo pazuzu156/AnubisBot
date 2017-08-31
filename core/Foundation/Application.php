@@ -49,7 +49,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.4.3';
+    const VERSION = '1.5';
 
     /**
      * List of current active commands.
@@ -360,6 +360,17 @@ class Application
         }
 
         return $prefix;
+    }
+
+    /**
+     * Shutsdown the bot
+     *
+     * @return void
+     */
+    public function shutdown()
+    {
+        $this->bot()->close();
+        exit;
     }
 
     /**

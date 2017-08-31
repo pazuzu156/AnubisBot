@@ -6,12 +6,14 @@ return [
     // All commands are registered here
     'commands' => [
         // All built-in commands are registered here
-        Core\Base\Commands\BotMod::class,
         Core\Base\Commands\Cow::class,
         Core\Base\Commands\Info\About::class,
+        Core\Base\Commands\Info\Changes::class,
         Core\Base\Commands\Info\Help::class,
+        Core\Base\Commands\Manager\Announce::class,
+        Core\Base\Commands\Manager\BotMod::class,
+        Core\Base\Commands\Manager\Power::class,
         Core\Base\Commands\Messages::class,
-        Core\Base\Commands\Power::class,
         Core\Base\Commands\User\Roles::class,
         Core\Base\Commands\User\User::class,
         Core\Base\Commands\User\UserInfo::class,

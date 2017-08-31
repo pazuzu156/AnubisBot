@@ -262,21 +262,4 @@ class About extends Command
 
         $this->channel->sendMessage("You can use this url: $url to invite the bot to your server");
     }
-
-    /**
-     * Gets the latest changelog.
-     *
-     * @example {COMMAND} changes
-     *
-     * @return void
-     */
-    public function changes()
-    {
-        $client = new Client();
-        $response = $client->get('https://api.kalebklein.com/anubisbot/changes');
-
-        $content = $response->getBody()->getContents();
-
-        $this->channel->sendMessage($content);
-    }
 }
