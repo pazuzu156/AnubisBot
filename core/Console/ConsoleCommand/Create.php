@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Create extends Command
@@ -22,6 +23,7 @@ class Create extends Command
         ->setDescription('Creates a new console command template')
         ->setDefinition(new InputDefinition([
             new InputArgument('name', InputArgument::REQUIRED, 'The name of the console command class to create (CammelCase please)'),
+            new InputOption('part', 'p', InputOption::VALUE_REQUIRED, 'Specify where to generate the console command (app|core)'),
         ]));
     }
 
@@ -36,12 +38,46 @@ class Create extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
-        $nametolower = strtolower($name);
+        $part = $input->getOption('part');
+
+        $exp = explode('\\', $name);
+        $namespace = 'App\\Console'; // By default, leave it at the app/commands directory
+        $dTree = ''; // Directory tree for generating folders for the command
+
+        if (!is_null($part)) {
+            switch (strtolower($part)) {
+                case 'core':
+                    $namespace = 'Core\\Console';
+                    $dTree = base_path().'/core/Console';
+                    break;
+                case 'app':
+                    $dTree = console_path();
+                    break;
+                default:
+                    throw new \Exception('Invalid part option! Use app or core');
+            }
+        } else {
+            $dTree = console_path();
+        }
+
+        for ($i = 0; $i < count($exp); $i++) {
+            if ($i == (count($exp) - 1)) {
+                $name = $exp[$i];
+                $nametolower = strtolower($name);
+            } else {
+                $namespace .= '\\'.$exp[$i];
+                $dTree .= '/'.$exp[$i];
+            }
+        }
+
+        if (!file_exists($dTree)) {
+            mkdir($dTree, 0777, true);
+        }
 
         $content = <<<EOF
 <?php
 
-namespace App\Console;
+namespace $namespace;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -77,7 +113,7 @@ class $name extends Command
 
 EOF;
 
-        $cpath = console_path();
+        $cpath = $dTree;
         $filename = $name.'.php';
         $filepath = $cpath.'/'.$filename;
 

@@ -195,11 +195,45 @@ class File
      * Deletes a file.
      *
      * @param string $filename
+     * @param bool   $tree
      *
      * @return bool
      */
-    public static function delete($filename)
+    public static function delete($filename, $tree = false)
     {
+        if ($tree) {
+            $remove = unlink($filename);
+            $name = basename($filename);
+            self::deleteTree(str_replace($name, '', $filename));
+
+            return $remove;
+        }
+
         return unlink($filename);
+    }
+
+    /**
+     * Deletes a directory tree assuming it's empty.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public static function deleteTree($path)
+    {
+        $path = rtrim($path, '/');
+        if (is_dir($path)) {
+            $files = array_diff(scandir($path), ['.', '..']);
+
+            if (count($files) == 0) {
+                $return = rmdir($path);
+                $parent = substr($path, 0, strripos($path, '/'));
+                self::deleteTree($path);
+
+                return $return;
+            }
+        }
+
+        return false;
     }
 }
