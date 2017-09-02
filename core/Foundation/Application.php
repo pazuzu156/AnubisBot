@@ -49,7 +49,7 @@ class Application
      *
      * @var string
      */
-    const VERSION = '1.5';
+    const VERSION = '1.5.1';
 
     /**
      * List of current active commands.
@@ -158,7 +158,7 @@ class Application
                 }
             }
 
-            if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
+            if (!$bannedUser) {
                 if ($guild->dataFile()->exists()) {
                     $dataFile = $guild->dataFile();
 
@@ -181,6 +181,8 @@ class Application
                                 }
                             }, $message);
 
+                            dump($message);
+
                             $channel->sendMessage($message);
                         }
                     }
@@ -200,7 +202,7 @@ class Application
                 }
             }
 
-            if (env('DISPLAY_USER_JOIN_LEAVE', true) && !$bannedUser) {
+            if (!$bannedUser) {
                 if ($guild->dataFile()->exists()) {
                     $dataFile = $guild->dataFile();
 
@@ -283,12 +285,17 @@ class Application
      */
     public function getBannedUsers($guild)
     {
-        if ($guild->dataFile()->exists()
-            && isset($guild->dataFile()->getAsObject()->banned_users)) {
-            return $guild->dataFile()->getAsObject()->banned_users;
+        if ($guild->dataFile()->exists()) {
+            $data = $guild->dataFile()->getAsObject();
+
+            if (isset($data->banned_users)) {
+                return $data->banned_users;
+            }
         }
 
-        $guild->dataFile->write(['banned_users' => []]);
+        $dataFile = $guild->dataFile()->getAsArray();
+        $dataFile['banned_users'] = [];
+        $guild->dataFile()->write($dataFile);
 
         return $this->getBannedUsers();
     }
