@@ -170,7 +170,7 @@ class Application
                             if ($msg && ($msg['join'] !== '')) {
                                 $message = $msg['join'];
                             } else {
-                                $message = 'Hello {USER}, welcome to **{GUILD}**! :smile:';
+                                $message = 'Hello {USER}, welcome to **{GUILD}**. Please enjoy your stay! :smile:';
                             }
 
                             $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member, $guild) {
