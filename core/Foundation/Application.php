@@ -170,14 +170,17 @@ class Application
                             if ($msg && ($msg['join'] !== '')) {
                                 $message = $msg['join'];
                             } else {
-                                $message = 'User {USER} has joined the server. Welcome! :smile:';
+                                $message = 'Hello {USER}, welcome to **{GUILD}**! :smile:';
                             }
 
-                            $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
+                            $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member, $guild) {
                                 switch (strtolower($m[1])) {
                                     case 'user':
-                                    return $member;
-                                    break;
+                                        return $member;
+                                        break;
+                                    case 'guild':
+                                        return $guild->name;
+                                        break;
                                 }
                             }, $message);
 
@@ -220,7 +223,8 @@ class Application
                             $message = preg_replace_callback('/\{([a-zA-Z]+)\}/i', function ($m) use ($member) {
                                 switch (strtolower($m[1])) {
                                     case 'user':
-                                    return $member;
+                                        return $member;
+                                        break;
                                     break;
                                 }
                             }, $message);
