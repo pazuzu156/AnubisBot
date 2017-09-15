@@ -1,3 +1,6 @@
+# ANNOUNCEMENT
+There seems to be an issue with my ISP at the moment, and this my Internet is either super slow or not working at all. I will do all I can to ensure the bot stays online, but until they fix their shit, not a whole lot I can do about it. Sorry, guys.
+
 # AnubisBot
 [![StyleCI](https://styleci.io/repos/87753072/shield?branch=master)](https://styleci.io/repos/87753072)
 [![Latest Stable Version](https://poser.pugx.org/pazuzu156/anubisbot/v/stable?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
