@@ -75,15 +75,17 @@ class Application
     /**
      * Ctor.
      *
+     * @param array $shards
+     *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $shards = [])
     {
         $this->_env = new Environment();
         $this->_logger = new Logger(env('NAME', ''));
         $this->_config = new Configuration();
 
-        $this->registerDiscordBot();
+        $this->registerDiscordBot($shards);
     }
 
     /**
@@ -387,9 +389,11 @@ class Application
     /**
      * Registers the bot.
      *
+     * @param array $shards
+     *
      * @return void
      */
-    private function registerDiscordBot()
+    public function registerDiscordBot(array $shards = [])
     {
         $opts = [
             'token'          => $this->_env->get('TOKEN', ''),
@@ -402,6 +406,15 @@ class Application
             ],
             'defaultHelpCommand' => false,
         ];
+
+        if (!empty($shards)) {
+            try {
+                $opts['discordOptions']['shardId'] = $shards[0];
+                $opts['discordOptions']['shardCount'] = $shards[1];
+            } catch (\Exception $ex) {
+                die('Invalid sharding!');
+            }
+        }
 
         $this->_logger->info('Registering DiscordPHP bot');
         $this->_discord = new DiscordCommandClient($opts);
