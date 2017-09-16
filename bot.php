@@ -18,7 +18,7 @@ use Core\Foundation\Application;
  * run an instance with [0, 2] and another with [1, 2]
  * this will run on shards 1 and 2
  */
-$shards = []; // define shards here
+$shards = [0, 1]; // define shards here
 
 $app = new Application($shards);
 $app->setPresence(env('DEFAULT_BOT_PRESENCE', ''));

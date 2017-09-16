@@ -70,7 +70,7 @@ class Application
      *
      * @var array
      */
-    private $_presets = ['NUMBER_OF_GUILDS', 'S'];
+    private $_presets = ['NUMBER_OF_GUILDS', 'S', 'SHARD_ID', 'NUMBER_OF_SHARDS'];
 
     /**
      * Ctor.
@@ -119,7 +119,7 @@ class Application
             if (!is_null($this->_game)) {
                 $ctx = $this;
                 $presets = $this->_presets;
-                $this->_game->name = preg_replace_callback('/\{([A-Z\_]+)\}/i', function ($m) use ($ctx, $presets) {
+                $this->_game->name = preg_replace_callback('/\{([A-Z\_]+)\}/i', function ($m) use ($ctx, $presets, $discord) {
                     foreach ($presets as $preset) {
                         if ($m[1] == $preset) {
                             switch ($m[1]) {
@@ -127,6 +127,18 @@ class Application
                                     return $ctx->numberOfGuilds();
                                 case 'S':
                                     return ($ctx->numberOfGuilds() == 1) ? '' : 's';
+                                case 'SHARD_ID':
+                                    if (isset($discord->options['shardId'])) {
+                                        return $discord->options['shardId'];
+                                    }
+
+                                    return 0;
+                                case 'NUMBER_OF_SHARDS':
+                                    if (isset($discord->options['shardCount'])) {
+                                        return $discord->options['shardCount'];
+                                    }
+
+                                    return 0;
                             }
                         }
                     }
@@ -138,6 +150,10 @@ class Application
             $msg = "\nBot is now online\n"
                 ."Bot ID: {$discord->user->id}\n"
                 ."Bot name: {$discord->user->username}\n";
+
+            if (isset($this->_discord->options['shardId'])) {
+                $msg .= "Running on shard {$this->_discord->options['shardId']} of {$this->_discord->options['shardCount']} total shards\n";
+            }
 
             foreach (explode("\n", $msg) as $line) {
                 if ($line !== '') {
