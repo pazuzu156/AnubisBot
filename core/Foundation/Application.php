@@ -129,7 +129,7 @@ class Application
                                     return ($ctx->numberOfGuilds() == 1) ? '' : 's';
                                 case 'SHARD_ID':
                                     if (isset($discord->options['shardId'])) {
-                                        return $discord->options['shardId'];
+                                        return $discord->options['shardId'] + 1;
                                     }
 
                                     return 0;
@@ -152,7 +152,8 @@ class Application
                 ."Bot name: {$discord->user->username}\n";
 
             if (isset($this->_discord->options['shardId'])) {
-                $msg .= "Running on shard {$this->_discord->options['shardId']} of {$this->_discord->options['shardCount']} total shards\n";
+                $id = $this->_discord->options['shardId'] + 1;
+                $msg .= "Running on shard $id of {$this->_discord->options['shardCount']} total shards\n";
             }
 
             foreach (explode("\n", $msg) as $line) {
