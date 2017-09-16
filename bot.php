@@ -11,7 +11,7 @@ use Core\Foundation\Application;
 
 /**
  * Shards array has 2 values, id, and count.
- * index 0 is the id, and index 1 is the count
+ * index 0 is the id, and index 1 is the count.
  *
  * if you need 2 shards, then first shard id is 0, and second is 1
  *
