@@ -31,7 +31,7 @@ class File
             touch($filename);
             chmod($filename, 0755);
         }
-        
+
         $this->_handle = fopen($filename, $mode);
     }
 
