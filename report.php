@@ -11,7 +11,6 @@
  * Sharding requires the existance of the file
  * `storage/data/botinfo.json`
  */
-
 require_once __DIR__.'/vendor/autoload.php';
 
 use Core\Foundation\Environment;
