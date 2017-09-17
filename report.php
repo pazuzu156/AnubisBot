@@ -32,7 +32,7 @@ if ($shards !== false) {
 /**
  * Sends an update to the Discord Bot List API.
  *
- * @param array $shard - The shard info
+ * @param array $shard       - The shard info
  * @param int   $shard_count - Number of shards (or server count if no sharding)
  *
  * @return void
@@ -46,9 +46,9 @@ function post($shard, $shard_count)
 
     // This array is for sharding
     $data = [
-        'shard_id' => $shard['id'],
+        'shard_id'     => $shard['id'],
         'server_count' => $shard['guild_count'],
-        'shard_count' => $shard_count,
+        'shard_count'  => $shard_count,
     ];
 
     // This array is for no sharding
