@@ -4,8 +4,8 @@ namespace Core\Foundation;
 
 use Core\Command\Command;
 use Core\Command\Parameters;
-use Core\Utils\Configuration;
 use Core\Utils\BotData;
+use Core\Utils\Configuration;
 use Core\Utils\File;
 use Core\Wrappers\Logger;
 use Core\Wrappers\Parts\Guild;
