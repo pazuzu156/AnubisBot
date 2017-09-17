@@ -26,6 +26,12 @@ class File
     public function __construct($filename, $mode = 'r')
     {
         $this->_filename = $filename;
+
+        if (!file_exists($this->_filename)) {
+            touch($filename);
+            chmod($filename, 0755);
+        }
+        
         $this->_handle = fopen($filename, $mode);
     }
 

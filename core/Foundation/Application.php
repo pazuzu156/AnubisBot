@@ -5,6 +5,7 @@ namespace Core\Foundation;
 use Core\Command\Command;
 use Core\Command\Parameters;
 use Core\Utils\Configuration;
+use Core\Utils\BotData;
 use Core\Utils\File;
 use Core\Wrappers\Logger;
 use Core\Wrappers\Parts\Guild;
@@ -124,8 +125,16 @@ class Application
                         if ($m[1] == $preset) {
                             switch ($m[1]) {
                                 case 'NUMBER_OF_GUILDS':
+                                    if (isset($discord->options['shardId'])) {
+                                        return $ctx->numberOfGuilds(false);
+                                    }
+
                                     return $ctx->numberOfGuilds();
                                 case 'S':
+                                    if (isset($discord->options['shardId'])) {
+                                        return ($ctx->numberOfGuilds(false) == 1) ? '' : 's';
+                                    }
+
                                     return ($ctx->numberOfGuilds() == 1) ? '' : 's';
                                 case 'SHARD_ID':
                                     if (isset($discord->options['shardId'])) {
@@ -556,22 +565,39 @@ class Application
     /**
      * Returns the number of guilds the bot is registered to.
      *
+     * @param bool $calculate
+     *
      * @return int
      */
-    private function numberOfGuilds()
+    private function numberOfGuilds($calculate = true)
     {
-        $i = 0;
+        if ($calculate) {
+            $i = 0;
 
-        foreach ($this->bot()->guilds as $guild) {
-            $g = new Guild($guild);
+            foreach ($this->bot()->guilds as $guild) {
+                $g = new Guild($guild);
 
-            $dataFile = $g->dataFile()->getAsArray();
-            $dataFile['guild_name'] = $g->name;
+                $dataFile = $g->dataFile()->getAsArray();
+                $dataFile['guild_name'] = $g->name;
 
-            $g->dataFile()->write($dataFile);
-            $i++;
+                $g->dataFile()->write($dataFile);
+                $i++;
+            }
+
+            return $i;
+        } else {
+            $shards = BotData::get('shards');
+
+            if ($shards !== false) {
+                $count = 0;
+                foreach ($shards as $shard) {
+                    $count += $shard['guild_count'];
+                }
+
+                return $count;
+            } else {
+                return $this->numberOfGuilds();
+            }
         }
-
-        return $i;
     }
 }
