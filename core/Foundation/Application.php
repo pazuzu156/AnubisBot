@@ -125,25 +125,25 @@ class Application
                         if ($m[1] == $preset) {
                             switch ($m[1]) {
                                 case 'NUMBER_OF_GUILDS':
-                                    if (isset($discord->options['shardId'])) {
+                                    if ($this->isSharded()) {
                                         return $ctx->numberOfGuilds(false);
                                     }
 
                                     return $ctx->numberOfGuilds();
                                 case 'S':
-                                    if (isset($discord->options['shardId'])) {
+                                    if ($this->isSharded()) {
                                         return ($ctx->numberOfGuilds(false) == 1) ? '' : 's';
                                     }
 
                                     return ($ctx->numberOfGuilds() == 1) ? '' : 's';
                                 case 'SHARD_ID':
-                                    if (isset($discord->options['shardId'])) {
+                                    if ($this->isSharded()) {
                                         return $discord->options['shardId'] + 1;
                                     }
 
                                     return 0;
                                 case 'NUMBER_OF_SHARDS':
-                                    if (isset($discord->options['shardCount'])) {
+                                    if ($this->isSharded()) {
                                         return $discord->options['shardCount'];
                                     }
 
@@ -160,7 +160,7 @@ class Application
                 ."Bot ID: {$discord->user->id}\n"
                 ."Bot name: {$discord->user->username}\n";
 
-            if (isset($this->_discord->options['shardId'])) {
+            if ($this->isSharded()) {
                 $id = $this->_discord->options['shardId'] + 1;
                 $msg .= "Running on shard $id of {$this->_discord->options['shardCount']} total shards\n";
             }
@@ -453,6 +453,16 @@ class Application
     }
 
     /**
+     * Returns whether or not the bot is sharded.
+     *
+     * @return bool
+     */
+    public function isSharded()
+    {
+        return isset($this->_discord->options['shardId']);
+    }
+
+    /**
      * Registers all bot commands.
      *
      * @param bool $alias
@@ -569,7 +579,7 @@ class Application
      *
      * @return int
      */
-    private function numberOfGuilds($calculate = true)
+    public function numberOfGuilds($calculate = true)
     {
         if ($calculate) {
             $i = 0;

@@ -98,6 +98,17 @@ class About extends Command
             ];
         }
 
+        $calc = false;
+
+        if ($this->app->isSharded()) {
+            $calc = true;
+        }
+
+        $fields[] = [
+            'name'  => 'Server Count',
+            'value' => $this->app->numberOfGuilds($calc),
+        ];
+
         $embed = $this->createEmbed([
             'title'       => 'About '.env('NAME', ''),
             'color'       => Color::INFO,
