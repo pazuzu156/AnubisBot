@@ -18,6 +18,7 @@ use Core\Utils\BotData;
 use GuzzleHttp\Client as Guzzle;
 
 $shards = BotData::get('shards');
+// $shards = false; // Uncomment to force not using shards
 
 if ($shards !== false) {
     foreach ($shards as $shard) {

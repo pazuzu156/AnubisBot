@@ -4,7 +4,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/pazuzu156/anubisbot/v/unstable?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
 [![Total Downloads](https://poser.pugx.org/pazuzu156/anubisbot/downloads?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
 [![License](https://poser.pugx.org/pazuzu156/anubisbot/license?format=flat-square)](https://packagist.org/packages/pazuzu156/anubisbot)
-[![Bot Status](https://api.kalebklein.com/anubisbot/status)](https://api.kalebklein.com/anubisbot/status)
+[![Bot Status](https://api.kalebklein.com/anubisbot/status)](https://discordbots.org/bot/327322469197283328)
 
 A Discord bot built in PHP
 
