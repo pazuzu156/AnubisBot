@@ -162,7 +162,12 @@ class Application
 
             if ($this->isSharded()) {
                 $id = $this->_discord->options['shardId'] + 1;
-                $msg .= "Running on shard $id of {$this->_discord->options['shardCount']} total shards\n";
+                $msg .= "Shard ID: $id\n"
+                    ."Shard Count: {$this->_discord->options['shardCount']}\n"
+                    ."Guild Count on Current Shard: {$this->numberOfGuilds()}\n"
+                    ."Total Guild Count: {$this->numberOfGuilds(false)}\n";
+            } else {
+                $msg .= "Guild Count: {$this->numberOfGuilds()}\n";
             }
 
             foreach (explode("\n", $msg) as $line) {
