@@ -1,7 +1,0 @@
-logs/*
-!logs/.gitkeep
-data/*
-!data/.gitkeep
-tmp/*
-!tmp/.gitkeep
-bot_online
